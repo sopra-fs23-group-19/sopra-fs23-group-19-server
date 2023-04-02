@@ -1,8 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User Controller
- * This class is responsible for handling all REST request that are related to
- * the user.
- * The controller will receive the request and delegate the execution to the
- * UserService and finally return the result.
+ * User Controller This class is responsible for handling all REST request that are related to the
+ * user. The controller will receive the request and delegate the execution to the UserService and
+ * finally return the result.
  */
 @RestController
 public class UserController {
@@ -42,7 +41,7 @@ public class UserController {
     return userGetDTOs;
   }
 
-  @PostMapping("/users")
+  @PostMapping("/users/register")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public UserGetDTO createUser(@RequestBody UserPostDTO userPostDTO) {
@@ -54,4 +53,13 @@ public class UserController {
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
+
+  @PutMapping("/users/{userId}")
+  //update user profile, return 204
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  @ResponseBody
+  public void updateProfile(@RequestBody UserPutDTO userPutDTO) {
+      userService.updateUsernameOrPassword(userPutDTO);
+  }
+
 }
