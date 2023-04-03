@@ -28,7 +28,7 @@ public class UserController {
     this.userService = userService;
     }
 
-    @PostMapping("users/login")
+    @PostMapping("/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public String login(@RequestBody UserLoginPostDTO userLoginPostDTO) {
@@ -39,11 +39,10 @@ public class UserController {
     }
 
     @UserLoginToken
-    @PostMapping("users/logout")
+    @PostMapping("/users/logout/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void logout(@RequestBody long userId) {
-        System.out.println(userId);
+    public void logout(@PathVariable("userId") long userId) {
         userService.logout(userId);
     }
 
@@ -74,8 +73,6 @@ public class UserController {
 //        return userGetDTOs;
 //      }
 
-
-  @UserLoginToken
   @PostMapping("/users/register")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody

@@ -75,6 +75,13 @@ public class UserService {
         return user;
     }
 
+    public boolean findByToken(String token){
+        if(userRepository.findByToken(token)==null){
+            return false;
+        }
+        return true;
+    }
+
     public List<User> getUsers() {
     return this.userRepository.findAll();
     }
