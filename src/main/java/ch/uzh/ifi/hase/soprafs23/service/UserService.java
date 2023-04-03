@@ -56,33 +56,14 @@ public class UserService {
         }
     }
 
-    public User logout(Long id){
-        User user = userRepository.findByid(id);
+    public void logout(long id){
+        User user = userRepository.findById(id);
 
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
             user.setToken(null);
         }else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
-        }
-    }
-
-    public void updateUser(Long userId, User newUser){
-        checkIfUpdate(userId, newUser);
-        User oldUser = retrieveUser(userId);
-        if(oldUser!=null){
-            oldUser.setUsername(newUser.getUsername());
-            oldUser.setPassword(newUser.getPassword());
-        }
-    }
-
-    public void checkIfUpdate(Long userId, User userToBeCreated) {
-        User user = userRepository.findByid(userId);
-
-        if(!Objects.equals(user.getUsername(), userToBeCreated.getUsername())) {
-            if (userRepository.findByUsername(userToBeCreated.getUsername()) != null) {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed because username already exists.");
-            }
         }
     }
 
@@ -104,9 +85,9 @@ public class UserService {
     //  }
 
 
-  public List<User> getUsers() {
-	return this.userRepository.findAll();
-  }
+//  public List<User> getUsers() {
+//	return this.userRepository.findAll();
+//  }
 
   public User createUser(User newUser) {
       newUser.setToken(UUID.randomUUID().toString());
