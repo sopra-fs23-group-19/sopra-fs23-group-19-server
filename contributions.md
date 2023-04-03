@@ -13,3 +13,6 @@
 |week 1| Shiyu Ran | [#31](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/31) | Implement the backend service for updating password.|
 |week 1| Jingjing Li | [#15](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/15) | implemented the navigation menu|
 |week 1| Jingjing Li | [#16](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/16) | implemented the navigation menu|
+|week 1| Manyi Wang | [#21](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/21) | Implement the backend-service- logout|
+|week 1| Manyi Wang | [#23](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/23) | Implement the backend-service- login|
+|week 1| Manyi Wang | [#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/22) | Implement the backend service- show profile|
