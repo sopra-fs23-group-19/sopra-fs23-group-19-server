@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Internal User Representation
@@ -25,17 +26,27 @@ public class User implements Serializable {
   @GeneratedValue
   private Long id;
 
-  @Column(nullable = false)
-  private String name;
-
   @Column(nullable = false, unique = true)
   private String username;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
+  private String password;
+
+  @Column(unique = true)
   private String token;
 
   @Column(nullable = false)
   private UserStatus status;
+
+
+  @Column
+  private int bestScore;
+
+  @Column
+  private int totalScore;
+
+  @GeneratedValue
+  private Date creationDate;
 
   public Long getId() {
     return id;
@@ -45,12 +56,13 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+
+  public String getPassword() {
+    return password;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getUsername() {
@@ -76,4 +88,19 @@ public class User implements Serializable {
   public void setStatus(UserStatus status) {
     this.status = status;
   }
+
+
+  public int getBestScore(){return bestScore;}
+  public void setBestScore(int bestScore){this.bestScore=bestScore;}
+  public int getTotalScore(){return totalScore;}
+  public void setTotalScore(int totalScore){this.totalScore=totalScore;}
+
+  public Date getCreationDate() {
+      return creationDate;
+  }
+  public void setCreationDate(Date creationDate) {
+      this.creationDate = creationDate;
+  }
+
+
 }

@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -20,15 +22,45 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "username", target = "username")
-  User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "name", target = "name")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "status", target = "status")
-  UserGetDTO convertEntityToUserGetDTO(User user);
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "username", target = "username")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "bestScore", ignore = true)
+    @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
+    User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "creationDate", target = "creationDate")
+    @Mapping(source = "token", target = "token")
+    @Mapping(target = "bestScore", ignore = true)
+    @Mapping(target = "totalScore", ignore = true)
+    User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "creationDate", target = "creationDate")
+    @Mapping(target = "bestScore", source="bestScore")
+    @Mapping(target = "totalScore", source="totalScore")
+    UserGetDTO convertEntityToUserGetDTO(User user);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "bestScore", ignore = true)
+    @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
+    User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+
 }
