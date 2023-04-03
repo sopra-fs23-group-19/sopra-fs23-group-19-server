@@ -1,15 +1,13 @@
-package ch.uzh.ifi.hase.soprafs23.rest.dto.user;
+package ch.uzh.ifi.hase.soprafs23.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-import java.util.Date;
 
 public class UserGetDTO {
 
   private Long id;
+  private String name;
   private String username;
   private UserStatus status;
-  private boolean isLoggedIn;
-  private Date creationDate;
 
   public Long getId() {
     return id;
@@ -17,6 +15,14 @@ public class UserGetDTO {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
   public String getUsername() {
@@ -33,21 +39,5 @@ public class UserGetDTO {
 
   public void setStatus(UserStatus status) {
     this.status = status;
-  }
-
-  public boolean isLoggedIn(){
-      return isLoggedIn;
-  }
-
-  public void setLoggedIn(boolean loggedIn) {
-      this.isLoggedIn = loggedIn;
-  }
-
-  public Date getCreationDate(){
-      return creationDate;
-  }
-
-  public void setCreationDate(Date date){
-      this.creationDate = date;
   }
 }
