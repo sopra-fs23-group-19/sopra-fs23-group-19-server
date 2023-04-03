@@ -8,7 +8,6 @@ public class UserGetDTO {
   private Long id;
   private String username;
   private UserStatus status;
-  private boolean isLoggedIn;
   private Date creationDate;
   private int bestScore;
   private int totalScore;
@@ -42,13 +41,6 @@ public class UserGetDTO {
     this.status = status;
   }
 
-  public boolean isLoggedIn(){
-      return isLoggedIn;
-  }
-
-  public void setLoggedIn(boolean loggedIn) {
-      this.isLoggedIn = loggedIn;
-  }
 
   public Date getCreationDate(){
       return creationDate;

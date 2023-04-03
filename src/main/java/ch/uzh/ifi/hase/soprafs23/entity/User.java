@@ -45,9 +45,6 @@ public class User implements Serializable {
   @Column
   private int totalScore;
 
-  @Column(nullable = false)
-  private boolean isLoggedIn;
-
   @GeneratedValue
   private Date creationDate;
 
@@ -97,10 +94,6 @@ public class User implements Serializable {
   public void setBestScore(int bestScore){this.bestScore=bestScore;}
   public int getTotalScore(){return totalScore;}
   public void setTotalScore(int totalScore){this.totalScore=totalScore;}
-
-  public boolean getLoggedIn() {return this.isLoggedIn; }
-
-  public void setLoggedIn(boolean b) {this.isLoggedIn = b; }
 
   public Date getCreationDate() {
       return creationDate;

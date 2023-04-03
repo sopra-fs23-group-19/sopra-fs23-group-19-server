@@ -93,14 +93,9 @@ public class UserService {
     //  }
 
 
-//  public List<User> getUsers() {
-//	return this.userRepository.findAll();
-//  }
-
   public User createUser(User newUser) {
       newUser.setToken(UUID.randomUUID().toString());
 	  newUser.setStatus(UserStatus.ONLINE);
-	  newUser.setLoggedIn(true);
 
       checkIfUserExists(newUser);
       checkNullPassword(newUser);

@@ -32,7 +32,6 @@ public interface DTOMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
-    @Mapping(target = "loggedIn", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
@@ -42,7 +41,6 @@ public interface DTOMapper {
     @Mapping(source = "status", target = "status")
     @Mapping(source = "creationDate", target = "creationDate")
     @Mapping(source = "token", target = "token")
-    @Mapping(source = "loggedIn", target = "loggedIn")
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
@@ -50,7 +48,6 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
-    @Mapping(source = "loggedIn", target = "loggedIn")
     @Mapping(source = "creationDate", target = "creationDate")
     @Mapping(target = "bestScore", source="bestScore")
     @Mapping(target = "totalScore", source="totalScore")
@@ -63,7 +60,6 @@ public interface DTOMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
-    @Mapping(target = "loggedIn", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
