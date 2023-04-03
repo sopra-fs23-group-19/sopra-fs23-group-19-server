@@ -32,11 +32,18 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-  @Column(nullable = false, unique = true)
+  @Column(unique = true)
   private String token;
 
   @Column(nullable = false)
   private UserStatus status;
+
+
+  @Column
+  private int bestScore;
+
+  @Column
+  private int totalScore;
 
   @Column(nullable = false)
   private boolean isLoggedIn;
@@ -50,6 +57,15 @@ public class User implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getUsername() {
@@ -80,6 +96,12 @@ public class User implements Serializable {
     this.status = status;
   }
 
+
+  public int getBestScore(){return bestScore;}
+  public void setBestScore(int bestScore){this.bestScore=bestScore;}
+  public int getTotalScore(){return totalScore;}
+  public void setTotalScore(int totalScore){this.totalScore=totalScore;}
+
   public boolean getLoggedIn() {return this.isLoggedIn; }
 
   public void setLoggedIn(boolean b) {this.isLoggedIn = b; }
@@ -90,5 +112,6 @@ public class User implements Serializable {
   public void setCreationDate(Date creationDate) {
       this.creationDate = creationDate;
   }
+
 
 }

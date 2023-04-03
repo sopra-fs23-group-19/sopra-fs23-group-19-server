@@ -30,14 +30,79 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-  private final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  @Autowired
-  public UserService(@Qualifier("userRepository") UserRepository userRepository) {
-	this.userRepository = userRepository;
-  }
+
+    @Autowired
+    public UserService(@Qualifier("userRepository") UserRepository userRepository) {
+    this.userRepository = userRepository;
+    }
+
+    public String login(User loginUser){
+        User userByUsername = userRepository.findByUsername(loginUser.getUsername());
+
+        if(userByUsername==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found.");
+        }
+
+        if(userByUsername!=null && userByUsername.getPassword().equals(loginUser.getPassword())){
+            userByUsername.setStatus(UserStatus.ONLINE);
+            userByUsername.setToken(UUID.randomUUID().toString());
+            return userByUsername.getToken();
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Wrong password.");
+        }
+    }
+
+    public User logout(Long id){
+        User user = userRepository.findByid(id);
+
+        if(user!=null){
+            user.setStatus(UserStatus.OFFLINE);
+            user.setToken(null);
+        }else{
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
+        }
+    }
+
+    public void updateUser(Long userId, User newUser){
+        checkIfUpdate(userId, newUser);
+        User oldUser = retrieveUser(userId);
+        if(oldUser!=null){
+            oldUser.setUsername(newUser.getUsername());
+            oldUser.setPassword(newUser.getPassword());
+        }
+    }
+
+    public void checkIfUpdate(Long userId, User userToBeCreated) {
+        User user = userRepository.findByid(userId);
+
+        if(!Objects.equals(user.getUsername(), userToBeCreated.getUsername())) {
+            if (userRepository.findByUsername(userToBeCreated.getUsername()) != null) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Failed because username already exists.");
+            }
+        }
+    }
+
+    public List<User> getUsers() {
+    return this.userRepository.findAll();
+    }
+
+    //  public User createUser(User newUser) {
+    //    newUser.setToken(UUID.randomUUID().toString());
+    //    newUser.setStatus(UserStatus.OFFLINE);
+    //    checkIfUserExists(newUser);
+    //    // saves the given entity but data is only persisted in the database once
+    //    // flush() is called
+    //    newUser = userRepository.save(newUser);
+    //    userRepository.flush();
+    //
+    //    log.debug("Created Information for User: {}", newUser);
+    //    return newUser;
+    //  }
+
 
   public List<User> getUsers() {
 	return this.userRepository.findAll();
@@ -124,4 +189,5 @@ public class UserService {
           }
       }
   }
+
 }
