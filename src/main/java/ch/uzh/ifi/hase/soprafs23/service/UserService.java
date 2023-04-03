@@ -67,6 +67,14 @@ public class UserService {
         }
     }
 
+    public User retrieveUser(long userId){
+        User user =  userRepository.findById(userId);
+
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");}
+        return user;
+    }
+
     public List<User> getUsers() {
     return this.userRepository.findAll();
     }

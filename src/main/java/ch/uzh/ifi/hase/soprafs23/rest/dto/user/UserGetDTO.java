@@ -10,6 +10,13 @@ public class UserGetDTO {
   private UserStatus status;
   private boolean isLoggedIn;
   private Date creationDate;
+  private int bestScore;
+  private int totalScore;
+
+  public int getBestScore(){return bestScore;}
+  public void setBestScore(int bestScore){this.bestScore=bestScore;}
+  public int getTotalScore(){return bestScore;}
+  public void setTotalScore(int totalScore){this.totalScore=totalScore;}
 
   public Long getId() {
     return id;

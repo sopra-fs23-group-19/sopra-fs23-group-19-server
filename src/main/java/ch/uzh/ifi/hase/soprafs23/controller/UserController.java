@@ -42,8 +42,20 @@ public class UserController {
     @PostMapping("users/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void logout(@RequestBody long id) {
-        userService.logout(id);
+    public void logout(@RequestBody long userId) {
+        System.out.println(userId);
+        userService.logout(userId);
+    }
+
+    @UserLoginToken
+    @GetMapping(value = "/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public UserGetDTO retrieveUser(@PathVariable("userId") long userId){
+        // fetch all users in the internal representation
+        User user = userService.retrieveUser(userId);
+
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
 
