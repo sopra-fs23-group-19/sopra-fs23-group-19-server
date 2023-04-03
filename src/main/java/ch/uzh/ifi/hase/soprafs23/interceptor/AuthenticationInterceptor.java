@@ -27,7 +27,8 @@ public class AuthenticationInterceptor  implements HandlerInterceptor {
         // Get token from http request header.
 //        schema of Authorization header looks like this: Bearer <token>,
 //        therefore we need to remove the "Bearer " part. What remains, which is token itself.
-
+        System.out.println(token);
+        System.out.println();
         // if there is no Annotation
         if(!(object instanceof HandlerMethod)){
             return true;
