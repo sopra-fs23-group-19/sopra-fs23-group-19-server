@@ -40,7 +40,7 @@ public class UserService {
     this.userRepository = userRepository;
     }
 
-    public String login(User loginUser){
+    public User login(User loginUser){
         User userByUsername = userRepository.findByUsername(loginUser.getUsername());
 
         if(userByUsername==null){
@@ -50,7 +50,7 @@ public class UserService {
         if(userByUsername!=null && userByUsername.getPassword().equals(loginUser.getPassword())){
             userByUsername.setStatus(UserStatus.ONLINE);
             userByUsername.setToken(UUID.randomUUID().toString());
-            return userByUsername.getToken();
+            return userByUsername;
         }else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Wrong password.");
         }

@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
@@ -31,11 +28,11 @@ public class UserController {
     @PostMapping("/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String login(@RequestBody UserLoginPostDTO userLoginPostDTO) {
+    public UserLoginGetDTO login(@RequestBody UserLoginPostDTO userLoginPostDTO) {
         // convert API user to internal representation
         User userInput = DTOMapper.INSTANCE.convertUserLoginPostDTOtoEntity(userLoginPostDTO);
         // create user
-        return userService.login(userInput);
+        return DTOMapper.INSTANCE.convertEntityToUserLoginGetDTO(userService.login(userInput));
     }
 
     @UserLoginToken
