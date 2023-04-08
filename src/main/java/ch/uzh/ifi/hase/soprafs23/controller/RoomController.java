@@ -4,16 +4,23 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.*;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.util.HtmlUtils;
 
 @RestController
 public class RoomController {
@@ -21,6 +28,9 @@ public class RoomController {
     RoomController(RoomService roomService) {
         this.roomService = roomService;
     }
+
+    @Autowired
+    SimpMessagingTemplate simpMessagingTemplate;
 
     @UserLoginToken
     @PostMapping("/games")
@@ -38,12 +48,23 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @PutMapping("/games")
+    @PutMapping("/games/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
-        roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+        Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+        List<Long> players = transferStringToLong(room.getPlayers());
+        for(int i=0; i<players.size(); i++){
+            simpMessagingTemplate.convertAndSendToUser(Long.toString(players.get(i)), "/topic/waiting", players);
+        }
     }
+
+//    @MessageMapping("/games/join") // 处理客户端发送的消息
+//    @SendTo("/topic/waitingArea") // 将处理结果广播给所有订阅了该路径的客户端
+//    public String joinRoom(RoomPutDTO roomPutDTO){
+//        Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+//        return room.getPlayers();
+//    }
 
     public RoomPostDTO changeBeforeToPost(RoomBeforePostDTO roomBeforePostDTO){
         RoomPostDTO roomPostDTO = new RoomPostDTO();
@@ -70,14 +91,20 @@ public class RoomController {
         if(roomGetDTO.getPlayers()==null) {
             roomAfterGetDTO.setPlayers(null);
         }else {
-            String[] strArray = roomGetDTO.getPlayers().split(",");
-            List<Long> longList = new ArrayList<>();
-
-            for (String s : strArray) {
-                longList.add(Long.valueOf(s));
-            }
-            roomAfterGetDTO.setPlayers(longList);
+            roomAfterGetDTO.setPlayers(transferStringToLong(roomGetDTO.getPlayers()));
         }
         return roomAfterGetDTO;
     }
+
+    public List<Long> transferStringToLong(String players){
+        String[] strArray = players.split(",");
+        List<Long> longList = new ArrayList<>();
+
+        for (String s : strArray) {
+            longList.add(Long.valueOf(s));
+        }
+
+        return longList;
+    }
+
 }
