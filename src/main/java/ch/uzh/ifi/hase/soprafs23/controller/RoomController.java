@@ -55,7 +55,7 @@ public class RoomController {
         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
         List<Long> players = transferStringToLong(room.getPlayers());
         for(int i=0; i<players.size(); i++){
-            simpMessagingTemplate.convertAndSendToUser(Long.toString(players.get(i)), "/topic/waiting", players);
+            simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(0)), players);
         }
     }
 
