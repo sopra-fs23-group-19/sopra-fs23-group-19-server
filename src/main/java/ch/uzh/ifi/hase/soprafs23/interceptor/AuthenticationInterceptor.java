@@ -23,7 +23,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     UserService userService;
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object object) throws Exception {
-        String token = httpServletRequest.getHeader("authToken");
+        String token = httpServletRequest.getHeader("Authorization");
         // Get token from http request header.
 //        schema of Authorization header looks like this: Bearer <token>,
 //        therefore we need to remove the "Bearer " part. What remains, which is token itself.
@@ -51,6 +51,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     String tokenNullMessage = "Please log in with correct credentials. Not AUTHORIZED.";
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format(tokenNullMessage));
                 }
+                token=token.substring(7);
 
                 if (!userService.findByToken(token)) {
                     String tokenNullMessage = "Please log in with correct credentials. Not AUTHORIZED.";
