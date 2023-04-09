@@ -38,8 +38,7 @@ public class RoomController {
     @ResponseBody
     public RoomAfterGetDTO createRoom(@RequestBody RoomBeforePostDTO roomBeforePostDTO) {
         RoomPostDTO roomPostDTO=changeBeforeToPost(roomBeforePostDTO);
-        roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
-        roomPostDTO.setPlayers(Long.toString(roomBeforePostDTO.getOwnerId()));
+
         // convert API user to internal representation
         Room roomInput = DTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO);
 
@@ -77,8 +76,12 @@ public class RoomController {
 
     public RoomPostDTO changeBeforeToPost(RoomBeforePostDTO roomBeforePostDTO){
         RoomPostDTO roomPostDTO = new RoomPostDTO();
+
         roomPostDTO.setId(roomBeforePostDTO.getId());
         roomPostDTO.setRoomName(roomBeforePostDTO.getRoomName());
+        roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
+        roomPostDTO.setPlayers(Long.toString(roomBeforePostDTO.getOwnerId()));
+
         if(roomBeforePostDTO.getMode()==2){
             roomPostDTO.setMode(RoomMode.P2);
         }else if(roomBeforePostDTO.getMode()==4){
