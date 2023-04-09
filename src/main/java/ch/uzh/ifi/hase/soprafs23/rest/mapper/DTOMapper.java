@@ -72,7 +72,7 @@ public interface DTOMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "roomName", target = "roomName")
     @Mapping(source = "ownerId", target = "ownerId")
-    @Mapping(target = "players", ignore = true)
+    @Mapping(target = "players", source = "players")
     @Mapping(source = "mode", target = "mode")
     Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
 

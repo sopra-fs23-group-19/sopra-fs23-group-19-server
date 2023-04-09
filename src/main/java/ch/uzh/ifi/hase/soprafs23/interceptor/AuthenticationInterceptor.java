@@ -52,7 +52,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format(tokenNullMessage));
                 }
 
-                if (userService.findByToken(token)==false) {
+                if (!userService.findByToken(token)) {
                     String tokenNullMessage = "Please log in with correct credentials. Not AUTHORIZED.";
                     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format(tokenNullMessage));
                 }

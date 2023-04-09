@@ -39,12 +39,17 @@ public class RoomController {
     public RoomAfterGetDTO createRoom(@RequestBody RoomBeforePostDTO roomBeforePostDTO) {
         RoomPostDTO roomPostDTO=changeBeforeToPost(roomBeforePostDTO);
         roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
+        roomPostDTO.setPlayers(Long.toString(roomBeforePostDTO.getOwnerId()));
         // convert API user to internal representation
         Room roomInput = DTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO);
 
         // convert internal representation of user back to API
         RoomGetDTO roomGetDTO = DTOMapper.INSTANCE.convertEntityToRoomGetDTO(roomService.createRoom(roomInput));
-        return changeGetToAfter(roomGetDTO);
+        RoomAfterGetDTO result =  changeGetToAfter(roomGetDTO);
+
+        simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(result.getOwnerId()), result.getPlayers());
+
+        return result;
     }
 
     @UserLoginToken
@@ -52,11 +57,12 @@ public class RoomController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
-//         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
-//         List<Long> players = transferStringToLong(room.getPlayers());
+         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+         List<Long> players = transferStringToLong(room.getPlayers());
 //         for(int i=0; i<players.size(); i++){
-//             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(0)), players);
+//             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
 //         }
+        System.out.println(players);
         String s1 = "/topic/waiting/1";
         simpMessagingTemplate.convertAndSend(s1, "send message");
         

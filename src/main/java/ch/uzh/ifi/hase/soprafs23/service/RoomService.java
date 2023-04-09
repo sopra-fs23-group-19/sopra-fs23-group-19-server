@@ -47,7 +47,7 @@ public class RoomService {
     public Room joinRoom(long userId, long roomId){
         Room room = roomRepository.findById(roomId);
 
-        room.setPlayers(room.getPlayers()+String.valueOf(userId));
+        room.setPlayers(room.getPlayers()+","+String.valueOf(userId));
         return room;
     }
 
