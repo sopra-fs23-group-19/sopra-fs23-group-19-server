@@ -52,11 +52,14 @@ public class RoomController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
-        Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
-        List<Long> players = transferStringToLong(room.getPlayers());
-        for(int i=0; i<players.size(); i++){
-            simpMessagingTemplate.convertAndSendToUser(Long.toString(players.get(i)), "/topic/waiting", players);
-        }
+//         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+//         List<Long> players = transferStringToLong(room.getPlayers());
+//         for(int i=0; i<players.size(); i++){
+//             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(0)), players);
+//         }
+        String s1 = "/topic/waiting/1";
+        simpMessagingTemplate.convertAndSend(s1, "send message");
+        
     }
 
 //    @MessageMapping("/games/join") // 处理客户端发送的消息
