@@ -63,12 +63,12 @@ bootJar {
 }
 
 sonarqube {
-  properties {
-      //added here, according to the instructions
-    property "sonar.projectKey", "sopra-fs23-group-19_sopra-fs23-group-19-server"
-    property "sonar.organization", "sopra-fs23-group-19"
-    property "sonar.host.url", "https://sonarcloud.io"
-  }
+    properties {
+        //added here, according to the instructions
+        property "sonar.projectKey", "sopra-fs23-group-19_sopra-fs23-group-19-server"
+        property "sonar.organization", "sopra-fs23-group-19"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
 }
 
 jacocoTestReport {
