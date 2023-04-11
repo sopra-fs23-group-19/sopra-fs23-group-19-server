@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs23.repository;
+package ch.uzh.ifi.hase.soprafs23.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -7,7 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 
-public class WordsRepository {
+public class WordsService {
 
     HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create("https://pictionary-charades-word-generator.p.rapidapi.com/pictionary"))
@@ -30,7 +30,17 @@ public class WordsRepository {
     }
 
 
-    public String[] getAllWords(){
-        return new String[]{response.body()};
+    public String getWord(){
+        return response.body();  // retrieve "word"
     }
+
+    public String getThreeWords(){
+
+        String listOfWords = new String();
+        for(int i=0; i<3; i++){
+            listOfWords = listOfWords + getWord() + ",";
+        }
+        return listOfWords;
+    }
+
 }

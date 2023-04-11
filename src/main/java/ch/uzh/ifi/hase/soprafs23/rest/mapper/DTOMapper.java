@@ -1,9 +1,17 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs23.entity.*;
+import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.entity.Words;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.room.*;
-import org.mapstruct.*;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.words.WordsGetDTO;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -83,4 +91,17 @@ public interface DTOMapper {
     @Mapping(source = "mode", target = "mode")
     RoomGetDTO convertEntityToRoomGetDTO(Room room);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "roomName", target = "roomName")
+    @Mapping(source = "ownerId", target = "ownerId")
+    @Mapping(target = "players", ignore = true)
+    @Mapping(source = "mode", target = "mode")
+    Room convertRoomAfterGetDTOtoEntity(RoomAfterGetDTO roomAfterGetDTO);
+
+    @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
+    WordsGetDTO convertEntityToWordsGetDTO(Words words);
+
+    @Mapping(source = "drawingPlayerId", target = "drawingPlayerId")
+    @Mapping(source = "image", target = "image")
+    GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 }

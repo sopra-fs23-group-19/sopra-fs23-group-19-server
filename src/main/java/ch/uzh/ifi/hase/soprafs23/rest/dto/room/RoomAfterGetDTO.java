@@ -12,10 +12,9 @@ public class RoomAfterGetDTO {
     private RoomMode mode;
 
     private long ownerId;
-
     // string of players id
 
-    private List<Long> players;
+    private List<Long> allPlayers;
 
     public long getId() {
         return id;
@@ -45,9 +44,9 @@ public class RoomAfterGetDTO {
     }
 
     public List<Long> getPlayers(){
-        return players;
+        return allPlayers;
     }
-    public void setPlayers(List<Long> players){
-        this.players=players;
+    public void setPlayers(List<Long> allPlayers){
+        this.allPlayers=allPlayers;
     }
 }

@@ -9,18 +9,12 @@ import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @RestController
 public class RoomController {
@@ -38,13 +32,17 @@ public class RoomController {
     @ResponseBody
     public RoomAfterGetDTO createRoom(@RequestBody RoomBeforePostDTO roomBeforePostDTO) {
         RoomPostDTO roomPostDTO=changeBeforeToPost(roomBeforePostDTO);
-        roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
+
         // convert API user to internal representation
         Room roomInput = DTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO);
 
         // convert internal representation of user back to API
         RoomGetDTO roomGetDTO = DTOMapper.INSTANCE.convertEntityToRoomGetDTO(roomService.createRoom(roomInput));
-        return changeGetToAfter(roomGetDTO);
+        RoomAfterGetDTO result =  changeGetToAfter(roomGetDTO);
+
+        simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(result.getOwnerId()), result.getPlayers());
+
+        return result;
     }
 
     @UserLoginToken
@@ -55,8 +53,12 @@ public class RoomController {
         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
         List<Long> players = transferStringToLong(room.getPlayers());
         for(int i=0; i<players.size(); i++){
-            simpMessagingTemplate.convertAndSendToUser(Long.toString(players.get(i)), "/topic/waiting", players);
+            simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
         }
+        System.out.println(players);
+//         String s1 = "/topic/waiting/1";
+//         simpMessagingTemplate.convertAndSend(s1, "send message");
+
     }
 
 //    @MessageMapping("/games/join") // 处理客户端发送的消息
@@ -68,8 +70,12 @@ public class RoomController {
 
     public RoomPostDTO changeBeforeToPost(RoomBeforePostDTO roomBeforePostDTO){
         RoomPostDTO roomPostDTO = new RoomPostDTO();
+
         roomPostDTO.setId(roomBeforePostDTO.getId());
         roomPostDTO.setRoomName(roomBeforePostDTO.getRoomName());
+        roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
+        roomPostDTO.setPlayers(Long.toString(roomBeforePostDTO.getOwnerId()));
+
         if(roomBeforePostDTO.getMode()==2){
             roomPostDTO.setMode(RoomMode.P2);
         }else if(roomBeforePostDTO.getMode()==4){
