@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.Words;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.words.WordsGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -43,16 +44,18 @@ public class GameController {
     @PostMapping("/gameRounds/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void startGame(@PathVariable("roomId") long roomId){
+    public GameTurnGetDTO startGame(@PathVariable("roomId") long roomId){
         // start game turn
         Room room = gameService.getRoom(roomId);
         GameTurn gameTurn = gameService.startGameTurn(room);
-        List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
+        // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
-        for(int i=0; i<playersIds.size(); i++){
-            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
-        }
+        return gameTurnGetDTO;
+
+//        for(int i=0; i<playersIds.size(); i++){
+//            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
+//        }
     }
 
     @UserLoginToken
@@ -77,6 +80,19 @@ public class GameController {
         }
 
         return longList;
+    }
+
+    @UserLoginToken
+    @PostMapping("/gameRounds/drawing")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameTurnGetDTO submitDrawing(@RequestBody GameTurnPostDTO gameTurnPostDTO) {
+        // get current game turn status
+        GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPostDTOtoEntity(gameTurnPostDTO);
+
+        GameTurn gameTurn = gameService.submitImage(gameTurnInput);
+        return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+
     }
 
 }

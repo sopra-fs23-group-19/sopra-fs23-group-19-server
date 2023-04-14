@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * User Service
@@ -100,6 +101,7 @@ public class UserService {
 
 
   public User createUser(User newUser) {
+      newUser.setToken(UUID.randomUUID().toString());
 	  newUser.setStatus(UserStatus.ONLINE);
 
       checkIfUserExists(newUser);

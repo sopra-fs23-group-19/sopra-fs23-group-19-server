@@ -1,5 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -22,10 +25,10 @@ public class WordsService {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         }
         catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
         }
         catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
         }
     }
 

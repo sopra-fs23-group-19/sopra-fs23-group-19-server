@@ -15,9 +15,6 @@ public class GameTurn implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private Room room;
-
     @Column
     private String image;
 
@@ -33,6 +30,8 @@ public class GameTurn implements Serializable {
     @Column
     private String targetWord;
 
+    @Column
+    private long gameId;
 
     public Long getId() {
         return id;
@@ -64,14 +63,6 @@ public class GameTurn implements Serializable {
         return allPlayersIds;
     }
 
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public String getImage() {
         return image;
     }
@@ -90,5 +81,13 @@ public class GameTurn implements Serializable {
 
     public void setPlayersScores(Map<User, Integer> playersScores) {
         this.playersScores = playersScores;
+    }
+
+    public long getGameId() {
+        return gameId;
+    }
+
+    public void setGameId(long gameId) {
+        this.gameId = gameId;
     }
 }

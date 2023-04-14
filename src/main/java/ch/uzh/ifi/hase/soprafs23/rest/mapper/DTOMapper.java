@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.entity.Words;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
@@ -61,6 +62,7 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "creationDate", target = "creationDate")
+    @Mapping(source = "token", target = "token")
     @Mapping(target = "bestScore", source="bestScore")
     @Mapping(target = "totalScore", source="totalScore")
     UserGetDTO convertEntityToUserGetDTO(User user);
@@ -101,6 +103,16 @@ public interface DTOMapper {
     WordsGetDTO convertEntityToWordsGetDTO(Words words);
 
     @Mapping(source = "drawingPlayerId", target = "drawingPlayerId")
+    @Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
+
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "image", target = "image")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "drawingPlayer", ignore = true)
+    @Mapping(target = "allPlayersIds", ignore = true)
+    @Mapping(target = "targetWord", ignore = true)
+    @Mapping(target = "playersScores", ignore = true)
+    GameTurn convertGameTurnPostDTOtoEntity(GameTurnPostDTO gameTurnPostDTO);
 }

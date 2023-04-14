@@ -11,7 +11,7 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long roomId;
+    private Long gameId;
 
     @Column
     public String gameTurnList;
@@ -41,12 +41,12 @@ public class Game implements Serializable {
         this.currentGameTurn = currentGameTurn;
     }
 
-    public Long getRoomId() {
-        return roomId;
+    public Long getGameId() {
+        return gameId;
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    public void setGameId(Long roomId) {
+        this.gameId = gameId;
     }
 
     public void setPlayersTotalScores(User user, Integer playersTotalScores) {
@@ -64,5 +64,6 @@ public class Game implements Serializable {
     public void setGameTurnList(String gameTurnList) {
         this.gameTurnList = gameTurnList;
     }
+
 
 }

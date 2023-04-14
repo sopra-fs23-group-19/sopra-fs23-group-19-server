@@ -7,6 +7,8 @@ public class UserGetDTO {
 
   private Long id;
   private String username;
+
+  private String token;
   private UserStatus status;
   private Date creationDate;
   private int bestScore;
@@ -48,5 +50,11 @@ public class UserGetDTO {
 
   public void setCreationDate(Date date){
       this.creationDate = date;
+  }
+  public String getToken() {
+      return token;
+  }
+  public void setToken(String token) {
+      this.token = token;
   }
 }
