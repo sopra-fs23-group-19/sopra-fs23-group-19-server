@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * User Service
@@ -49,7 +48,7 @@ public class UserService {
 
         if(userByUsername!=null && userByUsername.getPassword().equals(loginUser.getPassword())){
             userByUsername.setStatus(UserStatus.ONLINE);
-            userByUsername.setToken(UUID.randomUUID().toString());
+//            userByUsername.setToken(UUID.randomUUID().toString());
             return userByUsername;
         }else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Wrong password.");
@@ -61,7 +60,7 @@ public class UserService {
 
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
-            user.setToken(null);
+//            user.setToken(null);
         }else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
         }

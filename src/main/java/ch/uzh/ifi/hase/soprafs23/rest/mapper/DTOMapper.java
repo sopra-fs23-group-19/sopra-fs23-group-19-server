@@ -48,11 +48,10 @@ public interface DTOMapper {
     @Mapping(source = "token", target = "token")
     UserLoginGetDTO convertEntityToUserLoginGetDTO(User user);
 
-    @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "creationDate", target = "creationDate")
+    @Mapping(target = "status",ignore = true)
+    @Mapping(target = "id",ignore = true)
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
