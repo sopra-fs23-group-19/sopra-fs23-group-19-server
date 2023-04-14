@@ -53,7 +53,7 @@ public interface DTOMapper {
     @Mapping(source = "password", target = "password")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "creationDate", target = "creationDate")
-    @Mapping(source = "token", target = "token")
+    @Mapping(target = "token", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);

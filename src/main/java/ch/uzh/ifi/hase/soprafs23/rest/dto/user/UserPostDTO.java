@@ -10,7 +10,6 @@ public class UserPostDTO {
     private String password;
     private UserStatus status;
     private Date creationDate;
-    private String token;
 
     public String getUsername() {
     return username;
@@ -41,10 +40,5 @@ public class UserPostDTO {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-    public String getToken() {
-        return token;
-    }
-    public void setToken(String token) {
-        this.token = token;
-    }
+
 }
