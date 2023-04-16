@@ -17,3 +17,5 @@
 |week 1| Manyi Wang | [#21](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/21) | Implement the backend-service- logout|
 |week 1| Manyi Wang | [#23](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/23) | Implement the backend-service- login|
 |week 1| Manyi Wang | [#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/22) | Implement the backend service- show profile|
+|week 2&3| Manyi Wang | [#43](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/43) | Implement the backend-service- create room|
+|week 2&3| Manyi Wang | [#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/42) | Implement the backend service- join room|
