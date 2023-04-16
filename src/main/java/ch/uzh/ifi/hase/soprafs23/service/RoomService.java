@@ -51,4 +51,21 @@ public class RoomService {
         return room;
     }
 
+    public Room leaveRoom(long userId, long roomId){
+        Room room = roomRepository.findById(roomId);
+
+        String sub = ""+userId;
+        int index = room.getPlayers().indexOf(sub); // 查找子字符串的位置
+        if (index != -1) { // 如果子字符串存在
+            room.setPlayers(room.getPlayers().substring(0, index) + room.getPlayers().substring(index + sub.length()+1)); // 删除子字符串
+        }
+        return room;
+    }
+
+    public Room retrieveRoom(long roomId){
+        Room room = roomRepository.findById(roomId);
+
+        return room;
+    }
+
 }
