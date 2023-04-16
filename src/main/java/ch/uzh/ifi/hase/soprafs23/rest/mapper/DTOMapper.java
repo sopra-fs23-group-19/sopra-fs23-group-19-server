@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
 import org.mapstruct.*;
@@ -65,5 +66,19 @@ public interface DTOMapper {
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "roomName", target = "roomName")
+    @Mapping(source = "ownerId", target = "ownerId")
+    @Mapping(target = "players", source = "players")
+    @Mapping(source = "mode", target = "mode")
+    Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "roomName", target = "roomName")
+    @Mapping(source = "ownerId", target = "ownerId")
+    @Mapping(source = "players", target = "players")
+    @Mapping(source = "mode", target = "mode")
+    RoomGetDTO convertEntityToRoomGetDTO(Room room);
 
 }
