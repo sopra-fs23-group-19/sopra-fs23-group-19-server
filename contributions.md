@@ -27,3 +27,6 @@
 |week 2&3| Runze Li  | [client#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/22) |Implement the friends profile display page.|
 |week 2&3| Jingjing Li  | [client#41](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/41) |Implement a timer function for the drawing phase.|
 |week 2&3| Jingjing Li  | [client#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/42) |Implement a timer component which is displayed during the guessing phase.|
+|week 2&3| Geyu Meng  | [client#46](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/46) |Implement the drawing function. |
+|week 2&3| Geyu Meng  | [client#50](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/50) |Implement the eraser function.|
+|week 2&3| Geyu Meng  | [client#28](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/28) |Implement a function to record the painting in JPG or PNG format, and allow the drawing player to save it to his local device. |
