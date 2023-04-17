@@ -19,3 +19,6 @@
 |week 1| Manyi Wang | [#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/22) | Implement the backend service- show profile|
 |week 2&3| Manyi Wang | [#43](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/43) | Implement the backend-service- create room|
 |week 2&3| Manyi Wang | [#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/42) | Implement the backend service- join room|
+|week 2&3| Shiyu Ran | [#92](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/92) | Implement the backend service to process painting submission.|
+|week 2&3| Shiyu Ran | [#57](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/57) | Implement the "start" game button and related function to start a game.|
+|week 2&3| Shiyu Ran | [#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/42) |Implement the backend service for game creation.|
