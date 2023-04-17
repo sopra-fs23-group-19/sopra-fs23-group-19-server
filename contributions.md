@@ -25,5 +25,5 @@
 |week 2&3| Runze Li  | [client#24](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/24) |Implement the Game creation page.|
 |week 2&3| Runze Li  | [client#32](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/32) |Implement the progress-bar view in the waiting page.|
 |week 2&3| Runze Li  | [client#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/22) |Implement the friends profile display page.|
-|week 2&3| Jingjing Li  | [client#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/41) |Implement a timer function for the drawing phase.|
-|week 2&3| Jingjing Li  | [client#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/42) |Implement a timer component which is displayed during the guessing phase.|
+|week 2&3| Jingjing Li  | [client#41](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/41) |Implement a timer function for the drawing phase.|
+|week 2&3| Jingjing Li  | [client#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/42) |Implement a timer component which is displayed during the guessing phase.|
