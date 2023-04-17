@@ -1,4 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.interceptor;
+
 import ch.uzh.ifi.hase.soprafs23.annotation.PassToken;
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
@@ -8,14 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.HandlerInterceptor;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-//import io.jsonwebtoken.Jwts;
-
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 
 @Component
 public class AuthenticationInterceptor implements HandlerInterceptor {

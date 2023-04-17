@@ -18,7 +18,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,9 @@ public class RoomController {
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
 
+
     // owner doesn't need to join the room after creating
+
     @UserLoginToken
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
@@ -88,6 +89,7 @@ public class RoomController {
 
     }
 
+
     public RoomPostDTO changeBeforeToPost(RoomBeforePostDTO roomBeforePostDTO){
         RoomPostDTO roomPostDTO = new RoomPostDTO();
 
@@ -122,6 +124,7 @@ public class RoomController {
         return roomAfterGetDTO;
     }
 
+
     public RoomAfterGetDTO changeRoomToAfter(Room roomGetDTO){
         RoomAfterGetDTO roomAfterGetDTO = new RoomAfterGetDTO();
 
@@ -150,3 +153,4 @@ public class RoomController {
     }
 
 }
+

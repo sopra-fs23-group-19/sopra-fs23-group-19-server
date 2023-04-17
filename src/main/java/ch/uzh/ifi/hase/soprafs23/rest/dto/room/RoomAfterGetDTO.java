@@ -17,6 +17,7 @@ public class RoomAfterGetDTO {
 
     private List<Long> players;
 
+
     public long getId() {
         return id;
     }
@@ -45,9 +46,11 @@ public class RoomAfterGetDTO {
     }
 
     public List<Long> getPlayers(){
+
         return players;
     }
     public void setPlayers(List<Long> players){
         this.players=players;
+
     }
 }

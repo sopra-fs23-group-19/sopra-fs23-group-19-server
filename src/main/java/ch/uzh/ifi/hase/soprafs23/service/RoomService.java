@@ -64,7 +64,7 @@ public class RoomService {
 
     public Room retrieveRoom(long roomId){
         Room room = roomRepository.findById(roomId);
-
+        
         return room;
     }
 

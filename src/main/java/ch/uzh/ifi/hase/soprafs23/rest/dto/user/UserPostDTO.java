@@ -10,6 +10,7 @@ public class UserPostDTO {
     private String password;
     private UserStatus status;
     private Date creationDate;
+
     private String token;
 
     public String getUsername() {
@@ -44,7 +45,9 @@ public class UserPostDTO {
     public String getToken() {
         return token;
     }
+
     public void setToken(String token) {
         this.token = token;
     }
+
 }

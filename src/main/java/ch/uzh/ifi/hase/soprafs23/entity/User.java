@@ -24,7 +24,7 @@ public class User implements Serializable {
 
   @Id
   @GeneratedValue
-  private Long id;
+  private long id;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -39,7 +39,6 @@ public class User implements Serializable {
   @Column(nullable = false)
   private UserStatus status;
 
-
   @Column
   private int bestScore;
 
@@ -49,11 +48,11 @@ public class User implements Serializable {
   @GeneratedValue
   private Date creationDate;
 
-  public Long getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(long id) {
     this.id = id;
   }
 
@@ -90,18 +89,20 @@ public class User implements Serializable {
     this.status = status;
   }
 
-
   public int getBestScore(){return bestScore;}
+
   public void setBestScore(int bestScore){this.bestScore=bestScore;}
+
   public int getTotalScore(){return totalScore;}
+
   public void setTotalScore(int totalScore){this.totalScore=totalScore;}
 
   public Date getCreationDate() {
       return creationDate;
   }
+
   public void setCreationDate(Date creationDate) {
       this.creationDate = creationDate;
   }
-
 
 }
