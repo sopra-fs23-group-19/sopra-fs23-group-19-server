@@ -2,15 +2,17 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
 public class GameTurnPostDTO {
 
-    private long gameId;
+    private long id;
     private String image;
 
-    public long getGameId() {
-        return gameId;
+    private String targetWord;
+
+    public long getId() {
+        return id;
     }
 
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getImage() {
@@ -19,5 +21,13 @@ public class GameTurnPostDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getTargetWord() {
+        return targetWord;
+    }
+
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
     }
 }

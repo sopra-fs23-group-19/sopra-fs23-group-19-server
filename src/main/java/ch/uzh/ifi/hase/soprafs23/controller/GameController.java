@@ -4,16 +4,12 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
-import ch.uzh.ifi.hase.soprafs23.entity.Words;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.words.WordsGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.WordsService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,6 +20,8 @@ import java.util.List;
  * game logic. The controller will receive the request and delegate the execution to the GameService and
  * finally return the result.
  */
+
+@RestController
 public class GameController {
 
     private final GameService gameService;
@@ -35,14 +33,14 @@ public class GameController {
         this.wordsService = wordsService;
     }
 
-    @Autowired
-    SimpMessagingTemplate simpMessagingTemplate;
+//    @Autowired
+//    SimpMessagingTemplate simpMessagingTemplate;
 
 
     // start a new game
     @UserLoginToken
-    @PostMapping("/gameRounds/{roomId}")
-    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/games/gameRounds/{roomId}")
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameTurnGetDTO startGame(@PathVariable("roomId") long roomId){
         // start game turn
@@ -58,17 +56,16 @@ public class GameController {
 //        }
     }
 
+    // get three words to be chosen by the drawing player
     @UserLoginToken
-    @GetMapping("/games/words")
+    @GetMapping("/games/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public WordsGetDTO getThreeWords(){
+    public GameTurnGetDTO getThreeWords(@PathVariable("gameTurnId") long gameTurnId){
 
-        Words words = new Words();
-        String wordsToBeChosen = wordsService.getThreeWords();
-        words.setWordsToBeChosen(wordsToBeChosen);
-        WordsGetDTO wordsGetDTO = DTOMapper.INSTANCE.convertEntityToWordsGetDTO(words);
-        return wordsGetDTO;
+        GameTurn gameTurn = wordsService.setThreeWords(gameTurnId);
+
+        return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
     }
 
     public List<Long> transferStringToLong(String players){
@@ -82,9 +79,10 @@ public class GameController {
         return longList;
     }
 
+    // drawing player submits the image
     @UserLoginToken
     @PostMapping("/gameRounds/drawing")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameTurnGetDTO submitDrawing(@RequestBody GameTurnPostDTO gameTurnPostDTO) {
         // get current game turn status
@@ -94,5 +92,16 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
     }
+
+    // drawing player chooses the target word
+    @UserLoginToken
+    @PutMapping("gameRounds/word")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void setTargetWord(@RequestBody GameTurnPostDTO gameTurnPostDTO){
+        gameService.setTargetWord(gameTurnPostDTO);
+
+    }
+
 
 }

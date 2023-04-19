@@ -1,12 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
 public class GameTurnGetDTO {
+    private long id;
 
     private Long drawingPlayerId;
 
     private String allPlayersIds;
 
     private String image;
+    private String wordsToBeChosen;
+    private String targetWord;
 
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
@@ -31,4 +34,13 @@ public class GameTurnGetDTO {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public Long id() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 }
