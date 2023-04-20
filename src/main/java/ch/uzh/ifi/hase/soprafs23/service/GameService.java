@@ -58,6 +58,8 @@ public class GameService {
         }else{game.setTurnLength(2);}
         // set current turn index
         game.setCurrentGameTurn(1);
+        // set all players ids
+        game.setAllPlayersIds(room.getPlayers());
 
         game = gameRepository.save(game);
         userRepository.flush();
@@ -74,6 +76,7 @@ public class GameService {
         gameTurn.setAllPlayersIds(room.getPlayers());
         gameTurn.setGameId(game.getId());
         gameTurn.setDrawingPhase(true);
+        gameTurn.setGameTurnStatus(true);
         List<Long> allPlayerIds = transferStringToLong(room.getPlayers());
         // find all players
         List<Optional<User>> allPlayers = new ArrayList<>();
@@ -93,6 +96,7 @@ public class GameService {
                 Optional<User> drawingPlayer = allPlayers.get(n);
                 if(drawingPlayer.isPresent()){
                     gameTurn.setDrawingPlayer(id);
+                    game.setDrawingPlayerIds(Long.toString(id) + ",");
                     game.setPlayersTotalScores(drawingPlayer.get(), 0);
                     drawingPlayer.get().setStatus(UserStatus.ISPLAYING);
                 }
@@ -105,12 +109,11 @@ public class GameService {
                 }
             }
         }
-
-        gameTurn = gameTurnRepository.save(gameTurn);
-        userRepository.flush();
+        gameTurnRepository.saveAndFlush(gameTurn);
 
         // set game turn list <gameTurnId1, gameTurnId2,...>
         game.setGameTurnList(Long.toString(gameTurn.getId()) + ",");
+        gameRepository.saveAndFlush(game);
 
         log.debug("Created Information for a new Game Turn: {}", gameTurn);
         return gameTurn;

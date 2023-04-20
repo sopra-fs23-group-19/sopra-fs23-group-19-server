@@ -58,10 +58,9 @@ public class GameTurnController {
     @PostMapping("/gameRounds/drawing")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameTurnGetDTO updateDrawing(@RequestBody GameTurnPutDTO gameTurnPutDTO) {
+    public void updateDrawing(@RequestBody GameTurnPutDTO gameTurnPutDTO) {
 
-        GameTurn gameTurn = gameTurnService.updateImage(gameTurnPutDTO);
-        return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+        gameTurnService.updateImage(gameTurnPutDTO);
 
     }
 
@@ -87,9 +86,10 @@ public class GameTurnController {
         gameTurnService.calculateScore(userPutDTO, gameTurnId);
     }
 
+    // get rank list from this turn
     @UserLoginToken
     @GetMapping("/gameRounds/rank/{gameTurnId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getRank(@RequestAttribute long gameTurnId){
 
@@ -101,6 +101,29 @@ public class GameTurnController {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;
+    }
+
+    // users request refreshed information from backend every second
+    @UserLoginToken
+    @GetMapping("/gameRounds/{gameTurnId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameTurnGetDTO getGameTurnInfo(@RequestAttribute long gameTurnId){
+
+        GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
+
+        return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+    }
+
+    @UserLoginToken
+    @PostMapping("/games/gameRounds/{gameId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public GameTurnGetDTO startGameTurn(@PathVariable("roomId") long gameId){
+
+        GameTurn gameTurn = gameTurnService.startGameTurn(gameId);
+
+        return DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
     }
 
 

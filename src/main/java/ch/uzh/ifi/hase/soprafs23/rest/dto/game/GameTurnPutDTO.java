@@ -5,6 +5,8 @@ public class GameTurnPutDTO {
     private long id;
     private String image;
 
+    private String targetWord;
+
     public long getId() {
         return id;
     }
@@ -19,6 +21,14 @@ public class GameTurnPutDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getTargetWord() {
+        return targetWord;
+    }
+
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
     }
 
 }

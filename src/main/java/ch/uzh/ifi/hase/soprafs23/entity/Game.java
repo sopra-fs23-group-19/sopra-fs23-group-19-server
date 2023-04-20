@@ -16,6 +16,10 @@ public class Game implements Serializable {
     private Long id;
 
     @Column
+    private String drawingPlayerIds;
+    @Column
+    private String allPlayersIds;
+    @Column
     public String gameTurnList;
 
     @Column(nullable = false)
@@ -26,6 +30,21 @@ public class Game implements Serializable {
 
     @ElementCollection
     private Map<User, Integer> playersTotalScores = new HashMap<>();
+
+    public String getDrawingPlayerIds() {
+        return drawingPlayerIds;
+    }
+
+    public void setDrawingPlayerIds(String drawingPlayerIds) {
+        this.drawingPlayerIds = drawingPlayerIds;
+    }
+    public String getAllPlayersIds() {
+        return allPlayersIds;
+    }
+
+    public void setAllPlayersIds(String allPlayersIds) {
+        this.allPlayersIds = allPlayersIds;
+    }
 
     public int getTurnLength() {
         return turnLength;

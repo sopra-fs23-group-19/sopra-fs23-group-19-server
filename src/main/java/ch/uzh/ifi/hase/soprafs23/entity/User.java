@@ -40,10 +40,10 @@ public class User implements Serializable {
   private UserStatus status;
 
   @Column
-  private int bestScore;
+  private int bestScore = 0;
 
   @Column
-  private int totalScore;
+  private int totalScore = 0;
 
   @GeneratedValue
   private Date creationDate;

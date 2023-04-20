@@ -22,15 +22,11 @@ import java.net.http.HttpResponse;
 public class WordsService {
 
     private final Logger log = LoggerFactory.getLogger(GameService.class);
-
-    private final WordsRepository wordsRepository;
     private final GameTurnRepository gameTurnRepository;
 
     @Autowired
-    public WordsService(@Qualifier("wordsRepository")WordsRepository wordsRepository,
-                       @Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository) {
+    public WordsService(@Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository) {
         this.gameTurnRepository = gameTurnRepository;
-        this.wordsRepository = wordsRepository;
     }
 
     public String getWord(){

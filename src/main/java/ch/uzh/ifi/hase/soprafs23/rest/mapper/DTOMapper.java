@@ -37,6 +37,7 @@ public interface DTOMapper {
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -53,6 +54,7 @@ public interface DTOMapper {
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -72,6 +74,7 @@ public interface DTOMapper {
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -95,6 +98,9 @@ public interface DTOMapper {
     @Mapping(source = "image", target = "image")
     @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
     @Mapping(source = "targetWord", target = "targetWord")
+    @Mapping(source = "drawingPhase", target = "drawingPhase")
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 
     @Mapping(source = "id", target = "id")
@@ -102,7 +108,11 @@ public interface DTOMapper {
     @Mapping(source = "targetWord", target = "targetWord")
     @Mapping(target = "drawingPlayer", ignore = true)
     @Mapping(target = "allPlayersIds", ignore = true)
-    @Mapping(target = "targetWord", ignore = true)
-    GameTurn convertGameTurnPostDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
+    @Mapping(target = "gameId", ignore = true)
+    @Mapping(target = "wordsToBeChosen", ignore = true)
+    @Mapping(target = "drawingPhase", ignore = true)
+    @Mapping(target = "gameTurnStatus", ignore = true)
+    @Mapping(target = "playersScores", ignore = true)
+    GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
 }
