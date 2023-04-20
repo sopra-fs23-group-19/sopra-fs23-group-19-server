@@ -26,7 +26,7 @@ public class GameTurn implements Serializable {
     private String allPlayersIds;
 
     @ElementCollection
-    private Map<User, Integer> playersScores = new HashMap<>();
+    private Map<Integer, User> playersScores = new HashMap<>();
 
     @Column
     private String targetWord;
@@ -37,6 +37,9 @@ public class GameTurn implements Serializable {
     @Column
     private String wordsToBeChosen;
 
+    @Column
+    private Boolean DrawingPhase = false;
+
     public Long getId() {
         return id;
     }
@@ -45,9 +48,12 @@ public class GameTurn implements Serializable {
         this.id = id;
     }
 
-    public void addPlayersScores(User user, int playersScores) {
+    public Map<Integer, User> getPlayersScores() {
+        return playersScores;
+    }
+    public void addPlayersScores(int playersScores, User user) {
 
-        this.playersScores.put(user, playersScores);
+        this.playersScores.put(playersScores, user);
     }
 
 
@@ -98,4 +104,13 @@ public class GameTurn implements Serializable {
     public void setWordsToBeChosen(String wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
     }
+
+    public Boolean getDrawingPhase() {
+        return DrawingPhase;
+    }
+
+    public void setDrawingPhase(Boolean drawingPhase) {
+        DrawingPhase = drawingPhase;
+    }
+
 }

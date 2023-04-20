@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
@@ -103,6 +103,6 @@ public interface DTOMapper {
     @Mapping(target = "drawingPlayer", ignore = true)
     @Mapping(target = "allPlayersIds", ignore = true)
     @Mapping(target = "targetWord", ignore = true)
-    GameTurn convertGameTurnPostDTOtoEntity(GameTurnPostDTO gameTurnPostDTO);
+    GameTurn convertGameTurnPostDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
 }

@@ -5,6 +5,7 @@ public class UserPutDTO {
     private String username;
     private String password;
     private Long id;
+    private String guessingWord;
 
     public String getUsername() {
         return username;
@@ -23,12 +24,19 @@ public class UserPutDTO {
         this.password = password;
     }
 
-
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getGuessingWord() {
+        return guessingWord;
+    }
+
+    public void setGuessingWord(String guessingWord) {
+        this.guessingWord = guessingWord;
     }
 }

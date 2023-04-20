@@ -3,10 +3,14 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs23.entity.*;
-import ch.uzh.ifi.hase.soprafs23.repository.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +73,7 @@ public class GameService {
         // save all players' Ids
         gameTurn.setAllPlayersIds(room.getPlayers());
         gameTurn.setGameId(game.getId());
+        gameTurn.setDrawingPhase(true);
         List<Long> allPlayerIds = transferStringToLong(room.getPlayers());
         // find all players
         List<Optional<User>> allPlayers = new ArrayList<>();
@@ -88,7 +93,6 @@ public class GameService {
                 Optional<User> drawingPlayer = allPlayers.get(n);
                 if(drawingPlayer.isPresent()){
                     gameTurn.setDrawingPlayer(id);
-                    gameTurn.addPlayersScores(drawingPlayer.get(), 0);
                     game.setPlayersTotalScores(drawingPlayer.get(), 0);
                     drawingPlayer.get().setStatus(UserStatus.ISPLAYING);
                 }
@@ -96,7 +100,6 @@ public class GameService {
                 // set guessing players
                 Optional<User> guessingPlayer = userRepository.findById(id);
                 if(guessingPlayer.isPresent()) {
-                    gameTurn.addPlayersScores(guessingPlayer.get(), 0);
                     game.setPlayersTotalScores(guessingPlayer.get(), 0);
                     guessingPlayer.get().setStatus(UserStatus.ISPLAYING);
                 }
@@ -123,24 +126,6 @@ public class GameService {
         }
     }
 
-    public Game getGame(long gameId) {
-        Game game = gameRepository.findById(gameId);
-        if(game == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has not started yet!");
-        }else{
-            return game;
-        }
-    }
-
-    public GameTurn getGameTurn(long gameTurnId){
-        GameTurn gameTurn = gameTurnRepository.findById(gameTurnId);
-        if(gameTurn == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game turn has not started yet!");
-        }else{
-            return gameTurn;
-        }
-    }
-
     public List<Long> transferStringToLong(String players){
         String[] strArray = players.split(",");
         List<Long> longList = new ArrayList<>();
@@ -152,40 +137,6 @@ public class GameService {
         return longList;
     }
 
-    public GameTurn submitImage(GameTurn gameTurnInput) {
 
-        // get current game turn
-        Game game = getGame(gameTurnInput.getGameId());
-        List<Long> gameTurnList = transferStringToLong(game.getGameTurnList());
-        long currentTurnId;
-        if (gameTurnList.size() == 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game has not started.");
-        }
-        else {
-            currentTurnId = gameTurnList.get(gameTurnList.size() - 1);
-        }
-        // refresh current gameTurn status - add new image string
-        GameTurn gameTurn = getGameTurn(currentTurnId);
-        addImage(gameTurn, gameTurnInput.getImage());
-
-        return gameTurn;
-    }
-
-    public void addImage (GameTurn gameTurn, String imageAdd){
-        String image = gameTurn.getImage();
-        if(image == null) {
-            gameTurn.setImage(imageAdd);
-        }else{
-            gameTurn.setImage(image + imageAdd);
-        }
-    }
-
-    public void setTargetWord(GameTurnPostDTO gameTurnPostDTO) {
-        long id = gameTurnPostDTO.getGameId();
-        GameTurn gameTurn = getGameTurn(id);
-        GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPostDTOtoEntity(gameTurnPostDTO);
-        gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-        gameTurnRepository.flush();
-    }
 }
 
