@@ -1,24 +1,33 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RoomGetDTO {
-    private long id;
+    private Long id;
 
     private String roomName;
 
-    private RoomMode mode;
+    private int mode;
 
-    private long ownerId;
+    private Long ownerId;
 
     // string of players id
 
-    private String players;
+    private Set<Long> players;
 
-    public long getId() {
+    private RoomStatus status;
+
+    public Long getId() {
         return id;
     }
-    public void setId(long id){
+    public void setId(Long id){
         this.id=id;
     }
 
@@ -28,24 +37,35 @@ public class RoomGetDTO {
     public void setRoomName(String roomName){
         this.roomName=roomName;
     }
-    public RoomMode getMode(){
+
+    public int getMode() {
         return mode;
     }
-    public void setMode(RoomMode mode){
-        this.mode=mode;
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
-    public long getOwnerId(){
+    public Long getOwnerId(){
         return ownerId;
     }
-    public void setOwnerId(long ownerId){
+    public void setOwnerId(Long ownerId){
         this.ownerId=ownerId;
     }
 
-    public String getPlayers(){
+    public Set<Long> getPlayers() {
         return players;
     }
-    public void setPlayers(String players){
-        this.players=players;
+
+    public void setPlayers(Set<Long> players) {
+        this.players = players;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
     }
 }

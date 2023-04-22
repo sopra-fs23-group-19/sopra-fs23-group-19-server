@@ -1,27 +1,35 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RoomAfterGetDTO {
-    private long id;
+    private Long id;
 
     private String roomName;
 
-    private RoomMode mode;
+    private int roomSeats;
 
-    private long ownerId;
+    private Long ownerId;
 
     // string of players id
 
-    private List<Long> players;
+    private List<UserNameDTO> players = new ArrayList<>();
 
+    private RoomStatus status;
 
-    public long getId() {
+    private int numberOfPlayers;
+
+    public Long getId() {
         return id;
     }
-    public void setId(long id){
+    public void setId(Long id){
         this.id=id;
     }
 
@@ -31,26 +39,43 @@ public class RoomAfterGetDTO {
     public void setRoomName(String roomName){
         this.roomName=roomName;
     }
-    public RoomMode getMode(){
-        return mode;
-    }
-    public void setMode(RoomMode mode){
-        this.mode=mode;
+
+    public int getRoomSeats() {
+        return roomSeats;
     }
 
-    public long getOwnerId(){
+    public void setRoomSeats(int roomSeats) {
+        this.roomSeats = roomSeats;
+    }
+
+    public Long getOwnerId(){
         return ownerId;
     }
-    public void setOwnerId(long ownerId){
+    public void setOwnerId(Long ownerId){
         this.ownerId=ownerId;
     }
 
-    public List<Long> getPlayers(){
+    public void setPlayers(List<UserNameDTO> players) {
+        this.players = players;
+    }
 
+    public List<UserNameDTO> getPlayers() {
         return players;
     }
-    public void setPlayers(List<Long> players){
-        this.players=players;
 
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
+    }
+
+    public int getNumberOfPlayers() {
+        return numberOfPlayers;
+    }
+
+    public void setNumberOfPlayers(int numberOfPlayers) {
+        this.numberOfPlayers = numberOfPlayers;
     }
 }

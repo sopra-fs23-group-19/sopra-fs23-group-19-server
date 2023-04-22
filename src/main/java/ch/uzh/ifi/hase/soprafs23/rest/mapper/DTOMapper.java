@@ -80,8 +80,9 @@ public interface DTOMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "roomName", target = "roomName")
     @Mapping(source = "ownerId", target = "ownerId")
-    @Mapping(target = "players", source = "players")
+    @Mapping(target = "players", ignore = true)
     @Mapping(source = "mode", target = "mode")
+    @Mapping(target = "status", ignore = true)
     Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -89,6 +90,7 @@ public interface DTOMapper {
     @Mapping(source = "ownerId", target = "ownerId")
     @Mapping(source = "players", target = "players")
     @Mapping(source = "mode", target = "mode")
+    @Mapping(source = "status", target = "status")
     RoomGetDTO convertEntityToRoomGetDTO(Room room);
 
 
@@ -115,4 +117,7 @@ public interface DTOMapper {
     @Mapping(target = "playersScores", ignore = true)
     GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    UserNameDTO convertEntityToUserNameDTO(User user);
 }

@@ -1,16 +1,16 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
 public class RoomPutDTO {
-    private long userId;
-    private long roomId;
+    private Long userId;
+    private Long roomId;
 
-    public long getRoomId(){
+    public Long getRoomId(){
         return roomId;
     }
-    public void setRoomId(long roomId){
+    public void setRoomId(Long roomId){
         this.roomId=roomId;
     }
-    public long getUserId(){
+    public Long getUserId(){
         return userId;
     }
     public void setUserId(){

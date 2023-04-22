@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.room.*;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,13 +27,14 @@ import org.springframework.web.util.HtmlUtils;
 @RestController
 public class RoomController {
     private final RoomService roomService;
-    RoomController(RoomService roomService) {
+    private final UserService userService;
+    RoomController(RoomService roomService, UserService userService) {
         this.roomService = roomService;
+        this.userService = userService;
     }
 
-    @Autowired
-    SimpMessagingTemplate simpMessagingTemplate;
-
+//    @Autowired
+//    SimpMessagingTemplate simpMessagingTemplate;
 
     // owner doesn't need to join the room after creating
 
@@ -40,19 +42,16 @@ public class RoomController {
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public RoomAfterGetDTO createRoom(@RequestBody RoomBeforePostDTO roomBeforePostDTO) {
-        RoomPostDTO roomPostDTO=changeBeforeToPost(roomBeforePostDTO);
+    public RoomAfterGetDTO createRoom(@RequestBody RoomPostDTO roomPostDTO) {
 
         // convert API user to internal representation
-        Room roomInput = DTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO);
-
-        // convert internal representation of user back to API
-        RoomGetDTO roomGetDTO = DTOMapper.INSTANCE.convertEntityToRoomGetDTO(roomService.createRoom(roomInput));
-        RoomAfterGetDTO result =  changeGetToAfter(roomGetDTO);
+        return changeRoomToAfter(
+                roomService.createRoom(
+                        DTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO)
+                )
+        );
 
         // simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(result.getOwnerId()), result.getPlayers());
-
-        return result;
     }
 
     @UserLoginToken
@@ -75,82 +74,67 @@ public class RoomController {
     @GetMapping(value = "/gameRounds/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public RoomAfterGetDTO retrieveRoom(@PathVariable("roomId") long roomId){
+    public RoomAfterGetDTO retrieveRoom(@PathVariable("roomId") Long roomId){
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
+    }
+
+    @GetMapping("/games")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<RoomAfterGetDTO> getAllRooms() {
+        // fetch all users in the internal representation
+        List<Room> rooms = roomService.getRooms();
+        List<RoomAfterGetDTO> roomAfterGetDTOS = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (Room room: rooms) {
+            roomAfterGetDTOS.add(changeRoomToAfter(room));
+        }
+        return roomAfterGetDTOS;
     }
 
     @UserLoginToken
     @PutMapping("/games/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public RoomAfterGetDTO leaveRoom(@RequestBody RoomPutDTO roomPutDTO) {
-        Room room = roomService.leaveRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
-        return changeRoomToAfter(room);
-
-    }
-
-
-    public RoomPostDTO changeBeforeToPost(RoomBeforePostDTO roomBeforePostDTO){
-        RoomPostDTO roomPostDTO = new RoomPostDTO();
-
-        roomPostDTO.setId(roomBeforePostDTO.getId());
-        roomPostDTO.setRoomName(roomBeforePostDTO.getRoomName());
-        roomPostDTO.setOwnerId(roomBeforePostDTO.getOwnerId());
-        roomPostDTO.setPlayers(Long.toString(roomBeforePostDTO.getOwnerId()));
-
-        if(roomBeforePostDTO.getMode()==2){
-            roomPostDTO.setMode(RoomMode.P2);
-        }else if(roomBeforePostDTO.getMode()==4){
-            roomPostDTO.setMode(RoomMode.P4);
-        }else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong room mode!");
-        }
-
-        return roomPostDTO;
-    }
-
-    public RoomAfterGetDTO changeGetToAfter(RoomGetDTO roomGetDTO){
-        RoomAfterGetDTO roomAfterGetDTO = new RoomAfterGetDTO();
-        roomAfterGetDTO.setMode(roomGetDTO.getMode());
-        roomAfterGetDTO.setId(roomGetDTO.getId());
-        roomAfterGetDTO.setOwnerId(roomGetDTO.getOwnerId());
-        roomAfterGetDTO.setRoomName(roomGetDTO.getRoomName());
-
-        if(roomGetDTO.getPlayers()==null) {
-            roomAfterGetDTO.setPlayers(null);
-        }else {
-            roomAfterGetDTO.setPlayers(transferStringToLong(roomGetDTO.getPlayers()));
-        }
-        return roomAfterGetDTO;
+    public void leaveRoom(@RequestBody RoomPutDTO roomPutDTO) {
+        roomService.leaveRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
     }
 
 
     public RoomAfterGetDTO changeRoomToAfter(Room roomGetDTO){
         RoomAfterGetDTO roomAfterGetDTO = new RoomAfterGetDTO();
 
-        roomAfterGetDTO.setMode(roomGetDTO.getMode());
+        roomAfterGetDTO.setRoomSeats(roomGetDTO.getMode());
         roomAfterGetDTO.setId(roomGetDTO.getId());
         roomAfterGetDTO.setOwnerId(roomGetDTO.getOwnerId());
         roomAfterGetDTO.setRoomName(roomGetDTO.getRoomName());
+        roomAfterGetDTO.setStatus(roomGetDTO.getStatus());
 
         if(roomGetDTO.getPlayers()==null) {
             roomAfterGetDTO.setPlayers(null);
         }else {
-            roomAfterGetDTO.setPlayers(transferStringToLong(roomGetDTO.getPlayers()));
+            for(Long iid: roomGetDTO.getPlayers()){
+                userService.changeStatusToPlaying(iid);
+                roomAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
+            }
         }
+
+        roomAfterGetDTO.setNumberOfPlayers(roomGetDTO.getPlayers().size());
+
         return roomAfterGetDTO;
     }
 
-    public List<Long> transferStringToLong(String players){
-        String[] strArray = players.split(",");
-        List<Long> longList = new ArrayList<>();
-
-        for (String s : strArray) {
-            longList.add(Long.valueOf(s));
-        }
-
-        return longList;
-    }
+//    public List<Long> transferStringToLong(String players){
+//        String[] strArray = players.split(",");
+//        List<Long> LongList = new ArrayList<>();
+//
+//        for (String s : strArray) {
+//            LongList.add(Long.valueOf(s));
+//        }
+//
+//        return LongList;
+//    }
 
 }
 

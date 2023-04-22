@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
 public class GameTurnGetDTO {
-    private long id;
+    private Long id;
 
     private Long drawingPlayerId;
 
@@ -12,7 +12,7 @@ public class GameTurnGetDTO {
     private String wordsToBeChosen;
     private String targetWord;
     private Boolean DrawingPhase;
-    private long gameId;
+    private Long gameId;
     private Boolean gameTurnStatus;
 
     public Long getDrawingPlayerId() {
@@ -27,11 +27,11 @@ public class GameTurnGetDTO {
         return allPlayersIds;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
@@ -59,11 +59,11 @@ public class GameTurnGetDTO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

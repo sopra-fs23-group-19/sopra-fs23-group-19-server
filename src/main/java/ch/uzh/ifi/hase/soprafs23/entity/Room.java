@@ -1,37 +1,46 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "ROOM")
 public class Room implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false, unique = true)
     private String roomName;
 
     @Column(nullable = false)
-    private RoomMode mode;
+    private int mode;
 
     @Column(nullable = false)
-    private long ownerId;
+    private Long ownerId;
 
     // string of players id
     @Column
-    private String players;
+    @ElementCollection
+    private Set<Long> players = new HashSet<>();
 
-    public long getId() {
+    @Column
+    private RoomStatus status;
+
+    public Long getId() {
         return id;
     }
-    public void setId(long id){
+    public void setId(Long id){
         this.id=id;
     }
 
@@ -41,25 +50,35 @@ public class Room implements Serializable {
     public void setRoomName(String roomName){
         this.roomName=roomName;
     }
-    public RoomMode getMode(){
+
+    public int getMode() {
         return mode;
     }
-    public void setMode(RoomMode mode){
-        this.mode=mode;
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
-    public long getOwnerId(){
+    public Long getOwnerId(){
         return ownerId;
     }
-    public void setOwnerId(long ownerId){
+    public void setOwnerId(Long ownerId){
         this.ownerId=ownerId;
     }
 
-    public String getPlayers(){
-        return players;
-    }
-    public void setPlayers(String players){
-        this.players=players;
+    public void setPlayers(Set<Long> players) {
+        this.players = players;
     }
 
+    public Set<Long> getPlayers() {
+        return players;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(RoomStatus status) {
+        this.status = status;
+    }
 }

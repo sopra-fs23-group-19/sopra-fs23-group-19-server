@@ -39,7 +39,7 @@ public class UserController {
     @PostMapping("/users/logout/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void logout(@PathVariable("userId") long userId) {
+    public void logout(@PathVariable("userId") Long userId) {
         userService.logout(userId);
     }
 
@@ -47,7 +47,7 @@ public class UserController {
     @GetMapping(value = "/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO retrieveUser(@PathVariable("userId") long userId){
+    public UserGetDTO retrieveUser(@PathVariable("userId") Long userId){
         // fetch all users in the internal representation
         User user = userService.retrieveUser(userId);
 

@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository("gameTurnRepository")
 public interface GameTurnRepository extends JpaRepository<GameTurn, Long> {
 
-    GameTurn findById(long id);
+    GameTurn findByid(Long id);
 
 }

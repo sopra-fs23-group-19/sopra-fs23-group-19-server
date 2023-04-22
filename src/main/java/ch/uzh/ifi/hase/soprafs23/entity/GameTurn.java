@@ -10,7 +10,7 @@ import java.util.Map;
 @Table(name = "GAMETURN")
 public class GameTurn implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue
@@ -32,7 +32,7 @@ public class GameTurn implements Serializable {
     private String targetWord;
 
     @Column
-    private long gameId;
+    private Long gameId;
 
     @Column
     private String wordsToBeChosen;
@@ -92,11 +92,11 @@ public class GameTurn implements Serializable {
         this.targetWord = targetWord;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 

@@ -57,16 +57,16 @@ public class GameTurnService {
         gameTurnRepository.flush();
     }
 
-    public Game getGame(long gameId){
-        Game game = gameRepository.findById(gameId);
+    public Game getGame(Long gameId){
+        Game game = gameRepository.findByid(gameId);
         if(game == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has not started yet!");
         }else{
             return game;
         }
     }
-    public GameTurn getGameTurn(long gameTurnId){
-        GameTurn gameTurn = gameTurnRepository.findById(gameTurnId);
+    public GameTurn getGameTurn(Long gameTurnId){
+        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnId);
         if(gameTurn == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game turn has not started yet!");
         }else{
@@ -74,8 +74,8 @@ public class GameTurnService {
         }
     }
 
-    public User getUser(long userid){
-        User user = userRepository.findById(userid);
+    public User getUser(Long userid){
+        User user = userRepository.findByid(userid);
         if(user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the user is not found!");
         }else{
@@ -90,7 +90,7 @@ public class GameTurnService {
         return gameTurn;
     }
 
-    public void calculateScore(UserPutDTO userPutDTO, long gameTurnId) {
+    public void calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
         User user = getUser(userPutDTO.getId());
         GameTurn gameTurn = getGameTurn(gameTurnId);
         if(userPutDTO.getGuessingWord() == gameTurn.getTargetWord()){
@@ -102,7 +102,7 @@ public class GameTurnService {
         }
     }
 
-    public List<User> rank(long gameTurnId) {
+    public List<User> rank(Long gameTurnId) {
         GameTurn gameTurn = getGameTurn(gameTurnId);
         Map<User,Integer> playersScores = gameTurn.getPlayersScores();
         // rank the user by scores
@@ -124,7 +124,7 @@ public class GameTurnService {
         return rankedUsers;
     }
 
-    public GameTurn startGameTurn(long gameId) {
+    public GameTurn startGameTurn(Long gameId) {
         Game game = getGame(gameId);
         GameTurn gameTurn = new GameTurn();
         gameTurn.setAllPlayersIds(game.getAllPlayersIds());
@@ -139,13 +139,13 @@ public class GameTurnService {
         // find all players
         List<Optional<User>> allPlayers = new ArrayList<>();
         for (Long id: allPlayersIds){
-            allPlayers.add(userRepository.findById(id));
+            allPlayers.add(Optional.ofNullable(userRepository.findByid(id)));
         }
         // set new drawingPlayer
         if(leftDrawingPlayerIds.size() == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
         }else if (leftDrawingPlayerIds.size() == 1){
-            long drawingPlayerId = leftDrawingPlayerIds.get(0);
+            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
             for(Long id: allPlayersIds){
                 if(id == drawingPlayerId){
                     // set drawing player
@@ -157,7 +157,7 @@ public class GameTurnService {
                     }
                 }else{
                     // set guessing players
-                    Optional<User> guessingPlayer = userRepository.findById(id);
+                    Optional<User> guessingPlayer = Optional.ofNullable(userRepository.findByid(id));
                     if(guessingPlayer.isPresent()) {
                         guessingPlayer.get().setCurrentScore(0);
                     }
@@ -179,7 +179,7 @@ public class GameTurnService {
                     }
                 }else{
                     // set guessing players
-                    Optional<User> guessingPlayer = userRepository.findById(id);
+                    Optional<User> guessingPlayer = Optional.ofNullable(userRepository.findByid(id));
                     if(guessingPlayer.isPresent()) {
                         guessingPlayer.get().setCurrentScore(0);
                     }
@@ -198,12 +198,12 @@ public class GameTurnService {
 
     public List<Long> transferStringToLong(String players){
         String[] strArray = players.split(",");
-        List<Long> longList = new ArrayList<>();
+        List<Long> LongList = new ArrayList<>();
 
         for (String s : strArray) {
-            longList.add(Long.valueOf(s));
+            LongList.add(Long.valueOf(s));
         }
 
-        return longList;
+        return LongList;
     }
 }

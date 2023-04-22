@@ -20,11 +20,11 @@ import java.util.Date;
 @Table(name = "USER")
 public class User implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final Long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue
-  private long id;
+  private Long id;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -51,11 +51,11 @@ public class User implements Serializable {
   @Column
   private int currentScore;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
