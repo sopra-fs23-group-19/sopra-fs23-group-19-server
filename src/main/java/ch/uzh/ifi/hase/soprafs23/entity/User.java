@@ -51,6 +51,12 @@ public class User implements Serializable {
   @Column
   private int currentScore;
 
+  @Column
+  private String guessingWord;
+
+  @Column
+  private int currentGameScore;
+
   public long getId() {
     return id;
   }
@@ -114,6 +120,22 @@ public class User implements Serializable {
 
     public void setCurrentScore(int currentScore) {
         this.currentScore = currentScore;
+    }
+
+    public String getGuessingWord() {
+        return guessingWord;
+    }
+
+    public void setGuessingWord(String guessingWord) {
+        this.guessingWord = guessingWord;
+    }
+
+    public int getCurrentGameScore() {
+        return currentGameScore;
+    }
+
+    public void setCurrentGameScore(int currentGameScore) {
+        this.currentGameScore = currentGameScore;
     }
 
 }

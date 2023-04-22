@@ -77,6 +77,7 @@ public class GameService {
         gameTurn.setGameId(game.getId());
         gameTurn.setDrawingPhase(true);
         gameTurn.setGameTurnStatus(true);
+        gameTurn.setGameStatus(true);
         List<Long> allPlayerIds = transferStringToLong(room.getPlayers());
         // find all players
         List<Optional<User>> allPlayers = new ArrayList<>();
@@ -97,15 +98,16 @@ public class GameService {
                 if(drawingPlayer.isPresent()){
                     gameTurn.setDrawingPlayer(id);
                     game.setDrawingPlayerIds(Long.toString(id) + ",");
-                    game.setPlayersTotalScores(drawingPlayer.get(), 0);
+                    drawingPlayer.get().setCurrentScore(0);
+                    drawingPlayer.get().setCurrentGameScore(0);
                     drawingPlayer.get().setStatus(UserStatus.ISPLAYING);
                 }
             }else{
                 // set guessing players
                 Optional<User> guessingPlayer = userRepository.findById(id);
                 if(guessingPlayer.isPresent()) {
-                    game.setPlayersTotalScores(guessingPlayer.get(), 0);
                     guessingPlayer.get().setStatus(UserStatus.ISPLAYING);
+                    guessingPlayer.get().setCurrentGameScore(0);
                 }
             }
         }

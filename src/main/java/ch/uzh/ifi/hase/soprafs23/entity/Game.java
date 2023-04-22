@@ -2,8 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @Table(name = "GAME")
@@ -27,9 +25,6 @@ public class Game implements Serializable {
 
     @Column
     private int currentGameTurn;  // current turn index
-
-    @ElementCollection
-    private Map<User, Integer> playersTotalScores = new HashMap<>();
 
     public String getDrawingPlayerIds() {
         return drawingPlayerIds;
@@ -60,14 +55,6 @@ public class Game implements Serializable {
 
     public void setCurrentGameTurn(int currentGameTurn) {
         this.currentGameTurn = currentGameTurn;
-    }
-
-    public void setPlayersTotalScores(User user, int playersTotalScores) {
-        this.playersTotalScores.put(user, playersTotalScores);
-    }
-
-    public Map<User, Integer> getPlayersTotalScores() {
-        return playersTotalScores;
     }
 
     public String getGameTurnList() {

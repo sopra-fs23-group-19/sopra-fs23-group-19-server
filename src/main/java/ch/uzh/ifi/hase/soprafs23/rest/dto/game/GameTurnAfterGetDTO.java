@@ -1,11 +1,15 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
-public class GameTurnGetDTO {
+import ch.uzh.ifi.hase.soprafs23.entity.User;
+
+import java.util.List;
+
+public class GameTurnAfterGetDTO {
     private long id;
 
     private Long drawingPlayerId;
 
-    private String allPlayersIds;
+    private List<User> allPlayers;
 
     private String image;
 
@@ -14,7 +18,6 @@ public class GameTurnGetDTO {
     private Boolean DrawingPhase;
     private long gameId;
     private Boolean gameTurnStatus;
-
     private Boolean gameStatus;
 
     public Long getDrawingPlayerId() {
@@ -23,10 +26,6 @@ public class GameTurnGetDTO {
 
     public void setDrawingPlayerId(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
-    }
-
-    public String getAllPlayersIds() {
-        return allPlayersIds;
     }
 
     public long getGameId() {
@@ -43,10 +42,6 @@ public class GameTurnGetDTO {
 
     public void setGameTurnStatus(Boolean gameTurnStatus) {
         this.gameTurnStatus = gameTurnStatus;
-    }
-
-    public void setAllPlayersIds(String allPlayersIds) {
-        this.allPlayersIds = allPlayersIds;
     }
 
     public String getImage() {
@@ -93,6 +88,14 @@ public class GameTurnGetDTO {
         DrawingPhase = drawingPhase;
     }
 
+    public List<User> getAllPlayers() {
+        return allPlayers;
+    }
+
+    public void setAllPlayers(List<User> allPlayers) {
+        this.allPlayers = allPlayers;
+    }
+
     public Boolean getGameStatus() {
         return gameStatus;
     }
@@ -100,5 +103,4 @@ public class GameTurnGetDTO {
     public void setGameStatus(Boolean gameStatus) {
         this.gameStatus = gameStatus;
     }
-
 }

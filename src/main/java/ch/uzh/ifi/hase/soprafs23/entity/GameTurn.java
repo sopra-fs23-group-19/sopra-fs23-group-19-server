@@ -3,8 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 @Entity
 @Table(name = "GAMETURN")
@@ -25,9 +23,6 @@ public class GameTurn implements Serializable {
     @Column
     private String allPlayersIds;
 
-    @ElementCollection
-    private Map<User, Integer> playersScores = new HashMap<>();
-
     @Column
     private String targetWord;
 
@@ -43,6 +38,9 @@ public class GameTurn implements Serializable {
     @Column
     private Boolean gameTurnStatus = false;
 
+    @Column
+    private Boolean gameStatus = false;
+
     public Long getId() {
         return id;
     }
@@ -50,15 +48,6 @@ public class GameTurn implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Map<User, Integer> getPlayersScores() {
-        return playersScores;
-    }
-    public void addPlayersScores(User user, int playersScores) {
-
-        this.playersScores.put(user, playersScores);
-    }
-
 
     public void setDrawingPlayer(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
@@ -122,6 +111,14 @@ public class GameTurn implements Serializable {
 
     public void setGameTurnStatus(Boolean gameTurnStatus) {
         this.gameTurnStatus = gameTurnStatus;
+    }
+
+    public Boolean getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(Boolean gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
 }

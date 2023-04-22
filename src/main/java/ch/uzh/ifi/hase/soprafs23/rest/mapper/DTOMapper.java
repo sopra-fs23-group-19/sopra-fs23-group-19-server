@@ -38,6 +38,8 @@ public interface DTOMapper {
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "guessingWord", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -55,6 +57,8 @@ public interface DTOMapper {
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "guessingWord", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -64,17 +68,22 @@ public interface DTOMapper {
     @Mapping(source = "token", target = "token")
     @Mapping(target = "bestScore", source="bestScore")
     @Mapping(target = "totalScore", source="totalScore")
+    @Mapping(target = "currentScore", source="currentScore")
+    @Mapping(target = "guessingWord", source="guessingWord")
+    @Mapping(target = "currentGameScore", source="currentGameScore")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
+    @Mapping(source = "guessingWord", target = "guessingWord")
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
     @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -101,6 +110,7 @@ public interface DTOMapper {
     @Mapping(source = "drawingPhase", target = "drawingPhase")
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
+    @Mapping(source = "gameStatus", target = "gameStatus")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 
     @Mapping(source = "id", target = "id")
@@ -112,7 +122,7 @@ public interface DTOMapper {
     @Mapping(target = "wordsToBeChosen", ignore = true)
     @Mapping(target = "drawingPhase", ignore = true)
     @Mapping(target = "gameTurnStatus", ignore = true)
-    @Mapping(target = "playersScores", ignore = true)
+    @Mapping(target = "gameStatus", ignore = true)
     GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
 }

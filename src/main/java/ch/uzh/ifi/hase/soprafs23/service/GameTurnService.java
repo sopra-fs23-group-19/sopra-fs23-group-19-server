@@ -85,26 +85,48 @@ public class GameTurnService {
 
     public GameTurn submitImage(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
+        String image = gameTurn.getImage();
+        if(image == null) {
+            gameTurn.setImage(gameTurnPutDTO.getImage());
+        }else{
+            gameTurn.setImage(image + gameTurnPutDTO.getImage());
+        }
         gameTurn.setDrawingPhase(false);
         gameTurnRepository.flush();
         return gameTurn;
     }
 
     public void calculateScore(UserPutDTO userPutDTO, long gameTurnId) {
-        User user = getUser(userPutDTO.getId());
+
+        User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+        // find user in the db
+        User user = getUser(userInput.getId());
+        // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        if(userPutDTO.getGuessingWord() == gameTurn.getTargetWord()){
-            gameTurn.addPlayersScores(user, 1);
+        if(userInput.getGuessingWord() == gameTurn.getTargetWord()){
+            user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(1);
+            user.setCurrentGameScore(user.getCurrentGameScore()+1);
         }else{
-            gameTurn.addPlayersScores(user, 0);
+            user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(0);
         }
+        userRepository.saveAndFlush(user);
+        gameTurnRepository.saveAndFlush(gameTurn);
     }
 
-    public List<User> rank(long gameTurnId) {
+    public List<User> rank(long gameId, long gameTurnId) {
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        Map<User,Integer> playersScores = gameTurn.getPlayersScores();
+        List<Long> allPlayerIds = transferStringToLong(gameTurn.getAllPlayersIds());
+        // find all players
+        List<User> allPlayers = new ArrayList<>();
+        for (Long id: allPlayerIds){
+            allPlayers.add(getUser(id));
+        }
+        Map<User,Integer> playersScores = new HashMap<>();
+        for (User user: allPlayers){
+            playersScores.put(user, user.getCurrentScore());
+        }
         // rank the user by scores
         List<User> rankedUsers =  playersScores.entrySet().stream()
                 .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
@@ -119,13 +141,20 @@ public class GameTurnService {
         }
         // set game turn status
         gameTurn.setGameTurnStatus(false);
+
+        // check game status
+        Game game = getGame(gameId);
+        if(game.getCurrentGameTurn() == game.getTurnLength()){
+            gameTurn.setGameStatus(false);
+        }
         gameTurnRepository.flush();
 
         return rankedUsers;
     }
 
-    public GameTurn startGameTurn(long gameId) {
+    public GameTurn startNewGameTurn(long gameId) {
         Game game = getGame(gameId);
+        game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
         GameTurn gameTurn = new GameTurn();
         gameTurn.setAllPlayersIds(game.getAllPlayersIds());
         gameTurn.setGameId(game.getId());

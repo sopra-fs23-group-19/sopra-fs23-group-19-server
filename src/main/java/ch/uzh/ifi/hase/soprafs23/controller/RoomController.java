@@ -1,27 +1,19 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @RestController
 public class RoomController {
@@ -36,7 +28,7 @@ public class RoomController {
 
     // owner doesn't need to join the room after creating
 
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -55,7 +47,7 @@ public class RoomController {
         return result;
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/games/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -71,7 +63,7 @@ public class RoomController {
 
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping(value = "/gameRounds/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -79,7 +71,7 @@ public class RoomController {
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/games/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
