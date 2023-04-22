@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,12 +16,16 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
 public class WordsService {
 
-//    private final Logger log = LoggerFactory.getLogger(GameService.class);
+    private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameTurnRepository gameTurnRepository;
 
     @Autowired
@@ -31,7 +34,6 @@ public class WordsService {
     }
 
     public String getWord(){
-
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://pictionary-charades-word-generator.p.rapidapi.com/pictionary?difficulty=easy"))
                 .header("X-RapidAPI-Key", "f1ba58b38bmsh7f13519be0f7c4ep180d7cjsn1d03862b849f")
@@ -51,18 +53,19 @@ public class WordsService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
             }
         }
-        System.out.println(response.body());
-
-        return response.body();
+        String str = response.body();
+        List<String> words = Arrays.asList(str.split("\""));
+        return words.get(words.size()-2);
     }
 
 
-    public String getThreeWords(){
+    public Set<String> getThreeWords(){
 
-        String listOfWords = new String();
+        Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){
-            listOfWords = listOfWords + getWord() + ",";
+            listOfWords.add(getWord());
         }
+
         return listOfWords;
     }
 

@@ -2,27 +2,18 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
-import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.room.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.util.HtmlUtils;
 
 @RestController
 public class RoomController {
@@ -78,6 +69,7 @@ public class RoomController {
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
+    @UserLoginToken
     @GetMapping("/games")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

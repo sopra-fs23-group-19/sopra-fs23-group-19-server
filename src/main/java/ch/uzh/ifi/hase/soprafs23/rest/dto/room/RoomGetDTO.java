@@ -1,12 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
-import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class RoomGetDTO {

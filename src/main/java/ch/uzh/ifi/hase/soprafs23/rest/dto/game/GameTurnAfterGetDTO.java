@@ -6,23 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class GameTurnGetDTO {
-    private Long id;
+public class GameTurnAfterGetDTO {
+    private long id;
 
     private Long drawingPlayerId;
 
-    private Set<Long> allPlayersIds;
+    private List<UserNameDTO> players = new ArrayList<>();
 
     private String image;
 
     private Set<String> wordsToBeChosen;
     private Boolean DrawingPhase;
-    private Long gameId;
+    private long gameId;
     private Boolean gameTurnStatus;
-
     private Boolean gameStatus;
-
-    private List<UserNameDTO> players = new ArrayList<>();
 
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
@@ -32,15 +29,11 @@ public class GameTurnGetDTO {
         this.drawingPlayerId = drawingPlayerId;
     }
 
-    public Set<Long> getAllPlayersIds() {
-        return allPlayersIds;
-    }
-
-    public Long getGameId() {
+    public long getGameId() {
         return gameId;
     }
 
-    public void setGameId(Long gameId) {
+    public void setGameId(long gameId) {
         this.gameId = gameId;
     }
 
@@ -50,10 +43,6 @@ public class GameTurnGetDTO {
 
     public void setGameTurnStatus(Boolean gameTurnStatus) {
         this.gameTurnStatus = gameTurnStatus;
-    }
-
-    public void setAllPlayersIds(Set<Long> allPlayersIds) {
-        this.allPlayersIds = allPlayersIds;
     }
 
     public String getImage() {
@@ -68,11 +57,11 @@ public class GameTurnGetDTO {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
@@ -100,4 +89,11 @@ public class GameTurnGetDTO {
         this.gameStatus = gameStatus;
     }
 
+    public void setPlayers(List<UserNameDTO> players) {
+        this.players = players;
+    }
+
+    public List<UserNameDTO> getPlayers() {
+        return players;
+    }
 }

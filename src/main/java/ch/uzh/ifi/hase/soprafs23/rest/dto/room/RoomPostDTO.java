@@ -1,11 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
-import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
-import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class RoomPostDTO {
     // private Long id;
 
@@ -49,6 +43,7 @@ public class RoomPostDTO {
     public void setOwnerId(Long ownerId){
         this.ownerId=ownerId;
     }
+
 
 //    public List<Long> getPlayers() {
 //        return players;

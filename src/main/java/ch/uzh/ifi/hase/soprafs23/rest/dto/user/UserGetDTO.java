@@ -14,9 +14,14 @@ public class UserGetDTO {
   private int bestScore;
   private int totalScore;
 
+  private int currentScore;
+  private String guessingWord;
+
+  private int currentGameScore;
+
   public int getBestScore(){return bestScore;}
   public void setBestScore(int bestScore){this.bestScore=bestScore;}
-  public int getTotalScore(){return bestScore;}
+  public int getTotalScore(){return totalScore;}
   public void setTotalScore(int totalScore){this.totalScore=totalScore;}
 
   public Long getId() {
@@ -57,4 +62,28 @@ public class UserGetDTO {
   public void setToken(String token) {
       this.token = token;
   }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public String getGuessingWord() {
+        return guessingWord;
+    }
+
+    public void setGuessingWord(String guessingWord) {
+        this.guessingWord = guessingWord;
+    }
+
+    public int getCurrentGameScore() {
+        return currentGameScore;
+    }
+
+    public void setCurrentGameScore(int currentGameScore) {
+        this.currentGameScore = currentGameScore;
+    }
 }

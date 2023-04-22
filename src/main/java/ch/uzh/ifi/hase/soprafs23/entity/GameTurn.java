@@ -3,8 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "GAMETURN")
@@ -13,7 +13,7 @@ public class GameTurn implements Serializable {
     private static final Long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -23,10 +23,8 @@ public class GameTurn implements Serializable {
     private Long drawingPlayerId;
 
     @Column
-    private String allPlayersIds;
-
     @ElementCollection
-    private Map<User, Integer> playersScores = new HashMap<>();
+    private Set<Long> allPlayersIds = new HashSet<>();
 
     @Column
     private String targetWord;
@@ -35,13 +33,17 @@ public class GameTurn implements Serializable {
     private Long gameId;
 
     @Column
-    private String wordsToBeChosen;
+    @ElementCollection
+    private Set<String> wordsToBeChosen = new HashSet<>();
 
     @Column
     private Boolean DrawingPhase = false;
 
     @Column
     private Boolean gameTurnStatus = false;
+
+    @Column
+    private Boolean gameStatus = false;
 
     public Long getId() {
         return id;
@@ -51,15 +53,6 @@ public class GameTurn implements Serializable {
         this.id = id;
     }
 
-    public Map<User, Integer> getPlayersScores() {
-        return playersScores;
-    }
-    public void addPlayersScores(User user, int playersScores) {
-
-        this.playersScores.put(user, playersScores);
-    }
-
-
     public void setDrawingPlayer(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
     }
@@ -68,11 +61,11 @@ public class GameTurn implements Serializable {
         return drawingPlayerId;
     }
 
-    public void setAllPlayersIds(String allPlayersIds) {
+    public void setAllPlayersIds(Set<Long> allPlayersIds) {
         this.allPlayersIds = allPlayersIds;
     }
 
-    public String getAllPlayersIds() {
+    public Set<Long> getAllPlayersIds() {
         return allPlayersIds;
     }
 
@@ -100,11 +93,11 @@ public class GameTurn implements Serializable {
         this.gameId = gameId;
     }
 
-    public String getWordsToBeChosen() {
+    public Set<String> getWordsToBeChosen() {
         return wordsToBeChosen;
     }
 
-    public void setWordsToBeChosen(String wordsToBeChosen) {
+    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
     }
 
@@ -122,6 +115,14 @@ public class GameTurn implements Serializable {
 
     public void setGameTurnStatus(Boolean gameTurnStatus) {
         this.gameTurnStatus = gameTurnStatus;
+    }
+
+    public Boolean getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(Boolean gameStatus) {
+        this.gameStatus = gameStatus;
     }
 
 }
