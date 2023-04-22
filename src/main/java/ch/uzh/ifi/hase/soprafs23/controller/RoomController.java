@@ -74,7 +74,7 @@ public class RoomController {
     @GetMapping(value = "/gameRounds/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public RoomAfterGetDTO retrieveRoom(@PathVariable("roomId") Long roomId){
+    public RoomAfterGetDTO retrieveRoom(@PathVariable Long roomId){
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
