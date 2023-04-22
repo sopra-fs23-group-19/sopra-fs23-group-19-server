@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
 import org.mapstruct.Mapper;
@@ -89,16 +88,10 @@ public interface DTOMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "roomName", target = "roomName")
     @Mapping(source = "ownerId", target = "ownerId")
-    @Mapping(target = "players", source = "players")
+    @Mapping(target = "players", ignore = true)
     @Mapping(source = "mode", target = "mode")
+    @Mapping(target = "status", ignore = true)
     Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
-
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "roomName", target = "roomName")
-    @Mapping(source = "ownerId", target = "ownerId")
-    @Mapping(source = "players", target = "players")
-    @Mapping(source = "mode", target = "mode")
-    RoomGetDTO convertEntityToRoomGetDTO(Room room);
 
 
     @Mapping(source = "id", target = "id")
@@ -106,7 +99,6 @@ public interface DTOMapper {
     @Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
-    @Mapping(source = "targetWord", target = "targetWord")
     @Mapping(source = "drawingPhase", target = "drawingPhase")
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
@@ -125,4 +117,7 @@ public interface DTOMapper {
     @Mapping(target = "gameStatus", ignore = true)
     GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    UserNameDTO convertEntityToUserNameDTO(User user);
 }

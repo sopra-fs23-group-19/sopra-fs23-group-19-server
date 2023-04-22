@@ -1,21 +1,28 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 public class GameTurnGetDTO {
-    private long id;
+    private Long id;
 
     private Long drawingPlayerId;
 
-    private String allPlayersIds;
+    private Set<Long> allPlayersIds;
 
     private String image;
 
-    private String wordsToBeChosen;
-    private String targetWord;
+    private Set<String> wordsToBeChosen;
     private Boolean DrawingPhase;
-    private long gameId;
+    private Long gameId;
     private Boolean gameTurnStatus;
 
     private Boolean gameStatus;
+
+    private List<UserNameDTO> players = new ArrayList<>();
 
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
@@ -25,15 +32,15 @@ public class GameTurnGetDTO {
         this.drawingPlayerId = drawingPlayerId;
     }
 
-    public String getAllPlayersIds() {
+    public Set<Long> getAllPlayersIds() {
         return allPlayersIds;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
@@ -45,7 +52,7 @@ public class GameTurnGetDTO {
         this.gameTurnStatus = gameTurnStatus;
     }
 
-    public void setAllPlayersIds(String allPlayersIds) {
+    public void setAllPlayersIds(Set<Long> allPlayersIds) {
         this.allPlayersIds = allPlayersIds;
     }
 
@@ -61,28 +68,20 @@ public class GameTurnGetDTO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public String getWordsToBeChosen() {
+    public Set<String> getWordsToBeChosen() {
         return wordsToBeChosen;
     }
 
-    public void setWordsToBeChosen(String wordsToBeChosen) {
+    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
-    }
-
-    public String getTargetWord() {
-        return targetWord;
-    }
-
-    public void setTargetWord(String targetWord) {
-        this.targetWord = targetWord;
     }
 
     public Boolean getDrawingPhase() {

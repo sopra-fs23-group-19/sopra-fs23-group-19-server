@@ -2,16 +2,16 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
 public class GameTurnPutDTO {
 
-    private long id;
+    private Long id;
     private String image;
 
     private String targetWord;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

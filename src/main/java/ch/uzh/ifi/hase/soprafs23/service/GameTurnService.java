@@ -57,16 +57,16 @@ public class GameTurnService {
         gameTurnRepository.flush();
     }
 
-    public Game getGame(long gameId){
-        Game game = gameRepository.findById(gameId);
+    public Game getGame(Long gameId){
+        Game game = gameRepository.findByid(gameId);
         if(game == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has not started yet!");
         }else{
             return game;
         }
     }
-    public GameTurn getGameTurn(long gameTurnId){
-        GameTurn gameTurn = gameTurnRepository.findById(gameTurnId);
+    public GameTurn getGameTurn(Long gameTurnId){
+        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnId);
         if(gameTurn == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game turn has not started yet!");
         }else{
@@ -74,8 +74,8 @@ public class GameTurnService {
         }
     }
 
-    public User getUser(long userid){
-        User user = userRepository.findById(userid);
+    public User getUser(Long userid){
+        User user = userRepository.findByid(userid);
         if(user == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the user is not found!");
         }else{
@@ -103,7 +103,7 @@ public class GameTurnService {
         User user = getUser(userInput.getId());
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        if(userInput.getGuessingWord() == gameTurn.getTargetWord()){
+        if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(1);
             user.setCurrentGameScore(user.getCurrentGameScore()+1);
@@ -115,12 +115,16 @@ public class GameTurnService {
         gameTurnRepository.saveAndFlush(gameTurn);
     }
 
+
     public List<User> rank(long gameId, long gameTurnId) {
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        List<Long> allPlayerIds = transferStringToLong(gameTurn.getAllPlayersIds());
+        Set<Long> allPlayersIds = new HashSet<>();
+        for(Long id: gameTurn.getAllPlayersIds()){
+            allPlayersIds.add(id);
+        }
         // find all players
         List<User> allPlayers = new ArrayList<>();
-        for (Long id: allPlayerIds){
+        for (Long id: allPlayersIds){
             allPlayers.add(getUser(id));
         }
         Map<User,Integer> playersScores = new HashMap<>();
@@ -152,43 +156,60 @@ public class GameTurnService {
         return rankedUsers;
     }
 
+
     public GameTurn startNewGameTurn(long gameId) {
+
         Game game = getGame(gameId);
         game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
+
+        Set<Long> allPlayerIds = new HashSet<>();
+        for(Long id: game.getAllPlayersIds()){
+            allPlayerIds.add(id);
+        }
+        Set<Long> drawingPlayersIds = new HashSet<>();
+        for(Long id: game.getDrawingPlayerIds()){
+            drawingPlayersIds.add(id);
+        }
         GameTurn gameTurn = new GameTurn();
-        gameTurn.setAllPlayersIds(game.getAllPlayersIds());
+        gameTurn.setAllPlayersIds(allPlayerIds);
         gameTurn.setGameId(game.getId());
         gameTurn.setDrawingPhase(true);
         gameTurn.setGameTurnStatus(true);
+        gameTurn.setGameStatus(true);
 
-        List<Long> allPlayersIds = transferStringToLong(game.getAllPlayersIds());
-        List<Long> drawingPlayerIds = transferStringToLong(game.getDrawingPlayerIds());
+
+        List<Long> allPlayersIds = new ArrayList<>(allPlayerIds);
+        List<Long> drawingPlayerIds = new ArrayList<>(drawingPlayersIds);
         List<Long> leftDrawingPlayerIds =  allPlayersIds.stream().filter(item -> !drawingPlayerIds.contains(item)).collect(Collectors.toList());
 
         // find all players
-        List<Optional<User>> allPlayers = new ArrayList<>();
+        List<User> allPlayers = new ArrayList<>();
         for (Long id: allPlayersIds){
-            allPlayers.add(userRepository.findById(id));
+            allPlayers.add(userRepository.findByid(id));
         }
         // set new drawingPlayer
         if(leftDrawingPlayerIds.size() == 0){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
         }else if (leftDrawingPlayerIds.size() == 1){
-            long drawingPlayerId = leftDrawingPlayerIds.get(0);
+            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
             for(Long id: allPlayersIds){
                 if(id == drawingPlayerId){
                     // set drawing player
-                    Optional<User> drawingPlayer = allPlayers.get(0);
-                    if(drawingPlayer.isPresent()){
+                    User drawingPlayer = allPlayers.get(0);
+                    if(drawingPlayer != null){
                         gameTurn.setDrawingPlayer(id);
-                        game.setDrawingPlayerIds(Long.toString(id) + ",");
-                        drawingPlayer.get().setCurrentScore(0);
+                        game.setDrawingPlayerIds(id);
+                        drawingPlayer.setCurrentScore(0);
+                    }else{
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                     }
                 }else{
                     // set guessing players
-                    Optional<User> guessingPlayer = userRepository.findById(id);
-                    if(guessingPlayer.isPresent()) {
-                        guessingPlayer.get().setCurrentScore(0);
+                    User guessingPlayer = userRepository.findByid(id);
+                    if(guessingPlayer != null) {
+                        guessingPlayer.setCurrentScore(0);
+                    }else{
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                     }
                 }
             }
@@ -200,17 +221,21 @@ public class GameTurnService {
             for(Long id: allPlayersIds){
                 if(id == m){
                     // set drawing player
-                    Optional<User> drawingPlayer = allPlayers.get(n);
-                    if(drawingPlayer.isPresent()){
+                    User drawingPlayer = allPlayers.get(n);
+                    if(drawingPlayer != null){
                         gameTurn.setDrawingPlayer(id);
-                        game.setDrawingPlayerIds(Long.toString(id) + ",");
-                        drawingPlayer.get().setCurrentScore(0);
+                        game.setDrawingPlayerIds(id);
+                        drawingPlayer.setCurrentScore(0);
+                    }else{
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                     }
                 }else{
                     // set guessing players
-                    Optional<User> guessingPlayer = userRepository.findById(id);
-                    if(guessingPlayer.isPresent()) {
-                        guessingPlayer.get().setCurrentScore(0);
+                    User guessingPlayer = userRepository.findByid(id);
+                    if(guessingPlayer != null) {
+                        guessingPlayer.setCurrentScore(0);
+                    }else{
+                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                     }
                 }
             }
@@ -219,20 +244,10 @@ public class GameTurnService {
         gameTurnRepository.saveAndFlush(gameTurn);
 
         // set game turn list <gameTurnId1, gameTurnId2,...>
-        game.setGameTurnList(Long.toString(gameTurn.getId()) + ",");
+        game.setGameTurnList(gameTurn.getId());
         gameRepository.saveAndFlush(game);
 
         return gameTurn;
     }
 
-    public List<Long> transferStringToLong(String players){
-        String[] strArray = players.split(",");
-        List<Long> longList = new ArrayList<>();
-
-        for (String s : strArray) {
-            longList.add(Long.valueOf(s));
-        }
-
-        return longList;
-    }
 }

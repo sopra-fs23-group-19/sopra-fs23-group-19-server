@@ -16,6 +16,10 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -31,8 +35,8 @@ public class WordsService {
 
     public String getWord(){
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://pictionary-charades-word-generator.p.rapidapi.com/pictionary"))
-                .header("X-RapidAPI-Key", "SIGN-UP-FOR-KEY")
+                .uri(URI.create("https://pictionary-charades-word-generator.p.rapidapi.com/pictionary?difficulty=easy"))
+                .header("X-RapidAPI-Key", "f1ba58b38bmsh7f13519be0f7c4ep180d7cjsn1d03862b849f")
                 .header("X-RapidAPI-Host", "pictionary-charades-word-generator.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
@@ -49,22 +53,25 @@ public class WordsService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
             }
         }
-        return response.body();
+        String str = response.body();
+        List<String> words = Arrays.asList(str.split("\""));
+        return words.get(words.size()-2);
     }
 
 
-    public String getThreeWords(){
+    public Set<String> getThreeWords(){
 
-        String listOfWords = new String();
+        Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){
-            listOfWords = listOfWords + getWord() + ",";
+            listOfWords.add(getWord());
         }
+
         return listOfWords;
     }
 
 
-    public GameTurn setThreeWords(long gameTurnInputId) {
-        GameTurn gameTurn = gameTurnRepository.findById(gameTurnInputId);
+    public GameTurn setThreeWords(Long gameTurnInputId) {
+        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnInputId);
         if(gameTurn == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This game turn is not found!");
         }

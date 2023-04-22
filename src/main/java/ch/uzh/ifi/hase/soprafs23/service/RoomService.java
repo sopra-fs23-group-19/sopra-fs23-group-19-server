@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -28,9 +31,13 @@ public class RoomService {
         checkIfRoomExists(newRoom);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
+
+        newRoom.setStatus(RoomStatus.WAITING);
+        newRoom.getPlayers().add(newRoom.getOwnerId());
+
         newRoom = roomRepository.save(newRoom);
         roomRepository.flush();
-
+        System.out.println("create----"+newRoom.getId());
         log.debug("Created Information for Room: {}", newRoom);
         return newRoom;
     }
@@ -44,28 +51,48 @@ public class RoomService {
         }
     }
 
-    public Room joinRoom(long userId, long roomId){
-        Room room = roomRepository.findById(roomId);
+    public Room joinRoom(Long userId, Long roomId){
+        Room room = retrieveRoom(roomId);
+        room.getPlayers().add(userId);
 
-        room.setPlayers(room.getPlayers()+","+String.valueOf(userId));
+        roomRepository.flush();
+
+        if(room.getMode()== room.getPlayers().size()){
+            room.setStatus(RoomStatus.STARTING);
+        }
+
+        roomRepository.flush();
+
         return room;
     }
 
-    public Room leaveRoom(long userId, long roomId){
-        Room room = roomRepository.findById(roomId);
+    public Room leaveRoom(Long userId, Long roomId){
+        Room room = retrieveRoom(roomId);
 
-        String sub = ""+userId;
-        int index = room.getPlayers().indexOf(sub); // 查找子字符串的位置
-        if (index != -1) { // 如果子字符串存在
-            room.setPlayers(room.getPlayers().substring(0, index) + room.getPlayers().substring(index + sub.length()+1)); // 删除子字符串
+        if(userId==room.getOwnerId()){
+            room.setStatus(RoomStatus.QUIT);
+        }else{
+            for(Long uid: room.getPlayers()){
+                if(userId==uid){
+                    room.getPlayers().remove(userId);
+                    room.setStatus(RoomStatus.WAITING);
+                }
+            }
+        }
+
+        return room;
+    }
+
+    public Room retrieveRoom(Long roomId){
+        Room room = roomRepository.findByid(roomId);
+        if (room == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
         }
         return room;
     }
 
-    public Room retrieveRoom(long roomId){
-        Room room = roomRepository.findById(roomId);
-        
-        return room;
+    public List<Room> getRooms() {
+        return this.roomRepository.findAll();
     }
 
 }

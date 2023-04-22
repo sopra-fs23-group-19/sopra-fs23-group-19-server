@@ -137,33 +137,20 @@ public class GameTurnController {
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
-        gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());
         gameTurnAfterGetDTO.setGameTurnStatus(gameTurnGetDTO.getGameTurnStatus());
         gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
-        List<Long> allPlayersIds = transferStringToLong(gameTurnGetDTO.getAllPlayersIds());
-        List<User> allPlayers = new ArrayList<>();
-        for (Long id: allPlayersIds){
-            allPlayers.add(userService.retrieveUser(id));
+        if(gameTurnGetDTO.getAllPlayersIds()==null) {
+            gameTurnAfterGetDTO.setPlayers(null);
+        }else {
+            for(Long iid: gameTurnGetDTO.getAllPlayersIds()){
+                gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
+            }
         }
-
-        gameTurnAfterGetDTO.setAllPlayers(allPlayers);
 
         return gameTurnAfterGetDTO;
     }
-
-    public List<Long> transferStringToLong(String players){
-        String[] strArray = players.split(",");
-        List<Long> longList = new ArrayList<>();
-
-        for (String s : strArray) {
-            longList.add(Long.valueOf(s));
-        }
-
-        return longList;
-    }
-
 
 }

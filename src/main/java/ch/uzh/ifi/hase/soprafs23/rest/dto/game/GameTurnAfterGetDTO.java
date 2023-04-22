@@ -1,20 +1,21 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
-import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class GameTurnAfterGetDTO {
     private long id;
 
     private Long drawingPlayerId;
 
-    private List<User> allPlayers;
+    private List<UserNameDTO> players = new ArrayList<>();
 
     private String image;
 
-    private String wordsToBeChosen;
-    private String targetWord;
+    private Set<String> wordsToBeChosen;
     private Boolean DrawingPhase;
     private long gameId;
     private Boolean gameTurnStatus;
@@ -64,20 +65,12 @@ public class GameTurnAfterGetDTO {
         return id;
     }
 
-    public String getWordsToBeChosen() {
+    public Set<String> getWordsToBeChosen() {
         return wordsToBeChosen;
     }
 
-    public void setWordsToBeChosen(String wordsToBeChosen) {
+    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
-    }
-
-    public String getTargetWord() {
-        return targetWord;
-    }
-
-    public void setTargetWord(String targetWord) {
-        this.targetWord = targetWord;
     }
 
     public Boolean getDrawingPhase() {
@@ -88,19 +81,19 @@ public class GameTurnAfterGetDTO {
         DrawingPhase = drawingPhase;
     }
 
-    public List<User> getAllPlayers() {
-        return allPlayers;
-    }
-
-    public void setAllPlayers(List<User> allPlayers) {
-        this.allPlayers = allPlayers;
-    }
-
     public Boolean getGameStatus() {
         return gameStatus;
     }
 
     public void setGameStatus(Boolean gameStatus) {
         this.gameStatus = gameStatus;
+    }
+
+    public void setPlayers(List<UserNameDTO> players) {
+        this.players = players;
+    }
+
+    public List<UserNameDTO> getPlayers() {
+        return players;
     }
 }

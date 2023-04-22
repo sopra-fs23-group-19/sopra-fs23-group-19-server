@@ -3,15 +3,17 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "GAMETURN")
 public class GameTurn implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
@@ -21,16 +23,18 @@ public class GameTurn implements Serializable {
     private Long drawingPlayerId;
 
     @Column
-    private String allPlayersIds;
+    @ElementCollection
+    private Set<Long> allPlayersIds = new HashSet<>();
 
     @Column
     private String targetWord;
 
     @Column
-    private long gameId;
+    private Long gameId;
 
     @Column
-    private String wordsToBeChosen;
+    @ElementCollection
+    private Set<String> wordsToBeChosen = new HashSet<>();
 
     @Column
     private Boolean DrawingPhase = false;
@@ -57,11 +61,11 @@ public class GameTurn implements Serializable {
         return drawingPlayerId;
     }
 
-    public void setAllPlayersIds(String allPlayersIds) {
+    public void setAllPlayersIds(Set<Long> allPlayersIds) {
         this.allPlayersIds = allPlayersIds;
     }
 
-    public String getAllPlayersIds() {
+    public Set<Long> getAllPlayersIds() {
         return allPlayersIds;
     }
 
@@ -81,19 +85,19 @@ public class GameTurn implements Serializable {
         this.targetWord = targetWord;
     }
 
-    public long getGameId() {
+    public Long getGameId() {
         return gameId;
     }
 
-    public void setGameId(long gameId) {
+    public void setGameId(Long gameId) {
         this.gameId = gameId;
     }
 
-    public String getWordsToBeChosen() {
+    public Set<String> getWordsToBeChosen() {
         return wordsToBeChosen;
     }
 
-    public void setWordsToBeChosen(String wordsToBeChosen) {
+    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
     }
 

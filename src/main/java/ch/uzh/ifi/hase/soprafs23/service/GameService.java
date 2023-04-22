@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
 
-import ch.uzh.ifi.hase.soprafs23.constant.RoomMode;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
@@ -20,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 
 @Service
@@ -53,16 +49,18 @@ public class GameService {
         // start a new game
         Game game = new Game();
         // set turn length
-        if(room.getMode() == RoomMode.P4){
-            game.setTurnLength(4);
-        }else{game.setTurnLength(2);}
+        game.setTurnLength(room.getMode());
         // set current turn index
         game.setCurrentGameTurn(1);
         // set all players ids
-        game.setAllPlayersIds(room.getPlayers());
+        Set<Long> allPlayerIds = new HashSet<>();
+        for(Long id: room.getPlayers()){
+            allPlayerIds.add(id);
+        }
+        game.setAllPlayersIds(allPlayerIds);
 
         game = gameRepository.save(game);
-        userRepository.flush();
+        gameRepository.flush();
 
         return game;
     }
@@ -73,16 +71,20 @@ public class GameService {
         GameTurn gameTurn = new GameTurn();
 
         // save all players' Ids
-        gameTurn.setAllPlayersIds(room.getPlayers());
+        Set<Long> allPlayersIds = new HashSet<>();
+        for(Long id: room.getPlayers()){
+            allPlayersIds.add(id);
+        }
+        gameTurn.setAllPlayersIds(allPlayersIds);
         gameTurn.setGameId(game.getId());
         gameTurn.setDrawingPhase(true);
         gameTurn.setGameTurnStatus(true);
         gameTurn.setGameStatus(true);
-        List<Long> allPlayerIds = transferStringToLong(room.getPlayers());
         // find all players
-        List<Optional<User>> allPlayers = new ArrayList<>();
+        List<User> allPlayers = new ArrayList<>();
+        List<Long> allPlayerIds = new ArrayList<>(allPlayersIds);
         for (Long id: allPlayerIds){
-            allPlayers.add(userRepository.findById(id));
+            allPlayers.add(userRepository.findByid(id));
         }
 
         // set drawing player and guessing players
@@ -94,27 +96,31 @@ public class GameService {
         for(Long id: allPlayerIds){
             if(id == m){
                 // set drawing player
-                Optional<User> drawingPlayer = allPlayers.get(n);
-                if(drawingPlayer.isPresent()){
+                User drawingPlayer = allPlayers.get(n);
+                if(drawingPlayer != null){
                     gameTurn.setDrawingPlayer(id);
-                    game.setDrawingPlayerIds(Long.toString(id) + ",");
-                    drawingPlayer.get().setCurrentScore(0);
-                    drawingPlayer.get().setCurrentGameScore(0);
-                    drawingPlayer.get().setStatus(UserStatus.ISPLAYING);
+                    game.setDrawingPlayerIds(id);
+                    drawingPlayer.setCurrentScore(0);
+                    drawingPlayer.setCurrentGameScore(0);
+                    drawingPlayer.setStatus(UserStatus.ISPLAYING);
+                }else{
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                 }
             }else{
                 // set guessing players
-                Optional<User> guessingPlayer = userRepository.findById(id);
-                if(guessingPlayer.isPresent()) {
-                    guessingPlayer.get().setStatus(UserStatus.ISPLAYING);
-                    guessingPlayer.get().setCurrentGameScore(0);
+                User guessingPlayer = userRepository.findByid(id);
+                if(guessingPlayer != null) {
+                    guessingPlayer.setStatus(UserStatus.ISPLAYING);
+                    guessingPlayer.setCurrentGameScore(0);
+                }else{
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                 }
             }
         }
         gameTurnRepository.saveAndFlush(gameTurn);
 
         // set game turn list <gameTurnId1, gameTurnId2,...>
-        game.setGameTurnList(Long.toString(gameTurn.getId()) + ",");
+        game.setGameTurnList(gameTurn.getId());
         gameRepository.saveAndFlush(game);
 
         log.debug("Created Information for a new Game Turn: {}", gameTurn);
@@ -122,8 +128,8 @@ public class GameService {
 
     }
 
-    public Room getRoom(long roomId) {
-        Room room = roomRepository.findById(roomId);
+    public Room getRoom(Long roomId) {
+        Room room = roomRepository.findByid(roomId);
         if(room == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the room is not found!");
         }else{
@@ -131,17 +137,5 @@ public class GameService {
         }
     }
 
-    public List<Long> transferStringToLong(String players){
-        String[] strArray = players.split(",");
-        List<Long> longList = new ArrayList<>();
-
-        for (String s : strArray) {
-            longList.add(Long.valueOf(s));
-        }
-
-        return longList;
-    }
-
 
 }
-

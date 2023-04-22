@@ -56,8 +56,8 @@ public class UserService {
         }
     }
 
-    public void logout(long id){
-        User user = userRepository.findById(id);
+    public void logout(Long id){
+        User user = userRepository.findByid(id);
 
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
@@ -67,8 +67,8 @@ public class UserService {
         }
     }
 
-    public User retrieveUser(long userId){
-        User user =  userRepository.findById(userId);
+    public User retrieveUser(Long userId){
+        User user =  userRepository.findByid(userId);
 
         if (user == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");}
@@ -119,6 +119,15 @@ public class UserService {
 	  log.debug("Created Information for User: {}", newUser);
 	  return newUser;
   }
+
+  public void changeStatusToPlaying(Long userId){
+      User user =  userRepository.findByid(userId);
+      if (user == null) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");
+      }else{
+          user.setStatus(UserStatus.ISPLAYING);
+      }
+  }
   
   private void checkNullPassword(User newUser) {
       if(newUser.getPassword() == null){
@@ -146,8 +155,8 @@ public class UserService {
   }
 
   public void updateUsernameOrPassword(UserPutDTO userPutDTO) {
-    long userId =  userPutDTO.getId();
-    User user = userRepository.findById(userId);
+    Long userId =  userPutDTO.getId();
+    User user = userRepository.findByid(userId);
 
     if(user == null){
         // user with userId was not found, return 404
