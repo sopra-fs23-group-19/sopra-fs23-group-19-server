@@ -68,8 +68,8 @@ public class GameTurnController {
 
     // drawing player submits the image
     @UserLoginToken
-    @PutMapping("/gameRounds/finalDrawings")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/gameRounds/finalDrawings")
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public GameTurnAfterGetDTO submitDrawing(@RequestBody GameTurnPutDTO gameTurnPutDTO) {
 
