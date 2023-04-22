@@ -29,7 +29,7 @@ public class RoomController {
 
     // owner doesn't need to join the room after creating
 
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -45,7 +45,7 @@ public class RoomController {
         // simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(result.getOwnerId()), result.getPlayers());
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PutMapping("/games/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -61,7 +61,7 @@ public class RoomController {
 
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping(value = "/gameRounds/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -69,7 +69,7 @@ public class RoomController {
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/games")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -85,7 +85,7 @@ public class RoomController {
         return roomAfterGetDTOS;
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PutMapping("/games/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

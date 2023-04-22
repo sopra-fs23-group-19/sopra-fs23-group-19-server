@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
@@ -32,7 +33,7 @@ public class GameTurnController {
     }
 
     // get three words to be chosen by the drawing player
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/games/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -45,8 +46,8 @@ public class GameTurnController {
     }
 
     // drawing player chooses the target word
-    //@UserLoginToken
-    @PutMapping("/gameRounds/word")
+    @UserLoginToken
+    @PutMapping("/gameRounds/words")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void setTargetWord(@RequestBody GameTurnPutDTO gameTurnPutDTO){
@@ -55,8 +56,8 @@ public class GameTurnController {
     }
 
     // drawing player updates the image
-    //@UserLoginToken
-    @PutMapping("/gameRounds/drawing")
+    @UserLoginToken
+    @PutMapping("/gameRounds/drawings")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void updateDrawing(@RequestBody GameTurnPutDTO gameTurnPutDTO) {
@@ -66,9 +67,9 @@ public class GameTurnController {
     }
 
     // drawing player submits the image
-    //@UserLoginToken
-    @PostMapping("/gameRounds/submitDrawing")
-    @ResponseStatus(HttpStatus.CREATED)
+    @UserLoginToken
+    @PutMapping("/gameRounds/finalDrawings")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public GameTurnAfterGetDTO submitDrawing(@RequestBody GameTurnPutDTO gameTurnPutDTO) {
 
@@ -79,8 +80,8 @@ public class GameTurnController {
     }
 
     // guessing player submits the answer in advance
-    //@UserLoginToken
-    @PutMapping("/gameRounds/answer/{gameTurnId}")
+    @UserLoginToken
+    @PutMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable("gameTurnId") long gameTurnId){
@@ -89,8 +90,8 @@ public class GameTurnController {
     }
 
     // get rank list from this turn
-    //@UserLoginToken
-    @GetMapping("/gameRounds/rank/{gameId}/{gameTurnId}")
+    @UserLoginToken
+    @GetMapping("/gameRounds/ranks/{gameId}/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> getRank(@PathVariable("gameId") long gameId, @PathVariable("gameTurnId") long gameTurnId){
@@ -106,7 +107,7 @@ public class GameTurnController {
     }
 
     // users request refreshed information from backend every second
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/gameRounds/information/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -118,7 +119,7 @@ public class GameTurnController {
         return changeGetToAfter(gameTurnGetDTO);
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/games/gameRounds/{gameId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

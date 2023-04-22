@@ -1,11 +1,13 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
@@ -38,7 +40,7 @@ public class GameController {
 
 
     // start a new game
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/games/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -54,6 +56,23 @@ public class GameController {
 //        for(int i=0; i<playersIds.size(); i++){
 //            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
 //        }
+    }
+
+    // get rank list from this game
+    @UserLoginToken
+    @GetMapping("/games/ranks/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getGameRank(@PathVariable("gameId") long gameId){
+
+        List<User> rankedUsers = gameService.rankAll(gameId);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : rankedUsers) {
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        }
+        return userGetDTOs;
     }
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){

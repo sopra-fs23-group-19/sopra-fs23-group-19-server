@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -137,5 +138,55 @@ public class GameService {
         }
     }
 
+    public Game getGame(Long gameId) {
+        Game game = gameRepository.findByid(gameId);
+        if(game == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game has not started yet!");
+        }else{
+            return game;
+        }
+    }
+
+    public User getUser(Long userid){
+        User user = userRepository.findByid(userid);
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the user is not found!");
+        }else{
+            return user;
+        }
+    }
+
+    public List<User> rankAll(long gameId) {
+        Game game = getGame(gameId);
+        Set<Long> allPlayersIds = new HashSet<>();
+        for(Long id: game.getAllPlayersIds()){
+            allPlayersIds.add(id);
+        }
+        // find all players
+        List<User> allPlayers = new ArrayList<>();
+        for (Long id: allPlayersIds){
+            allPlayers.add(getUser(id));
+        }
+        Map<User,Integer> playersScores = new HashMap<>();
+        for (User user: allPlayers){
+            playersScores.put(user, user.getCurrentGameScore());
+        }
+        // rank the user by scores
+        List<User> rankedUsers =  playersScores.entrySet().stream()
+                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
+                .map(entry -> entry.getKey()).collect(Collectors.toList());
+
+        // set users' bestScore and totalScore
+        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
+            entry.getKey().setTotalScore(entry.getKey().getTotalScore()+entry.getValue());
+            if(entry.getKey().getBestScore() < entry.getValue()){
+                entry.getKey().setBestScore(entry.getValue());
+            }
+        }
+
+        gameRepository.flush();
+
+        return rankedUsers;
+    }
 
 }
