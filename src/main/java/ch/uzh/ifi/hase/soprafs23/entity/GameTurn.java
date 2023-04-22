@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -25,13 +26,22 @@ public class GameTurn implements Serializable {
     private String allPlayersIds;
 
     @ElementCollection
-    private Map<User, Integer> playersScores;
+    private Map<User, Integer> playersScores = new HashMap<>();
 
     @Column
     private String targetWord;
 
     @Column
     private long gameId;
+
+    @Column
+    private String wordsToBeChosen;
+
+    @Column
+    private Boolean DrawingPhase = false;
+
+    @Column
+    private Boolean gameTurnStatus = false;
 
     public Long getId() {
         return id;
@@ -41,7 +51,10 @@ public class GameTurn implements Serializable {
         this.id = id;
     }
 
-    public void addPlayersScores(User user, Integer playersScores) {
+    public Map<User, Integer> getPlayersScores() {
+        return playersScores;
+    }
+    public void addPlayersScores(User user, int playersScores) {
 
         this.playersScores.put(user, playersScores);
     }
@@ -79,10 +92,6 @@ public class GameTurn implements Serializable {
         this.targetWord = targetWord;
     }
 
-    public void setPlayersScores(Map<User, Integer> playersScores) {
-        this.playersScores = playersScores;
-    }
-
     public long getGameId() {
         return gameId;
     }
@@ -90,4 +99,29 @@ public class GameTurn implements Serializable {
     public void setGameId(long gameId) {
         this.gameId = gameId;
     }
+
+    public String getWordsToBeChosen() {
+        return wordsToBeChosen;
+    }
+
+    public void setWordsToBeChosen(String wordsToBeChosen) {
+        this.wordsToBeChosen = wordsToBeChosen;
+    }
+
+    public Boolean getDrawingPhase() {
+        return DrawingPhase;
+    }
+
+    public void setDrawingPhase(Boolean drawingPhase) {
+        DrawingPhase = drawingPhase;
+    }
+
+    public Boolean getGameTurnStatus() {
+        return gameTurnStatus;
+    }
+
+    public void setGameTurnStatus(Boolean gameTurnStatus) {
+        this.gameTurnStatus = gameTurnStatus;
+    }
+
 }

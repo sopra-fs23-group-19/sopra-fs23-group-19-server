@@ -40,13 +40,16 @@ public class User implements Serializable {
   private UserStatus status;
 
   @Column
-  private int bestScore;
+  private int bestScore = 0;
 
   @Column
-  private int totalScore;
+  private int totalScore = 0;
 
   @GeneratedValue
   private Date creationDate;
+
+  @Column
+  private int currentScore;
 
   public long getId() {
     return id;
@@ -104,5 +107,13 @@ public class User implements Serializable {
   public void setCreationDate(Date creationDate) {
       this.creationDate = creationDate;
   }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
 
 }

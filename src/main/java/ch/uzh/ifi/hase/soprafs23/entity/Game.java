@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -11,8 +12,13 @@ public class Game implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    private Long gameId;
+    @GeneratedValue
+    private Long id;
 
+    @Column
+    private String drawingPlayerIds;
+    @Column
+    private String allPlayersIds;
     @Column
     public String gameTurnList;
 
@@ -23,7 +29,22 @@ public class Game implements Serializable {
     private int currentGameTurn;  // current turn index
 
     @ElementCollection
-    private Map<User, Integer> playersTotalScores;
+    private Map<User, Integer> playersTotalScores = new HashMap<>();
+
+    public String getDrawingPlayerIds() {
+        return drawingPlayerIds;
+    }
+
+    public void setDrawingPlayerIds(String drawingPlayerIds) {
+        this.drawingPlayerIds = drawingPlayerIds;
+    }
+    public String getAllPlayersIds() {
+        return allPlayersIds;
+    }
+
+    public void setAllPlayersIds(String allPlayersIds) {
+        this.allPlayersIds = allPlayersIds;
+    }
 
     public int getTurnLength() {
         return turnLength;
@@ -41,15 +62,7 @@ public class Game implements Serializable {
         this.currentGameTurn = currentGameTurn;
     }
 
-    public Long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Long roomId) {
-        this.gameId = gameId;
-    }
-
-    public void setPlayersTotalScores(User user, Integer playersTotalScores) {
+    public void setPlayersTotalScores(User user, int playersTotalScores) {
         this.playersTotalScores.put(user, playersTotalScores);
     }
 
@@ -65,5 +78,11 @@ public class Game implements Serializable {
         this.gameTurnList = gameTurnList;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

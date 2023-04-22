@@ -3,13 +3,11 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.entity.Words;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.words.WordsGetDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -39,6 +37,7 @@ public interface DTOMapper {
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -55,6 +54,7 @@ public interface DTOMapper {
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -74,6 +74,7 @@ public interface DTOMapper {
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -90,21 +91,28 @@ public interface DTOMapper {
     @Mapping(source = "mode", target = "mode")
     RoomGetDTO convertEntityToRoomGetDTO(Room room);
 
-    @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
-    WordsGetDTO convertEntityToWordsGetDTO(Words words);
 
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "drawingPlayerId", target = "drawingPlayerId")
     @Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
+    @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
+    @Mapping(source = "targetWord", target = "targetWord")
+    @Mapping(source = "drawingPhase", target = "drawingPhase")
+    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 
-    @Mapping(source = "gameId", target = "gameId")
+    @Mapping(source = "id", target = "id")
     @Mapping(source = "image", target = "image")
-    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "targetWord", target = "targetWord")
     @Mapping(target = "drawingPlayer", ignore = true)
     @Mapping(target = "allPlayersIds", ignore = true)
-    @Mapping(target = "targetWord", ignore = true)
+    @Mapping(target = "gameId", ignore = true)
+    @Mapping(target = "wordsToBeChosen", ignore = true)
+    @Mapping(target = "drawingPhase", ignore = true)
+    @Mapping(target = "gameTurnStatus", ignore = true)
     @Mapping(target = "playersScores", ignore = true)
-    GameTurn convertGameTurnPostDTOtoEntity(GameTurnPostDTO gameTurnPostDTO);
+    GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
 }
