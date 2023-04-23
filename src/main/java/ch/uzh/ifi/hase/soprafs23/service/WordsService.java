@@ -77,7 +77,7 @@ public class WordsService {
         }
 
         gameTurn.setWordsToBeChosen(getThreeWords());
-        gameTurnRepository.flush();
+        gameTurnRepository.saveAndFlush(gameTurn);
         return gameTurn;
     }
 }

@@ -36,6 +36,7 @@ public class GameTurnService {
         this.userRepository = userRepository;
     }
 
+    // save drawing player's image renewal
     public void updateImage(GameTurnPutDTO gameTurnPutDTO) {
 
         // refresh current gameTurn status - add new image string
@@ -51,13 +52,15 @@ public class GameTurnService {
 
     }
 
-
+    // save the target word in db
     public void setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         gameTurn.setTargetWord(gameTurnInput.getTargetWord());
+
         gameTurn.setStatus(TurnStatus.PAINITING);
         gameTurnRepository.flush();
+
     }
 
     public Game getGame(Long gameId){
@@ -86,8 +89,10 @@ public class GameTurnService {
         }
     }
 
+    // the drawing player finishes his/her drawing, and the guessing phase begins
     public GameTurn submitImage(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
+
 //        String image = gameTurn.getImage();
 //        if(image == null) {
 //            gameTurn.setImage(gameTurnPutDTO.getImage());
@@ -99,9 +104,11 @@ public class GameTurnService {
 //        gameTurn.setDrawingPhase(false);
         gameTurn.setStatus(TurnStatus.GUESSING);
         gameTurnRepository.flush();
+
         return gameTurn;
     }
 
+    // calculate the score when each player handles his/her answer
     public void calculateScore(UserPutDTO userPutDTO, long gameTurnId) {
 
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
@@ -111,8 +118,8 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnId);
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setGuessingWord(userInput.getGuessingWord());
-            user.setCurrentScore(1);
-            user.setCurrentGameScore(user.getCurrentGameScore()+1);
+            user.setCurrentScore(1);  // set current score in this game turn
+            user.setCurrentGameScore(user.getCurrentGameScore()+1);  // total scores in this game accumulate
         }else{
             user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(0);
@@ -123,7 +130,11 @@ public class GameTurnService {
     }
 
 
+
     public List<User> rank(long gameTurnId) {
+
+    // rank all users by scores in this game turn
+
         GameTurn gameTurn = getGameTurn(gameTurnId);
         Set<Long> allPlayersIds = new HashSet<>();
         for(Long id: gameTurn.getAllPlayersIds()){
@@ -149,14 +160,18 @@ public class GameTurnService {
             if(entry.getKey().getBestScore() < entry.getValue()){
                 entry.getKey().setBestScore(entry.getValue());
             }
+            userRepository.saveAndFlush(entry.getKey());
         }
 //         set game turn status
 //        gameTurn.setGameTurnStatus(false);
 
+
         gameTurnRepository.flush();
+
 
         return rankedUsers;
     }
+
 
 
 //    public GameTurn startNewGameTurn(long gameId) {
@@ -251,5 +266,6 @@ public class GameTurnService {
 //
 //        return gameTurn;
 //    }
+
 
 }
