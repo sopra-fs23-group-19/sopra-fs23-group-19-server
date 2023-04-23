@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -40,24 +41,24 @@ public class GameTurnService {
 
         // refresh current gameTurn status - add new image string
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
-        String image = gameTurn.getImage();
-        if(image == null) {
-            gameTurn.setImage(gameTurnPutDTO.getImage());
-        }else{
-            gameTurn.setImage(image + gameTurnPutDTO.getImage());
-        }
+//        String image = gameTurn.getImage();
+//        if(image == null) {
+//            gameTurn.setImage(gameTurnPutDTO.getImage());
+//        }else{
+//            gameTurn.setImage(image + gameTurnPutDTO.getImage());
+//        }
+        gameTurn.setImage(gameTurnPutDTO.getImage());
         gameTurnRepository.saveAndFlush(gameTurn);
 
     }
 
     // save the target word in db
-    public GameTurn setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
+    public void setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-        gameTurn.setDrawingPhase(true);  // drawing phase starts
-        gameTurnRepository.saveAndFlush(gameTurn);
-        return gameTurn;
+        gameTurn.setStatus(TurnStatus.PAINITING);
+        gameTurnRepository.flush();
     }
 
     public Game getGame(Long gameId){
@@ -89,14 +90,19 @@ public class GameTurnService {
     // the drawing player finishes his/her drawing, and the guessing phase begins
     public GameTurn submitImage(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
-        String image = gameTurn.getImage();
-        if(image == null) {
-            gameTurn.setImage(gameTurnPutDTO.getImage());
-        }else{
-            gameTurn.setImage(image + gameTurnPutDTO.getImage());
-        }
-        gameTurn.setDrawingPhase(false);   // the guessing phase begins
-        gameTurnRepository.saveAndFlush(gameTurn);
+
+//        String image = gameTurn.getImage();
+//        if(image == null) {
+//            gameTurn.setImage(gameTurnPutDTO.getImage());
+//        }else{
+//            gameTurn.setImage(image + gameTurnPutDTO.getImage());
+//        }
+
+        gameTurn.setImage( gameTurnPutDTO.getImage());
+//        gameTurn.setDrawingPhase(false);
+        gameTurn.setStatus(TurnStatus.GUESSING);
+        gameTurnRepository.flush();
+
         return gameTurn;
     }
 
@@ -116,12 +122,17 @@ public class GameTurnService {
             user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(0);
         }
+        gameTurn.setSubmittedAnswerIds(userInput.getId());
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
     }
 
+
+
+    public List<User> rank(long gameTurnId) {
+
     // rank all users by scores in this game turn
-    public List<User> rank(long gameId, long gameTurnId) {
+
         GameTurn gameTurn = getGameTurn(gameTurnId);
         Set<Long> allPlayersIds = new HashSet<>();
         for(Long id: gameTurn.getAllPlayersIds()){
@@ -149,111 +160,109 @@ public class GameTurnService {
             }
             userRepository.saveAndFlush(entry.getKey());
         }
-        // set game turn status
-        gameTurn.setGameTurnStatus(false);
+//         set game turn status
+//        gameTurn.setGameTurnStatus(false);
 
-        // check game status
-        // if game ends, the front-end asks for the total rank in this game
-        Game game = getGame(gameId);
-        if(game.getCurrentGameTurn() == game.getTurnLength()){
-            gameTurn.setGameStatus(false);
-        }
-        gameTurnRepository.saveAndFlush(gameTurn);
+        gameTurnRepository.flush();
+
 
         return rankedUsers;
     }
 
-    // start a new game turn in the same game
-    public GameTurn startNewGameTurn(long gameId) {
-
-        Game game = getGame(gameId);
-        game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
-
-        Set<Long> allPlayerIds = new HashSet<>();
-        for(Long id: game.getAllPlayersIds()){
-            allPlayerIds.add(id);
-        }
-        Set<Long> drawingPlayersIds = new HashSet<>();
-        for(Long id: game.getDrawingPlayerIds()){
-            drawingPlayersIds.add(id);
-        }
-        GameTurn gameTurn = new GameTurn();
-        gameTurn.setAllPlayersIds(allPlayerIds);
-        gameTurn.setGameId(game.getId());
-        gameTurn.setGameTurnStatus(true);
-        gameTurn.setGameStatus(true);
 
 
-        List<Long> allPlayersIds = new ArrayList<>(allPlayerIds);
-        List<Long> drawingPlayerIds = new ArrayList<>(drawingPlayersIds);
-        List<Long> leftDrawingPlayerIds =  allPlayersIds.stream().filter(item -> !drawingPlayerIds.contains(item)).collect(Collectors.toList());
+//    public GameTurn startNewGameTurn(long gameId) {
+//
+//        Game game = getGame(gameId);
+//        game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
+//
+//        Set<Long> allPlayerIds = new HashSet<>();
+//        for(Long id: game.getAllPlayersIds()){
+//            allPlayerIds.add(id);
+//        }
+//        Set<Long> drawingPlayersIds = new HashSet<>();
+//        for(Long id: game.getDrawingPlayerIds()){
+//            drawingPlayersIds.add(id);
+//        }
+//        GameTurn gameTurn = new GameTurn();
+//        gameTurn.setAllPlayersIds(allPlayerIds);
+//        gameTurn.setGameId(game.getId());
+////        gameTurn.setDrawingPhase(true);
+////        gameTurn.setGameTurnStatus(true);
+////        gameTurn.setGameStatus(true);
+//
+//
+//        List<Long> allPlayersIds = new ArrayList<>(allPlayerIds);
+//        List<Long> drawingPlayerIds = new ArrayList<>(drawingPlayersIds);
+//        List<Long> leftDrawingPlayerIds =  allPlayersIds.stream().filter(item -> !drawingPlayerIds.contains(item)).collect(Collectors.toList());
+//
+//        // find all players
+//        List<User> allPlayers = new ArrayList<>();
+//        for (Long id: allPlayersIds){
+//            allPlayers.add(userRepository.findByid(id));
+//        }
+//        // set new drawingPlayer
+//        if(leftDrawingPlayerIds.size() == 0){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
+//        }else if (leftDrawingPlayerIds.size() == 1){
+//            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
+//            for(Long id: allPlayersIds){
+//                if(id == drawingPlayerId){
+//                    // set drawing player
+//                    User drawingPlayer = allPlayers.get(0);
+//                    if(drawingPlayer != null){
+//                        gameTurn.setDrawingPlayer(id);
+//                        game.setDrawingPlayerIds(id);
+//                        drawingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }else{
+//                    // set guessing players
+//                    User guessingPlayer = userRepository.findByid(id);
+//                    if(guessingPlayer != null) {
+//                        guessingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }
+//            }
+//        }else{
+//            // select randomly
+//            Random random = new Random();
+//            int n = random.nextInt(allPlayers.size());
+//            Long m = leftDrawingPlayerIds.get(n);
+//            for(Long id: allPlayersIds){
+//                if(id == m){
+//                    // set drawing player
+//                    User drawingPlayer = allPlayers.get(n);
+//                    if(drawingPlayer != null){
+//                        gameTurn.setDrawingPlayer(id);
+//                        game.setDrawingPlayerIds(id);
+//                        drawingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }else{
+//                    // set guessing players
+//                    User guessingPlayer = userRepository.findByid(id);
+//                    if(guessingPlayer != null) {
+//                        guessingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }
+//            }
+//        }
+//
+//        gameTurnRepository.saveAndFlush(gameTurn);
+//
+//        // set game turn list <gameTurnId1, gameTurnId2,...>
+//        game.setGameTurnList(gameTurn.getId());
+//        gameRepository.saveAndFlush(game);
+//
+//        return gameTurn;
+//    }
 
-        // find all players
-        List<User> allPlayers = new ArrayList<>();
-        for (Long id: allPlayersIds){
-            allPlayers.add(userRepository.findByid(id));
-        }
-        // set new drawingPlayer
-        if(leftDrawingPlayerIds.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
-        }else if (leftDrawingPlayerIds.size() == 1){
-            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
-            for(Long id: allPlayersIds){
-                if(id == drawingPlayerId){
-                    // set drawing player
-                    User drawingPlayer = allPlayers.get(0);
-                    if(drawingPlayer != null){
-                        gameTurn.setDrawingPlayer(id);
-                        game.setDrawingPlayerIds(id);
-                        drawingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }else{
-                    // set guessing players
-                    User guessingPlayer = userRepository.findByid(id);
-                    if(guessingPlayer != null) {
-                        guessingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }
-            }
-        }else{
-            // select randomly
-            Random random = new Random();
-            int n = random.nextInt(allPlayers.size());
-            Long m = leftDrawingPlayerIds.get(n);
-            for(Long id: allPlayersIds){
-                if(id == m){
-                    // set drawing player
-                    User drawingPlayer = allPlayers.get(n);
-                    if(drawingPlayer != null){
-                        gameTurn.setDrawingPlayer(id);
-                        game.setDrawingPlayerIds(id);
-                        drawingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }else{
-                    // set guessing players
-                    User guessingPlayer = userRepository.findByid(id);
-                    if(guessingPlayer != null) {
-                        guessingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }
-            }
-        }
-
-        gameTurnRepository.saveAndFlush(gameTurn);
-
-        // set game turn list <gameTurnId1, gameTurnId2,...>
-        game.setGameTurnList(gameTurn.getId());
-        gameRepository.saveAndFlush(game);
-
-        return gameTurn;
-    }
 
 }

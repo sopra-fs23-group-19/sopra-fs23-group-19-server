@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,7 +60,7 @@ public class RoomService {
         roomRepository.flush();
 
         if(room.getMode()== room.getPlayers().size()){
-            room.setStatus(RoomStatus.STARTING);
+            room.setStatus(RoomStatus.READY);
         }
 
         roomRepository.flush();
@@ -70,7 +72,7 @@ public class RoomService {
         Room room = retrieveRoom(roomId);
 
         if(userId==room.getOwnerId()){
-            room.setStatus(RoomStatus.QUIT);
+            room.setStatus(RoomStatus.END);
         }else{
             for(Long uid: room.getPlayers()){
                 if(userId==uid){
@@ -89,6 +91,28 @@ public class RoomService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
         }
         return room;
+    }
+
+    public List<Room> getAvailableRooms(){
+        List<Room> availableRooms = new ArrayList<>();
+        List<Room> allRooms=this.roomRepository.findAll();
+        for (Room room: allRooms){
+            if(room.getStatus() == RoomStatus.WAITING)
+            {
+                availableRooms.add(room);
+            }
+        }
+        return availableRooms;
+    }
+
+    public void activateRoom(Long roomId, Long gameId, Long turnId){
+        Room room = roomRepository.findByid(roomId);
+        if (room == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
+        }
+        room.setStatus(RoomStatus.PLAYING);
+        room.setGameId(gameId);
+        room.setGameTurnId(turnId);
     }
 
     public List<Room> getRooms() {

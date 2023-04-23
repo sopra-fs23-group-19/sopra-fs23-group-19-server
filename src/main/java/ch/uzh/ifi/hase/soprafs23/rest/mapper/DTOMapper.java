@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
@@ -91,6 +93,8 @@ public interface DTOMapper {
     @Mapping(target = "players", ignore = true)
     @Mapping(source = "mode", target = "mode")
     @Mapping(target = "status", ignore = true)
+    @Mapping(target = "gameId", ignore = true)
+    @Mapping(target = "gameTurnId", ignore = true)
     Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
 
 
@@ -99,23 +103,34 @@ public interface DTOMapper {
     @Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
-    @Mapping(source = "targetWord", target = "targetWord")
-    @Mapping(source = "drawingPhase", target = "drawingPhase")
+
+    @Mapping(source = "submittedAnswerIds", target = "submittedAnswerIds")
     @Mapping(source = "gameId", target = "gameId")
-    @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
-    @Mapping(source = "gameStatus", target = "gameStatus")
+    @Mapping(source = "targetWord", target = "targetWord")
+    @Mapping(source = "status", target = "status")
+//    @Mapping(source = "gameStatus", target = "gameStatus")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
+
+    ///added by runze
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "gameTurnList", target = "gameTurnList")
+    @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
+    @Mapping(source = "drawingPlayerIds", target = "drawingPlayerIds")
+    @Mapping(source = "allPlayersIds", target = "allPlayersIds")
+    @Mapping(source = "gameStatus", target = "gameStatus")
+    @Mapping(source = "currentGameTurn", target = "currentGameTurn")
+    GameGetDTO convertEntityToGameGetDTO(Game game);
+
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "targetWord", target = "targetWord")
-    @Mapping(target = "drawingPlayer", ignore = true)
+    @Mapping(target = "drawingPlayerId", ignore = true)
     @Mapping(target = "allPlayersIds", ignore = true)
     @Mapping(target = "gameId", ignore = true)
     @Mapping(target = "wordsToBeChosen", ignore = true)
-    @Mapping(target = "drawingPhase", ignore = true)
-    @Mapping(target = "gameTurnStatus", ignore = true)
-    @Mapping(target = "gameStatus", ignore = true)
+    @Mapping(target = "submittedAnswerIds", ignore = true)
+    @Mapping(target = "status", ignore = true)
     GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
 
     @Mapping(source = "id", target = "id")

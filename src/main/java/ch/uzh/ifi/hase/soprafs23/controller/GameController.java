@@ -2,20 +2,25 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
+import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
+import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User Controller This class is responsible for handling all REST request that are related to the
@@ -28,26 +33,24 @@ public class GameController {
 
     private final GameService gameService;
     private final UserService userService;
-
-    GameController(GameService gameService, UserService userService) {
+    private final RoomService roomService;
+    GameController(GameService gameService, UserService userService, RoomService roomService ) {
 
         this.gameService = gameService;
         this.userService = userService;
+        this.roomService = roomService;
     }
-
-//    @Autowired
-//    SimpMessagingTemplate simpMessagingTemplate;
-
 
     // start a new game
     @UserLoginToken
-    @PostMapping("/games/{roomId}")
+    @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameTurnAfterGetDTO startGame(@PathVariable("roomId") long roomId){
+    public GameTurnAfterGetDTO startGame(@PathVariable long roomId){
         // start game turn
         Room room = gameService.getRoom(roomId);
         GameTurn gameTurn = gameService.startGameTurn(room);
+        roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
         // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
@@ -58,12 +61,30 @@ public class GameController {
 //        }
     }
 
+//    @UserLoginToken
+//    @PostMapping("/games/leave/{gameId}")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseBody
+//    public void endGame(@PathVariable long gameId){
+//        // start game turn
+//        GameTurn gameTurn = gameService.startGameTurn(room);
+//        roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
+//        // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
+//        GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+//
+//        return changeGetToAfter(gameTurnGetDTO);
+//
+////        for(int i=0; i<playersIds.size(); i++){
+////            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
+////        }
+//    }
     // get rank list from this game
+    //if game status is false.
     @UserLoginToken
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getGameRank(@PathVariable("gameId") long gameId){
+    public List<UserGetDTO> getGameRank(@PathVariable long gameId){
 
         List<User> rankedUsers = gameService.rankAll(gameId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
@@ -74,19 +95,31 @@ public class GameController {
         }
         return userGetDTOs;
     }
+    ///every second get status, ids
+    @UserLoginToken
+    @GetMapping("/games/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameGetDTO getGameById(@PathVariable long gameId){
+        Game currentGame = gameService.getGame(gameId);
+        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
+    }
+
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
 
         GameTurnAfterGetDTO gameTurnAfterGetDTO = new GameTurnAfterGetDTO();
         gameTurnAfterGetDTO.setId(gameTurnGetDTO.getId());
+        gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
+        gameTurnAfterGetDTO.setSubmittedAnswerIds(gameTurnGetDTO.getSubmittedAnswerIds());
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
-        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
+//        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());
-        gameTurnAfterGetDTO.setGameTurnStatus(gameTurnGetDTO.getGameTurnStatus());
-        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
+//        gameTurnAfterGetDTO.setGameTurnStatus(gameTurnGetDTO.getGameTurnStatus());
+//        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 
         if(gameTurnGetDTO.getAllPlayersIds()==null) {

@@ -6,7 +6,8 @@ import java.util.Set;
 
 public class RoomGetDTO {
     private Long id;
-
+    private Long gameId;
+    private Long gameTurnId;
     private String roomName;
 
     private int mode;
@@ -24,6 +25,18 @@ public class RoomGetDTO {
     }
     public void setId(Long id){
         this.id=id;
+    }
+    public Long getGameId() {
+        return gameId;
+    }
+    public void setGameId(Long id){
+        this.gameId=id;
+    }
+    public Long getGameTurnId() {
+        return gameTurnId;
+    }
+    public void setGameTurnId(Long id){
+        this.gameTurnId=id;
     }
 
     public String getRoomName(){
