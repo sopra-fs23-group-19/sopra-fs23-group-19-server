@@ -103,6 +103,7 @@ public interface DTOMapper {
     @Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
+
     @Mapping(source = "submittedAnswerIds", target = "submittedAnswerIds")
     @Mapping(source = "gameId", target = "gameId")
     @Mapping(source = "targetWord", target = "targetWord")

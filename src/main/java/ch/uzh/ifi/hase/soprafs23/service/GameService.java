@@ -87,11 +87,14 @@ public class GameService {
         gameTurn.setAllPlayersIds(allPlayersIds);
         gameTurn.setGameId(game.getId());
 
+
 //        gameTurn.setDrawingPhase(true);
 //        gameTurn.setGameTurnStatus(true);
 //        gameTurn.setGameStatus(true);
         //added by runze
         gameTurn.setStatus(TurnStatus.CHOOSE_WORD);
+
+
 
         // find all players
         List<User> allPlayers = new ArrayList<>();

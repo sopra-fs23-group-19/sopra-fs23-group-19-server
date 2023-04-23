@@ -57,10 +57,8 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-
         gameTurn.setStatus(TurnStatus.PAINITING);
         gameTurnRepository.flush();
-
     }
 
     public Game getGame(Long gameId){
@@ -164,7 +162,6 @@ public class GameTurnService {
         }
 //         set game turn status
 //        gameTurn.setGameTurnStatus(false);
-
 
         gameTurnRepository.flush();
 
