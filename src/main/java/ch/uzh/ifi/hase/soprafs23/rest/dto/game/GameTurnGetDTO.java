@@ -129,11 +129,11 @@ public class GameTurnGetDTO {
 //        this.gameStatus = gameStatus;
 //    }
 
-    public String getTargetWord() {
-        return targetWord;
-    }
-
-    public void setTargetWord(String targetWord) {
-        this.targetWord = targetWord;
-    }
+//    public String getTargetWord() {
+//        return targetWord;
+//    }
+//
+//    public void setTargetWord(String targetWord) {
+//        this.targetWord = targetWord;
+//    }
 }

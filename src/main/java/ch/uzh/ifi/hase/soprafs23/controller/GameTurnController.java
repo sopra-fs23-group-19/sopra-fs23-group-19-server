@@ -48,14 +48,12 @@ public class GameTurnController {
 
     // drawing player chooses the target word
     @UserLoginToken
-    @PostMapping("/gameRounds/words")
-    @ResponseStatus(HttpStatus.CREATED)
+    @PutMapping("/gameRounds/words")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public GameTurnAfterGetDTO setTargetWord(@RequestBody GameTurnPutDTO gameTurnPutDTO){
-        GameTurn gameTurn = gameTurnService.setTargetWord(gameTurnPutDTO);
-        GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+    public void setTargetWord(@RequestBody GameTurnPutDTO gameTurnPutDTO){
+        gameTurnService.setTargetWord(gameTurnPutDTO);
 
-        return changeGetToAfter(gameTurnGetDTO);
     }
 
     // drawing player updates the image
