@@ -45,7 +45,7 @@ public class GameService {
         this.roomRepository = roomRepository;
     }
 
-
+    // initialize a new game
     public Game startGame(Room room) {
         // start a new game
         Game game = new Game();
@@ -65,10 +65,13 @@ public class GameService {
 
         return game;
     }
+
+    // start a new game turn
     public GameTurn startGameTurn(Room room) {
 
+        // find the new game information
         Game game = startGame(room);
-        // get all players in this room
+        // initialize a new game turn
         GameTurn gameTurn = new GameTurn();
 
         // save all players' Ids
@@ -78,9 +81,9 @@ public class GameService {
         }
         gameTurn.setAllPlayersIds(allPlayersIds);
         gameTurn.setGameId(game.getId());
-        gameTurn.setDrawingPhase(true);
-        gameTurn.setGameTurnStatus(true);
-        gameTurn.setGameStatus(true);
+        gameTurn.setDrawingPhase(true);  // drawing phase starts
+        gameTurn.setGameTurnStatus(true);  // game turn starts
+        gameTurn.setGameStatus(true);  // game starts
         // find all players
         List<User> allPlayers = new ArrayList<>();
         List<Long> allPlayerIds = new ArrayList<>(allPlayersIds);
@@ -101,8 +104,8 @@ public class GameService {
                 if(drawingPlayer != null){
                     gameTurn.setDrawingPlayer(id);
                     game.setDrawingPlayerIds(id);
-                    drawingPlayer.setCurrentScore(0);
-                    drawingPlayer.setCurrentGameScore(0);
+                    drawingPlayer.setCurrentScore(0);   // the score in this game turn
+                    drawingPlayer.setCurrentGameScore(0);   // ths score in this game (include all game turns' scores)
                     drawingPlayer.setStatus(UserStatus.ISPLAYING);
                 }else{
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
@@ -112,7 +115,7 @@ public class GameService {
                 User guessingPlayer = userRepository.findByid(id);
                 if(guessingPlayer != null) {
                     guessingPlayer.setStatus(UserStatus.ISPLAYING);
-                    guessingPlayer.setCurrentGameScore(0);
+                    guessingPlayer.setCurrentGameScore(0);  // ths score in this game (include all game turns' scores)
                 }else{
                     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
                 }
@@ -156,6 +159,7 @@ public class GameService {
         }
     }
 
+    // rank all players in this game
     public List<User> rankAll(long gameId) {
         Game game = getGame(gameId);
         Set<Long> allPlayersIds = new HashSet<>();
@@ -176,15 +180,8 @@ public class GameService {
                 .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
                 .map(entry -> entry.getKey()).collect(Collectors.toList());
 
-        // set users' bestScore and totalScore
-        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
-            entry.getKey().setTotalScore(entry.getKey().getTotalScore()+entry.getValue());
-            if(entry.getKey().getBestScore() < entry.getValue()){
-                entry.getKey().setBestScore(entry.getValue());
-            }
-        }
 
-        gameRepository.flush();
+        gameRepository.saveAndFlush(game);
 
         return rankedUsers;
     }
