@@ -1,8 +1,12 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -24,14 +28,21 @@ public class Game implements Serializable {
     private Set<Long> allPlayersIds = new HashSet<>();
     @Column
     @ElementCollection
-    private Set<Long> gameTurnList = new HashSet<>();
+    private List<Long> gameTurnList = new ArrayList<>();
 
     @Column(nullable = false)
     private int turnLength;  //game mode
 
     @Column
+    private TurnStatus gameTurnStatus;
+//    @Column
+//    private GameStatus status;  //game status
+
+    @Column
     private int currentGameTurn;  // current turn index
 
+    @Column
+    private Boolean gameStatus = false;
     public Set<Long> getDrawingPlayerIds() {
         return drawingPlayerIds;
     }
@@ -45,6 +56,14 @@ public class Game implements Serializable {
 
     public void setAllPlayersIds(Set<Long> allPlayersIds) {
         this.allPlayersIds = allPlayersIds;
+    }
+
+    public  TurnStatus getGameTurnStatus() {
+        return gameTurnStatus;
+    }
+
+    public void setGameTurnStatus(TurnStatus turnStatus) {
+            this.gameTurnStatus = turnStatus;
     }
 
     public int getTurnLength() {
@@ -63,7 +82,7 @@ public class Game implements Serializable {
         this.currentGameTurn = currentGameTurn;
     }
 
-    public Set<Long> getGameTurnList() {
+    public List<Long> getGameTurnList() {
         return gameTurnList;
     }
 
@@ -77,5 +96,12 @@ public class Game implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    public Boolean getGameStatus() {
+        return gameStatus;
+    }
+
+    public void setGameStatus(Boolean gameStatus) {
+        this.gameStatus = gameStatus;
     }
 }

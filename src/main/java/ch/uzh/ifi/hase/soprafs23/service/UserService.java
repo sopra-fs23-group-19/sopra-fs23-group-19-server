@@ -82,6 +82,16 @@ public class UserService {
         return true;
     }
 
+    public String findById(Long id){
+        if(userRepository.findById(id)==null){
+//            return false;
+            return "" ;//empty
+        }
+        User user = userRepository.findByid(id);
+
+        return user.getUsername();
+    }
+
     public List<User> getUsers() {
     return this.userRepository.findAll();
     }

@@ -26,6 +26,11 @@ public class Room implements Serializable {
     @Column(nullable = false)
     private Long ownerId;
 
+    @Column
+    private Long gameId;
+
+    @Column
+    private Long gameTurnId;
     // string of players id
     @Column
     @ElementCollection
@@ -41,6 +46,18 @@ public class Room implements Serializable {
         this.id=id;
     }
 
+    public Long getGameId() {
+        return gameId;
+    }
+    public void setGameId(Long id){
+        this.gameId=id;
+    }
+    public Long getGameTurnId() {
+        return gameTurnId;
+    }
+    public void setGameTurnId(Long id){
+        this.gameTurnId=id;
+    }
     public String getRoomName(){
         return roomName;
     }

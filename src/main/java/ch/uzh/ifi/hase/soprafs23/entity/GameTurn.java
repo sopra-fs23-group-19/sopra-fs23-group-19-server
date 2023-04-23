@@ -1,9 +1,13 @@
 package ch.uzh.ifi.hase.soprafs23.entity;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,15 +20,28 @@ public class GameTurn implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+//    @Column
+//    private String image;
+    @Column(name="IMAGE", columnDefinition="CLOB")
+    @Lob
     private String image;
 
     @Column
     private Long drawingPlayerId;
 
+    @Column(nullable = false)
+    private TurnStatus status;
+
     @Column
     @ElementCollection
     private Set<Long> allPlayersIds = new HashSet<>();
+
+    @Column
+    @ElementCollection
+    private List<Long> submittedAnswerIds = new ArrayList<>();
+
+//    @Column(nullable = false)
+//    private int turnLength;  //game mode
 
     @Column
     private String targetWord;
@@ -36,24 +53,47 @@ public class GameTurn implements Serializable {
     @ElementCollection
     private Set<String> wordsToBeChosen = new HashSet<>();
 
-    @Column
-    private Boolean DrawingPhase = false;
+//    @Column
+//    private Boolean DrawingPhase = false;
 
-    @Column
-    private Boolean gameTurnStatus = false;
+//    @Column
+//    private Boolean gameTurnStatus = false;
 
-    @Column
-    private Boolean gameStatus = false;
+//    @Column
+//    private Boolean gameStatus = false;
+
+    public TurnStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TurnStatus status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long turnId) {
+        this.id = turnId;
     }
 
-    public void setDrawingPlayer(Long drawingPlayerId) {
+    public List<Long> getSubmittedAnswerIds() {
+        return submittedAnswerIds;
+    }
+
+    public void setSubmittedAnswerIds(Long userId) {
+        this.submittedAnswerIds.add(userId);
+    }
+//    public int getTurnLength() {
+//        return turnLength;
+//    }
+
+//    public void setTurnLength(int turnLen) {
+//        this.turnLength = turnLen;
+//    }
+
+    public void setDrawingPlayerId(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
     }
 
@@ -101,28 +141,28 @@ public class GameTurn implements Serializable {
         this.wordsToBeChosen = wordsToBeChosen;
     }
 
-    public Boolean getDrawingPhase() {
-        return DrawingPhase;
-    }
+//    public Boolean getDrawingPhase() {
+//        return DrawingPhase;
+//    }
 
-    public void setDrawingPhase(Boolean drawingPhase) {
-        DrawingPhase = drawingPhase;
-    }
+//    public void setDrawingPhase(Boolean drawingPhase) {
+//        DrawingPhase = drawingPhase;
+//    }
 
-    public Boolean getGameTurnStatus() {
-        return gameTurnStatus;
-    }
+//    public Boolean getGameTurnStatus() {
+//        return gameTurnStatus;
+//    }
 
-    public void setGameTurnStatus(Boolean gameTurnStatus) {
-        this.gameTurnStatus = gameTurnStatus;
-    }
+//    public void setGameTurnStatus(Boolean gameTurnStatus) {
+//        this.gameTurnStatus = gameTurnStatus;
+//    }
 
-    public Boolean getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(Boolean gameStatus) {
-        this.gameStatus = gameStatus;
-    }
+//    public Boolean getGameStatus() {
+//        return gameStatus;
+//    }
+//
+//    public void setGameStatus(Boolean gameStatus) {
+//        this.gameStatus = gameStatus;
+//    }
 
 }

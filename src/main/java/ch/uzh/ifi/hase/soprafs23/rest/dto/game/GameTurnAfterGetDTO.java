@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
 import java.util.ArrayList;
@@ -14,16 +15,42 @@ public class GameTurnAfterGetDTO {
     private List<UserNameDTO> players = new ArrayList<>();
 
     private String image;
+    private String drawingPlayerName;
+    public String getDrawingPlayerName() {
+        return drawingPlayerName;
+    }
+
+    public void setDrawingPlayerName(String name) {
+        this.drawingPlayerName = name;
+    }
 
     private Set<String> wordsToBeChosen;
-    private Boolean DrawingPhase;
+//    private Boolean DrawingPhase;
     private long gameId;
-    private Boolean gameTurnStatus;
-    private Boolean gameStatus;
+//    private Boolean gameTurnStatus;
+//    private Boolean gameStatus;
+
+    private List<Long> submittedAnswerIds;
+    public List<Long> getSubmittedAnswerIds() {
+        return submittedAnswerIds;
+    }
+
+    public void setSubmittedAnswerIds(List<Long> userIds) {
+        this.submittedAnswerIds = userIds;
+    }
+    private TurnStatus status;
+    public TurnStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TurnStatus status) {
+        this.status = status;
+    }
 
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
     }
+
 
     public void setDrawingPlayerId(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
@@ -37,12 +64,13 @@ public class GameTurnAfterGetDTO {
         this.gameId = gameId;
     }
 
-    public Boolean getGameTurnStatus() {
-        return gameTurnStatus;
+     private String targetWord;
+    public String getTargetWord() {
+        return targetWord;
     }
 
-    public void setGameTurnStatus(Boolean gameTurnStatus) {
-        this.gameTurnStatus = gameTurnStatus;
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
     }
 
     public String getImage() {
@@ -71,22 +99,6 @@ public class GameTurnAfterGetDTO {
 
     public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
         this.wordsToBeChosen = wordsToBeChosen;
-    }
-
-    public Boolean getDrawingPhase() {
-        return DrawingPhase;
-    }
-
-    public void setDrawingPhase(Boolean drawingPhase) {
-        DrawingPhase = drawingPhase;
-    }
-
-    public Boolean getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(Boolean gameStatus) {
-        this.gameStatus = gameStatus;
     }
 
     public void setPlayers(List<UserNameDTO> players) {

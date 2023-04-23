@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
 import java.util.ArrayList;
@@ -16,11 +17,36 @@ public class GameTurnGetDTO {
     private String image;
 
     private Set<String> wordsToBeChosen;
-    private Boolean DrawingPhase;
+//    private Boolean DrawingPhase;
     private Long gameId;
-    private Boolean gameTurnStatus;
+//    private Boolean gameTurnStatus;
 
-    private Boolean gameStatus;
+//    private Boolean gameStatus;
+    private List<Long> submittedAnswerIds;
+    public List<Long> getSubmittedAnswerIds() {
+        return submittedAnswerIds;
+    }
+
+    public void setSubmittedAnswerIds(List<Long> userIds) {
+        this.submittedAnswerIds = userIds;
+    }
+    private TurnStatus status;
+    public TurnStatus getStatus() {
+        return status;
+    }
+
+    private String targetWord;
+    public String getTargetWord() {
+        return targetWord;
+    }
+
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
+    }
+
+    public void setStatus(TurnStatus status) {
+        this.status = status;
+    }
 
     private List<UserNameDTO> players = new ArrayList<>();
 
@@ -44,13 +70,13 @@ public class GameTurnGetDTO {
         this.gameId = gameId;
     }
 
-    public Boolean getGameTurnStatus() {
-        return gameTurnStatus;
-    }
+//    public Boolean getGameTurnStatus() {
+//        return gameTurnStatus;
+//    }
 
-    public void setGameTurnStatus(Boolean gameTurnStatus) {
-        this.gameTurnStatus = gameTurnStatus;
-    }
+//    public void setGameTurnStatus(Boolean gameTurnStatus) {
+//        this.gameTurnStatus = gameTurnStatus;
+//    }
 
     public void setAllPlayersIds(Set<Long> allPlayersIds) {
         this.allPlayersIds = allPlayersIds;
@@ -84,20 +110,20 @@ public class GameTurnGetDTO {
         this.wordsToBeChosen = wordsToBeChosen;
     }
 
-    public Boolean getDrawingPhase() {
-        return DrawingPhase;
-    }
+//    public Boolean getDrawingPhase() {
+//        return DrawingPhase;
+//    }
+//
+//    public void setDrawingPhase(Boolean drawingPhase) {
+//        DrawingPhase = drawingPhase;
+//    }
 
-    public void setDrawingPhase(Boolean drawingPhase) {
-        DrawingPhase = drawingPhase;
-    }
-
-    public Boolean getGameStatus() {
-        return gameStatus;
-    }
-
-    public void setGameStatus(Boolean gameStatus) {
-        this.gameStatus = gameStatus;
-    }
+//    public Boolean getGameStatus() {
+//        return gameStatus;
+//    }
+//
+//    public void setGameStatus(Boolean gameStatus) {
+//        this.gameStatus = gameStatus;
+//    }
 
 }

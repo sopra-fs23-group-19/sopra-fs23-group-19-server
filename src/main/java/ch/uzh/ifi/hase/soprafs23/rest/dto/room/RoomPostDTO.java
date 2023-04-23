@@ -15,10 +15,10 @@ public class RoomPostDTO {
 
 //    private RoomStatus status;
 
-//    public Long getId() {
+//    public Long getTurnId() {
 //        return id;
 //    }
-//    public void setId(Long id){
+//    public void setTurnId(Long id){
 //        this.id=id;
 //    }
 

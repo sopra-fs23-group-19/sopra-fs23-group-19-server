@@ -62,7 +62,7 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @GetMapping(value = "/gameRounds/{roomId}")
+    @GetMapping(value = "/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public RoomAfterGetDTO retrieveRoom(@PathVariable Long roomId){
@@ -75,7 +75,8 @@ public class RoomController {
     @ResponseBody
     public List<RoomAfterGetDTO> getAllRooms() {
         // fetch all users in the internal representation
-        List<Room> rooms = roomService.getRooms();
+//        List<Room> rooms = roomService.getRooms();
+        List<Room> rooms = roomService.getAvailableRooms();
         List<RoomAfterGetDTO> roomAfterGetDTOS = new ArrayList<>();
 
         // convert each user to the API representation
@@ -99,6 +100,8 @@ public class RoomController {
 
         roomAfterGetDTO.setRoomSeats(roomGetDTO.getMode());
         roomAfterGetDTO.setId(roomGetDTO.getId());
+        roomAfterGetDTO.setGameId(roomGetDTO.getGameId());
+        roomAfterGetDTO.setGameTurnId(roomGetDTO.getGameTurnId());
         roomAfterGetDTO.setOwnerId(roomGetDTO.getOwnerId());
         roomAfterGetDTO.setRoomName(roomGetDTO.getRoomName());
         roomAfterGetDTO.setStatus(roomGetDTO.getStatus());
