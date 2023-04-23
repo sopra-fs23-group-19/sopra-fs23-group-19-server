@@ -51,11 +51,13 @@ public class GameTurnService {
     }
 
     // save the target word in db
-    public void setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
+    public GameTurn setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         gameTurn.setTargetWord(gameTurnInput.getTargetWord());
+        gameTurn.setDrawingPhase(true);  // drawing phase starts
         gameTurnRepository.saveAndFlush(gameTurn);
+        return gameTurn;
     }
 
     public Game getGame(Long gameId){
@@ -178,7 +180,6 @@ public class GameTurnService {
         GameTurn gameTurn = new GameTurn();
         gameTurn.setAllPlayersIds(allPlayerIds);
         gameTurn.setGameId(game.getId());
-        gameTurn.setDrawingPhase(true);
         gameTurn.setGameTurnStatus(true);
         gameTurn.setGameStatus(true);
 

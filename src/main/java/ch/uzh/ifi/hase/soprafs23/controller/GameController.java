@@ -81,6 +81,7 @@ public class GameController {
         gameTurnAfterGetDTO.setId(gameTurnGetDTO.getId());
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
+        gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
         gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());

@@ -81,7 +81,6 @@ public class GameService {
         }
         gameTurn.setAllPlayersIds(allPlayersIds);
         gameTurn.setGameId(game.getId());
-        gameTurn.setDrawingPhase(true);  // drawing phase starts
         gameTurn.setGameTurnStatus(true);  // game turn starts
         gameTurn.setGameStatus(true);  // game starts
         // find all players

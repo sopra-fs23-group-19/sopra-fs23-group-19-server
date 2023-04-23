@@ -16,6 +16,7 @@ public class GameTurnAfterGetDTO {
     private String image;
 
     private Set<String> wordsToBeChosen;
+    private String targetWord;
     private Boolean DrawingPhase;
     private long gameId;
     private Boolean gameTurnStatus;
@@ -95,5 +96,13 @@ public class GameTurnAfterGetDTO {
 
     public List<UserNameDTO> getPlayers() {
         return players;
+    }
+
+    public String getTargetWord() {
+        return targetWord;
+    }
+
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
     }
 }
