@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
@@ -27,6 +28,25 @@ public class RoomAfterGetDTO {
     private int numberOfPlayers;
 
     private List<GameTurn> turns = new ArrayList<>();
+
+    private Long currentTurnId;  //most recent turn
+    private TurnStatus currentTurnStatus; //most recent turn status
+
+    public Long getCurrentTurnId() {
+        return currentTurnId;
+    }
+
+    public TurnStatus getCurrentTurnStatus() {
+        return currentTurnStatus;
+    }
+
+    public void setCurrentTurnId(Long currentTurnId) {
+        this.currentTurnId = currentTurnId;
+    }
+
+    public void setCurrentTurnStatus(TurnStatus currentTurnStatus) {
+        this.currentTurnStatus = currentTurnStatus;
+    }
 
     public List<GameTurn> getTurns() {
         return turns;

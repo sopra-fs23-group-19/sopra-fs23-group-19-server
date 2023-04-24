@@ -2,7 +2,9 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
+import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
@@ -124,6 +126,14 @@ public class RoomController {
         roomAfterGetDTO.setNumberOfPlayers(roomService.getAllPlayersIds(roomGetDTO.getId()).size());
 
         roomAfterGetDTO.setTurns(roomService.getAllTurns(roomGetDTO.getId()));
+
+        List<GameTurn> turns = roomAfterGetDTO.getTurns();
+        for(GameTurn t: turns){
+            if(t.getStatus()!= TurnStatus.END){
+                roomAfterGetDTO.setCurrentTurnId(t.getId());
+                roomAfterGetDTO.setCurrentTurnStatus(t.getStatus());
+            }
+        }
 
         return roomAfterGetDTO;
     }
