@@ -26,7 +26,7 @@ public class GameTurnGetDTO {
 //    private Boolean gameTurnStatus;
 
 //    private Boolean gameStatus;
-    private int submitNum;
+    private int submitNum=0;
     private String targetWord;
 
 

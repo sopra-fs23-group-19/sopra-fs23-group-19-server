@@ -32,7 +32,7 @@ public class GameTurnAfterGetDTO {
 //    private Boolean gameTurnStatus;
 //    private Boolean gameStatus;
 
-    private int submitNum;
+    private int submitNum=0;
 
     public int getSubmitNum() {
         return submitNum;

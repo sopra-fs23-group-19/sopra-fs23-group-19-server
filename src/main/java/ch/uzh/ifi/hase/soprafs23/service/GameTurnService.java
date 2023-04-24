@@ -140,6 +140,7 @@ public class GameTurnService {
 
         if(gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode()-1)
         {
+            gameTurn.setStatus(TurnStatus.END);
             if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
                 roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }
