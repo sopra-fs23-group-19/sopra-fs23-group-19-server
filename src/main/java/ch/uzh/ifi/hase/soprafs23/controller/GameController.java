@@ -105,6 +105,14 @@ public class GameController {
         return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
     }
 
+    @UserLoginToken
+    @GetMapping("/games/leave/{gameId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void QuitGame(@PathVariable long gameId){
+        gameService.endGame(gameId);
+    }
+
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
 

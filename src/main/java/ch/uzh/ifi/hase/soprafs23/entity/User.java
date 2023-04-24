@@ -57,6 +57,9 @@ public class User implements Serializable {
   @Column
   private int currentGameScore;
 
+    @Column
+    private Long currentGameId;
+
   public Long getId() {
     return id;
   }
@@ -65,6 +68,13 @@ public class User implements Serializable {
     this.id = id;
   }
 
+    public Long getCurrentGameId() {
+        return currentGameId;
+    }
+
+    public void setCurrentGameId(Long id) {
+        this.currentGameId = id;
+    }
 
   public String getPassword() {
     return password;

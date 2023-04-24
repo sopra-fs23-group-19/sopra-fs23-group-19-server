@@ -138,7 +138,7 @@ public class GameTurnController {
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         //only drawing player knows the words information
-        if(userId ==gameTurnGetDTO.getDrawingPlayerId())
+        if(userId == gameTurnGetDTO.getDrawingPlayerId())
         {
             gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
             gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
