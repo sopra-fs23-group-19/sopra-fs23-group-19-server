@@ -36,3 +36,5 @@
 |week 4| Runze Li  | [client#26](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/26)| Implement the view update after joining room and entering game|
 |week 4| Runze Li  | [client#31](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/31)| Implement submitting answers|
 |week 4| Runze Li  | [#69](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/69)| Fix backend problem, data saving format, refactor code|
+|week 4| Jingjing Li  | [client#40](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/40) |Implement three buttons which display given words and allow word selection.|
+|week 4| Jingjing Li  | [client#44](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/44) |Implement a text field which is enabled during the guessing phase.|
