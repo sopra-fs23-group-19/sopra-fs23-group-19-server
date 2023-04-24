@@ -69,6 +69,7 @@ public class GameService {
 //        gameRepository.flush();
 //
 //        return game;
+        room.setStatus(RoomStatus.PLAYING);
 
         for(int i =0; i<room.getMode();i++){
             GameTurn gameTurn = new GameTurn();
@@ -89,6 +90,8 @@ public class GameService {
                 result = t;
             }
         }
+
+        roomRepository.flush();
 
         return result;
     }
