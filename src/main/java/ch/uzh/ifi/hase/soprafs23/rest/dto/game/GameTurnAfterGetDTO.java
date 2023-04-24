@@ -24,7 +24,7 @@ public class GameTurnAfterGetDTO {
         this.drawingPlayerName = name;
     }
 
-    private Set<String> wordsToBeChosen;
+ //   private Set<String> wordsToBeChosen;
 
 //    private Boolean DrawingPhase;
 
@@ -97,13 +97,13 @@ public class GameTurnAfterGetDTO {
         return id;
     }
 
-    public Set<String> getWordsToBeChosen() {
-        return wordsToBeChosen;
-    }
-
-    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-        this.wordsToBeChosen = wordsToBeChosen;
-    }
+//    public Set<String> getWordsToBeChosen() {
+//        return wordsToBeChosen;
+//    }
+//
+//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
+//        this.wordsToBeChosen = wordsToBeChosen;
+//    }
 
     public void setPlayers(List<UserNameDTO> players) {
         this.players = players;

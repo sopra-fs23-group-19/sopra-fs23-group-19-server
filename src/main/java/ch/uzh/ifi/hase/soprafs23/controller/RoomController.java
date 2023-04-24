@@ -120,7 +120,7 @@ public class RoomController {
             }
         }
 
-        //roomAfterGetDTO.setNumberOfPlayers(roomGetDTO.getPlayers().size());
+        roomAfterGetDTO.setNumberOfPlayers(roomService.getAllPlayersIds(roomGetDTO.getId()).size());
 
         return roomAfterGetDTO;
     }

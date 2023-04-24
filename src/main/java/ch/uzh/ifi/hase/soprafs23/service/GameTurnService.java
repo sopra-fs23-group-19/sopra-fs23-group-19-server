@@ -145,6 +145,7 @@ public class GameTurnService {
             }
         }
 
+        gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
     }

@@ -12,6 +12,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class GameService {
 //        gameRepository.flush();
 //
 //        return game;
+        room.setStatus(RoomStatus.PLAYING);
 
         for(int i =0; i<room.getMode();i++){
             GameTurn gameTurn = new GameTurn();
@@ -88,6 +90,8 @@ public class GameService {
                 result = t;
             }
         }
+
+        roomRepository.flush();
 
         return result;
     }
@@ -438,4 +442,5 @@ public class GameService {
 
         return ids;
     }
+
 }
