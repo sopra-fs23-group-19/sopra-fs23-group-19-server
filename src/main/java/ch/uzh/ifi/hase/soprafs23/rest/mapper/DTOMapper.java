@@ -78,6 +78,7 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
     @Mapping(source = "guessingWord", target = "guessingWord")
+    @Mapping(source = "currentGameId", target = "currentGameId")
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)

@@ -255,10 +255,10 @@ public class GameService {
         if(game == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game has not started yet!");
         }
-        else if(!game.getGameStatus())
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game has ended!");
-        }
+//        else if(!game.getGameStatus())
+//        {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game has ended!");
+//        }
         else{
             List<Long> turnIds =  game.getGameTurnList();
             GameTurn recentTurn = getGameTurn(turnIds.get(turnIds.size() - 1));
@@ -268,18 +268,23 @@ public class GameService {
 
             if (recentTurn.getStatus() == TurnStatus.END)
             {
-               startNewGameTurn(gameId);
-            }
-            if (recentTurn.getStatus() !=TurnStatus.END &&recentTurn.getSubmittedAnswerIds().size() == game.getAllPlayersIds().size()-1 )
-            {
                 rank(recentTurn.getId());
-                endTurn(recentTurn.getId());
-                game.setGameTurnStatus(recentTurn.getStatus());
-
                 if(game.getCurrentGameTurn() == game.getTurnLength()){
-                game.setGameStatus(false);
+                    game.setGameStatus(false);
+                }
+//                else{
+//               startNewGameTurn(gameId);}
             }
-            }
+//            if (recentTurn.getStatus()== TurnStatus.END  )
+//            {
+//                rank(recentTurn.getId());
+//                endTurn(recentTurn.getId());
+//                game.setGameTurnSt   game.setGameTurnStatus(recentTurn.getStatus());atus(recentTurn.getStatus());
+//            if(game.getCurrentGameTurn() == game.getTurnLength()){
+//                game.setGameStatus(false);
+//            }
+
+//            }
             return game;
         }
     }
@@ -290,6 +295,16 @@ public class GameService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game turn information cannot be found!");
         }else{
             return gameTn;
+        }
+    }
+    public void endGame( long gameId) {
+        Game game = gameRepository.findByid(gameId);
+        if(game == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game is not found!");
+        }
+        else
+        {
+            game.setGameStatus(false);
         }
     }
 
@@ -330,13 +345,13 @@ public class GameService {
         return rankedUsers;
     }
 
-    public void endTurn (long gameTurnId)
-    {
-        GameTurn gameTurn = getGameTurn(gameTurnId);
-//        gameTurn.setGameTurnStatus(false);
-        gameTurn.setStatus(TurnStatus.END);
-        gameTurnRepository.flush();
-    }
+//    public void endTurn (long gameTurnId)
+//    {
+//        GameTurn gameTurn = getGameTurn(gameTurnId);
+////        gameTurn.setGameTurnStatus(false);
+//        gameTurn.setStatus(TurnStatus.END);
+//        gameTurnRepository.flush();
+//    }
 
     public List<User> rank( long gameTurnId) {
         GameTurn gameTurn = getGameTurn(gameTurnId);
