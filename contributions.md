@@ -30,5 +30,5 @@
 |week 2&3| Geyu Meng  | [client#46](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/46) |Implement the drawing function. |
 |week 2&3| Geyu Meng  | [client#50](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/50) |Implement the eraser function.|
 |week 2&3| Geyu Meng  | [client#28](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/28) |Implement a function to record the painting in JPG or PNG format, and allow the drawing player to save it to his local device. |
-|week 4| Manyi Wang | Commit d01242d(https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/d01242d077c170d5bfaeb7d2869c9a919a24c7c4) | Implement the backend-service- leave waiting area|
+|week 4| Manyi Wang | [Commit d01242d](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/d01242d077c170d5bfaeb7d2869c9a919a24c7c4) | Implement the backend-service- leave waiting area|
 |week 4| Manyi Wang | [#97](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/97)| Implement the backend-service- lobby|
