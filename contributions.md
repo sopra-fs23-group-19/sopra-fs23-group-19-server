@@ -32,3 +32,7 @@
 |week 2&3| Geyu Meng  | [client#28](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/28) |Implement a function to record the painting in JPG or PNG format, and allow the drawing player to save it to his local device. |
 |week 4| Manyi Wang | [Commit d01242d](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/d01242d077c170d5bfaeb7d2869c9a919a24c7c4) | Implement the backend-service- leave waiting area|
 |week 4| Manyi Wang | [#23](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/23)| Implement the backend-service- lobby|
+|week 4| Runze Li | [client#25](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/25) | Implement joining existing room|
+|week 4| Runze Li  | [client#26](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/26)| Implement the view update after joining room and entering game|
+|week 4| Runze Li  | [client#31](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/31)| Implement submitting answers|
+|week 4| Runze Li  | [#69](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/69)| Fix backend problem, data saving format, refactor code|
