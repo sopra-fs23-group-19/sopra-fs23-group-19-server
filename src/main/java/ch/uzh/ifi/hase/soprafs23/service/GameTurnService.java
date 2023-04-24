@@ -117,6 +117,7 @@ public class GameTurnService {
         User user = getUser(userInput.getId());
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
+        gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(1);  // set current score in this game turn
@@ -146,7 +147,6 @@ public class GameTurnService {
             }
         }
 
-        gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
     }

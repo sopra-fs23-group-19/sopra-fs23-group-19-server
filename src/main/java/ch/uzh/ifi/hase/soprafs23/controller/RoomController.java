@@ -123,6 +123,8 @@ public class RoomController {
 
         roomAfterGetDTO.setNumberOfPlayers(roomService.getAllPlayersIds(roomGetDTO.getId()).size());
 
+        roomAfterGetDTO.setTurns(roomService.getAllTurns(roomGetDTO.getId()));
+
         return roomAfterGetDTO;
     }
 
