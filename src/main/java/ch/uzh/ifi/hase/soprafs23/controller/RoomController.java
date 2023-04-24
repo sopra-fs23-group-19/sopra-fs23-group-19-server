@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
@@ -34,7 +35,7 @@ public class RoomController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RoomAfterGetDTO createRoom(@RequestBody RoomPostDTO roomPostDTO) {
-
+        userService.retrieveUser(roomPostDTO.getOwnerId()).setStatus(UserStatus.ONLINE);
         // convert API user to internal representation
         return changeRoomToAfter(
                 roomService.createRoom(
@@ -51,6 +52,7 @@ public class RoomController {
     @ResponseBody
     public RoomAfterGetDTO joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+        userService.retrieveUser(roomPutDTO.getUserId()).setStatus(UserStatus.ISPLAYING);
         return changeRoomToAfter(room);
 //         for(int i=0; i<players.size(); i++){
 //             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
@@ -92,6 +94,7 @@ public class RoomController {
     @ResponseBody
     public void leaveRoom(@RequestBody RoomPutDTO roomPutDTO) {
         roomService.leaveRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
+        userService.retrieveUser(roomPutDTO.getUserId()).setStatus(UserStatus.ONLINE);
     }
 
 
