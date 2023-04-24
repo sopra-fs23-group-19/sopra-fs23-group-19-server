@@ -2,9 +2,11 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
+//import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,12 @@ public class RoomService {
     private final Logger log = LoggerFactory.getLogger(RoomService.class);
 
     private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository) {
+    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, @Qualifier("userRepository") UserRepository userRepository) {
         this.roomRepository = roomRepository;
+        this.userRepository = userRepository;
     }
 
     public Room createRoom(Room newRoom) {
@@ -35,10 +39,15 @@ public class RoomService {
         // flush() is called
 
         newRoom.setStatus(RoomStatus.WAITING);
-        newRoom.getPlayers().add(newRoom.getOwnerId());
+//        newRoom.getPlayers().add(newRoom.getOwnerId());
 
         newRoom = roomRepository.save(newRoom);
+
         roomRepository.flush();
+
+        userRepository.findByid(newRoom.getOwnerId()).setRoomId(newRoom.getId());
+        userRepository.flush();
+
         System.out.println("create----"+newRoom.getId());
         log.debug("Created Information for Room: {}", newRoom);
         return newRoom;
@@ -55,11 +64,12 @@ public class RoomService {
 
     public Room joinRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
-        room.getPlayers().add(userId);
+        //room.getPlayers().add(userId);
 
-        roomRepository.flush();
+//        roomRepository.flush();
+        User user = userRepository.findByid(userId);
 
-        if(room.getMode()== room.getPlayers().size()){
+        if(room.getMode()== userRepository.findByRoomId(roomId).size()){
             room.setStatus(RoomStatus.READY);
         }
 
@@ -74,9 +84,9 @@ public class RoomService {
         if(userId==room.getOwnerId()){
             room.setStatus(RoomStatus.END);
         }else{
-            for(Long uid: room.getPlayers()){
-                if(userId==uid){
-                    room.getPlayers().remove(userId);
+            for(User user: userRepository.findByRoomId(roomId)){
+                if(userId==user.getId()){
+                    user.setRoomId(null);
                     room.setStatus(RoomStatus.WAITING);
                 }
             }
@@ -105,18 +115,31 @@ public class RoomService {
         return availableRooms;
     }
 
-    public void activateRoom(Long roomId, Long gameId, Long turnId){
-        Room room = roomRepository.findByid(roomId);
-        if (room == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
-        }
-        room.setStatus(RoomStatus.PLAYING);
-        room.setGameId(gameId);
-        room.setGameTurnId(turnId);
-    }
+//    public void activateRoom(Long roomId, Long gameId, Long turnId){
+//        Room room = roomRepository.findByid(roomId);
+//        if (room == null) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
+//        }
+//        room.setStatus(RoomStatus.PLAYING);
+//        room.setGameId(gameId);
+//        room.setGameTurnId(turnId);
+//    }
 
     public List<Room> getRooms() {
         return this.roomRepository.findAll();
+    }
+
+    public List<Long> getAllPlayersIds(Long id){ //turn id
+        Room room  = roomRepository.findByid(id);
+
+        List<User> users = userRepository.findByRoomId(room.getId());
+
+        List<Long> ids = new ArrayList<>();
+        for(User u:users){
+            ids.add(u.getId());
+        }
+
+        return ids;
     }
 
 }

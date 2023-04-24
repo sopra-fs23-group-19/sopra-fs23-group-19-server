@@ -66,18 +66,21 @@ public class WordsService {
             listOfWords.add(getWord());
         }
 
+        if(listOfWords.size()<3){
+            listOfWords.add(getWord());
+        }
         return listOfWords;
     }
 
 
-    public GameTurn setThreeWords(Long gameTurnInputId) {
-        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnInputId);
-        if(gameTurn == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This game turn is not found!");
-        }
-
-        gameTurn.setWordsToBeChosen(getThreeWords());
-        gameTurnRepository.saveAndFlush(gameTurn);
-        return gameTurn;
-    }
+//    public GameTurn setThreeWords(Long gameTurnInputId) {
+//        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnInputId);
+//        if(gameTurn == null){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This game turn is not found!");
+//        }
+//
+//        gameTurn.setWordsToBeChosen(getThreeWords());
+//        gameTurnRepository.saveAndFlush(gameTurn);
+//        return gameTurn;
+//    }
 }

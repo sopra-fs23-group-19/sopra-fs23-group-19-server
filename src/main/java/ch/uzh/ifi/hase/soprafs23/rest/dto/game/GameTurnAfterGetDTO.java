@@ -28,18 +28,20 @@ public class GameTurnAfterGetDTO {
 
 //    private Boolean DrawingPhase;
 
-    private long gameId;
+    private long roomId;
 //    private Boolean gameTurnStatus;
 //    private Boolean gameStatus;
 
-    private List<Long> submittedAnswerIds;
-    public List<Long> getSubmittedAnswerIds() {
-        return submittedAnswerIds;
+    private int submitNum;
+
+    public int getSubmitNum() {
+        return submitNum;
     }
 
-    public void setSubmittedAnswerIds(List<Long> userIds) {
-        this.submittedAnswerIds = userIds;
+    public void setSubmitNum(int submitNum) {
+        this.submitNum = submitNum;
     }
+
     private TurnStatus status;
     public TurnStatus getStatus() {
         return status;
@@ -58,15 +60,15 @@ public class GameTurnAfterGetDTO {
         this.drawingPlayerId = drawingPlayerId;
     }
 
-    public long getGameId() {
-        return gameId;
+    public void setRoomId(long roomId) {
+        this.roomId = roomId;
     }
 
-    public void setGameId(long gameId) {
-        this.gameId = gameId;
+    public long getRoomId() {
+        return roomId;
     }
 
-     private String targetWord;
+    private String targetWord;
     public String getTargetWord() {
         return targetWord;
     }

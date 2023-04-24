@@ -10,35 +10,41 @@ import java.util.Set;
 public class GameTurnGetDTO {
     private Long id;
 
+    private TurnStatus status;
+
     private Long drawingPlayerId;
 
-    private Set<Long> allPlayersIds;
+    //private List<Long> allPlayersIds;
 
     private String image;
 
-    private Set<String> wordsToBeChosen;
+ //   private Set<String> wordsToBeChosen;
 
 //    private Boolean DrawingPhase;
 
-
-    private Long gameId;
+    private Long roomId;
 //    private Boolean gameTurnStatus;
 
 //    private Boolean gameStatus;
-    private List<Long> submittedAnswerIds;
-    public List<Long> getSubmittedAnswerIds() {
-        return submittedAnswerIds;
+    private int submitNum;
+    private String targetWord;
+
+
+    public void setSubmitNum(int submitNum) {
+        this.submitNum = submitNum;
     }
 
-    public void setSubmittedAnswerIds(List<Long> userIds) {
-        this.submittedAnswerIds = userIds;
+    public int getSubmitNum() {
+        return submitNum;
     }
-    private TurnStatus status;
+
+
+
     public TurnStatus getStatus() {
         return status;
     }
 
-    private String targetWord;
+
     public String getTargetWord() {
         return targetWord;
     }
@@ -61,17 +67,32 @@ public class GameTurnGetDTO {
         this.drawingPlayerId = drawingPlayerId;
     }
 
-    public Set<Long> getAllPlayersIds() {
-        return allPlayersIds;
+    public List<UserNameDTO> getPlayers() {
+        return players;
     }
 
-    public Long getGameId() {
-        return gameId;
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
+    public Long getRoomId() {
+        return roomId;
     }
+
+    public void setPlayers(List<UserNameDTO> players) {
+        this.players = players;
+    }
+    //    public Set<Long> getAllPlayersIds() {
+//        return allPlayersIds;
+//    }
+//
+//    public Long getGameId() {
+//        return gameId;
+//    }
+//
+//    public void setGameId(Long gameId) {
+//        this.gameId = gameId;
+//    }
 
 //    public Boolean getGameTurnStatus() {
 //        return gameTurnStatus;
@@ -81,9 +102,9 @@ public class GameTurnGetDTO {
 //        this.gameTurnStatus = gameTurnStatus;
 //    }
 
-    public void setAllPlayersIds(Set<Long> allPlayersIds) {
-        this.allPlayersIds = allPlayersIds;
-    }
+//    public void setAllPlayersIds(List<Long> allPlayersIds) {
+//        this.allPlayersIds = allPlayersIds;
+//    }
 
     public String getImage() {
         return image;
@@ -105,13 +126,13 @@ public class GameTurnGetDTO {
         return id;
     }
 
-    public Set<String> getWordsToBeChosen() {
-        return wordsToBeChosen;
-    }
-
-    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-        this.wordsToBeChosen = wordsToBeChosen;
-    }
+//    public Set<String> getWordsToBeChosen() {
+//        return wordsToBeChosen;
+//    }
+//
+//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
+//        this.wordsToBeChosen = wordsToBeChosen;
+//    }
 
 //    public Boolean getDrawingPhase() {
 //        return DrawingPhase;

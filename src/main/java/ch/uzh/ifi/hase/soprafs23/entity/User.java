@@ -49,7 +49,7 @@ public class User implements Serializable {
   private Date creationDate;
 
   @Column
-  private int currentScore;
+  private int currentScore; //turn
 
   @Column
   private String guessingWord;
@@ -58,7 +58,7 @@ public class User implements Serializable {
   private int currentGameScore;
 
     @Column
-    private Long currentGameId;
+    private Long roomId;
 
   public Long getId() {
     return id;
@@ -68,12 +68,12 @@ public class User implements Serializable {
     this.id = id;
   }
 
-    public Long getCurrentGameId() {
-        return currentGameId;
+    public Long getRoomId() {
+        return roomId;
     }
 
-    public void setCurrentGameId(Long id) {
-        this.currentGameId = id;
+    public void setRoomId(Long id) {
+        this.roomId = id;
     }
 
   public String getPassword() {

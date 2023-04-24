@@ -1,11 +1,14 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
+// import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
+//import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
@@ -23,15 +26,15 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class GameTurnService {
-    private final GameRepository gameRepository;
+    private final RoomRepository roomRepository;
     private final GameTurnRepository gameTurnRepository;
     private final UserRepository userRepository;
 
     @Autowired
-    public GameTurnService(@Qualifier("gameRepository") GameRepository gameRepository,
+    public GameTurnService(@Qualifier("roomRepository") RoomRepository roomRepository,
                            @Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository,
                            @Qualifier("userRepository")UserRepository userRepository) {
-        this.gameRepository = gameRepository;
+        this.roomRepository = roomRepository;
         this.gameTurnRepository = gameTurnRepository;
         this.userRepository = userRepository;
     }
@@ -61,14 +64,14 @@ public class GameTurnService {
         gameTurnRepository.flush();
     }
 
-    public Game getGame(Long gameId){
-        Game game = gameRepository.findByid(gameId);
-        if(game == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has not started yet!");
-        }else{
-            return game;
-        }
-    }
+//    public Game getGame(Long gameId){
+//        Game game = gameRepository.findByid(gameId);
+//        if(game == null){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has not started yet!");
+//        }else{
+//            return game;
+//        }
+//    }
     public GameTurn getGameTurn(Long gameTurnId){
         GameTurn gameTurn = gameTurnRepository.findByid(gameTurnId);
         if(gameTurn == null){
@@ -122,18 +125,26 @@ public class GameTurnService {
             user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(0);
         }
-        gameTurn.setSubmittedAnswerIds(userInput.getId());
-        if(gameTurn.getSubmittedAnswerIds().size() == gameTurn.getAllPlayersIds().size()-1)
-        {       gameTurn.setStatus(TurnStatus.END);
-            long currentGId = userInput.getCurrentGameId();
-            Game game = getGame(currentGId);
-            if(game.getCurrentGameTurn() == game.getTurnLength()){
-                game.setGameStatus(false);
-            }
-            else {
-                startNewGameTurn(currentGId);
+//        gameTurn.setSubmittedAnswerIds(userInput.getId());
+//        if(gameTurn.getSubmitNum() == gameTurn.getAllPlayersIds().size()-1)
+//        {       gameTurn.setStatus(TurnStatus.END);
+//            long currentGId = userInput.getroomId();
+//            Game game = getGame(currentGId);
+//            if(game.getCurrentGameTurn() == game.getTurnLength()){
+//                game.setGameStatus(false);
+//            }
+//            else {
+//                startNewGameTurn(currentGId);
+//            }
+//        }
+
+        if(gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode()-1)
+        {
+            if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
+                roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }
         }
+
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
     }
@@ -145,15 +156,13 @@ public class GameTurnService {
     // rank all users by scores in this game turn
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        Set<Long> allPlayersIds = new HashSet<>();
-        for(Long id: gameTurn.getAllPlayersIds()){
-            allPlayersIds.add(id);
-        }
+        List<User> allPlayers = userRepository.findByRoomId(gameTurn.getRoomId());
         // find all players
-        List<User> allPlayers = new ArrayList<>();
-        for (Long id: allPlayersIds){
-            allPlayers.add(getUser(id));
-        }
+        //List<User> allPlayers = new ArrayList<>();
+//        for (Long id: allPlayersIds){
+//            allPlayers.add(getUser(id));
+//        }
+
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
             playersScores.put(user, user.getCurrentScore());
@@ -179,100 +188,100 @@ public class GameTurnService {
 
         return rankedUsers;
     }
-    public GameTurn startNewGameTurn(long gameId) {
-
-        Game game = gameRepository.findByid(gameId);
-        game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
-
-        Set<Long> allPlayerIds = new HashSet<>();
-        for(Long id: game.getAllPlayersIds()){
-            allPlayerIds.add(id);
-        }
-        Set<Long> drawingPlayersIds = new HashSet<>();
-        for(Long id: game.getDrawingPlayerIds()){
-            drawingPlayersIds.add(id);
-        }
-        GameTurn gameTurn = new GameTurn();
-        gameTurn.setAllPlayersIds(allPlayerIds);
-        gameTurn.setGameId(game.getId());
-        gameTurn.setStatus(TurnStatus.CHOOSE_WORD);
-//        gameTurn.setDrawingPhase(true);
-//        gameTurn.setGameTurnStatus(true);
-//        gameTurn.setGameStatus(true);
-
-
-        List<Long> allPlayersIds = new ArrayList<>(allPlayerIds);
-        List<Long> drawingPlayerIds = new ArrayList<>(drawingPlayersIds);
-        List<Long> leftDrawingPlayerIds =  allPlayersIds.stream().filter(item -> !drawingPlayerIds.contains(item)).collect(Collectors.toList());
-
-        // find all players
-        List<User> allPlayers = new ArrayList<>();
-        for (Long id: allPlayersIds){
-            allPlayers.add(userRepository.findByid(id));
-        }
-        // set new drawingPlayer
-        if(leftDrawingPlayerIds.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
-        }else if (leftDrawingPlayerIds.size() == 1){
-            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
-            for(Long id: allPlayersIds){
-                if(id == drawingPlayerId){
-                    // set drawing player
-                    User drawingPlayer = allPlayers.get(0);
-                    if(drawingPlayer != null){
-                        gameTurn.setDrawingPlayerId(id);
-                        game.setDrawingPlayerIds(id);
-                        drawingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }else{
-                    // set guessing players
-                    User guessingPlayer = userRepository.findByid(id);
-                    if(guessingPlayer != null) {
-                        guessingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }
-            }
-        }else{
-            // select randomly
-            Random random = new Random();
-            int n = random.nextInt(allPlayers.size());
-            Long m = leftDrawingPlayerIds.get(n);
-            for(Long id: allPlayersIds){
-                if(id == m){
-                    // set drawing player
-                    User drawingPlayer = allPlayers.get(n);
-                    if(drawingPlayer != null){
-                        gameTurn.setDrawingPlayerId(id);
-                        game.setDrawingPlayerIds(id);
-                        drawingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }else{
-                    // set guessing players
-                    User guessingPlayer = userRepository.findByid(id);
-                    if(guessingPlayer != null) {
-                        guessingPlayer.setCurrentScore(0);
-                    }else{
-                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
-                    }
-                }
-            }
-        }
-
-        gameTurnRepository.saveAndFlush(gameTurn);
-
-        // set game turn list <gameTurnId1, gameTurnId2,...>
-        game.setGameTurnList(gameTurn.getId());
-        game.setGameTurnStatus(gameTurn.getStatus());
-        gameRepository.saveAndFlush(game);
-
-        return gameTurn;
-    }
+//    public GameTurn startNewGameTurn(long gameId) {
+//
+//        Game game = gameRepository.findByid(gameId);
+//        game.setCurrentGameTurn(game.getCurrentGameTurn()+1);
+//
+//        Set<Long> allPlayerIds = new HashSet<>();
+//        for(Long id: game.getAllPlayersIds()){
+//            allPlayerIds.add(id);
+//        }
+//        Set<Long> drawingPlayersIds = new HashSet<>();
+//        for(Long id: game.getDrawingPlayerIds()){
+//            drawingPlayersIds.add(id);
+//        }
+//        GameTurn gameTurn = new GameTurn();
+//        gameTurn.setAllPlayersIds(allPlayerIds);
+//        gameTurn.setGameId(game.getId());
+//        gameTurn.setStatus(TurnStatus.CHOOSE_WORD);
+////        gameTurn.setDrawingPhase(true);
+////        gameTurn.setGameTurnStatus(true);
+////        gameTurn.setGameStatus(true);
+//
+//
+//        List<Long> allPlayersIds = new ArrayList<>(allPlayerIds);
+//        List<Long> drawingPlayerIds = new ArrayList<>(drawingPlayersIds);
+//        List<Long> leftDrawingPlayerIds =  allPlayersIds.stream().filter(item -> !drawingPlayerIds.contains(item)).collect(Collectors.toList());
+//
+//        // find all players
+//        List<User> allPlayers = new ArrayList<>();
+//        for (Long id: allPlayersIds){
+//            allPlayers.add(userRepository.findByid(id));
+//        }
+//        // set new drawingPlayer
+//        if(leftDrawingPlayerIds.size() == 0){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, this game has ended!");
+//        }else if (leftDrawingPlayerIds.size() == 1){
+//            Long drawingPlayerId = leftDrawingPlayerIds.get(0);
+//            for(Long id: allPlayersIds){
+//                if(id == drawingPlayerId){
+//                    // set drawing player
+//                    User drawingPlayer = allPlayers.get(0);
+//                    if(drawingPlayer != null){
+//                        gameTurn.setDrawingPlayerId(id);
+//                        game.setDrawingPlayerIds(id);
+//                        drawingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }else{
+//                    // set guessing players
+//                    User guessingPlayer = userRepository.findByid(id);
+//                    if(guessingPlayer != null) {
+//                        guessingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }
+//            }
+//        }else{
+//            // select randomly
+//            Random random = new Random();
+//            int n = random.nextInt(allPlayers.size());
+//            Long m = leftDrawingPlayerIds.get(n);
+//            for(Long id: allPlayersIds){
+//                if(id == m){
+//                    // set drawing player
+//                    User drawingPlayer = allPlayers.get(n);
+//                    if(drawingPlayer != null){
+//                        gameTurn.setDrawingPlayerId(id);
+//                        game.setDrawingPlayerIds(id);
+//                        drawingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }else{
+//                    // set guessing players
+//                    User guessingPlayer = userRepository.findByid(id);
+//                    if(guessingPlayer != null) {
+//                        guessingPlayer.setCurrentScore(0);
+//                    }else{
+//                        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Sorry, there is something wrong when starting a new game turn!");
+//                    }
+//                }
+//            }
+//        }
+//
+//        gameTurnRepository.saveAndFlush(gameTurn);
+//
+//        // set game turn list <gameTurnId1, gameTurnId2,...>
+//        game.setGameTurnList(gameTurn.getId());
+//        game.setGameTurnStatus(gameTurn.getStatus());
+//        gameRepository.saveAndFlush(game);
+//
+//        return gameTurn;
+//    }
 
 
 //    public GameTurn startNewGameTurn(long gameId) {
@@ -368,5 +377,17 @@ public class GameTurnService {
 //        return gameTurn;
 //    }
 
+    public List<Long> getAllPlayersIds(Long id){ //turn id
+        Room room  = roomRepository.findByid(gameTurnRepository.findByid(id).getRoomId());
+
+        List<User> users = userRepository.findByRoomId(room.getId());
+
+        List<Long> ids = new ArrayList<>();
+        for(User u:users){
+            ids.add(u.getId());
+        }
+
+        return ids;
+    }
 
 }

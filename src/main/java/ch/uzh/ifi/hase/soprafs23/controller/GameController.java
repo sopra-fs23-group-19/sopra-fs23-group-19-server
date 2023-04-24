@@ -2,7 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
-import ch.uzh.ifi.hase.soprafs23.entity.Game;
+// import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -49,8 +49,8 @@ public class GameController {
     public GameTurnAfterGetDTO startGame(@PathVariable long roomId){
         // start game turn
         Room room = gameService.getRoom(roomId);
-        GameTurn gameTurn = gameService.startGameTurn(room);
-        roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
+        GameTurn gameTurn = gameService.startGame(room);
+        // roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
         // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
@@ -78,6 +78,7 @@ public class GameController {
 ////            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
 ////        }
 //    }
+
     // get rank list from this game
     //if game status is false.
     @UserLoginToken
@@ -96,14 +97,14 @@ public class GameController {
         return userGetDTOs;
     }
     ///every second get status, ids
-    @UserLoginToken
-    @GetMapping("/games/{gameId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public GameGetDTO getGameById(@PathVariable long gameId){
-        Game currentGame = gameService.getGame(gameId);
-        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
-    }
+//    @UserLoginToken
+//    @GetMapping("/games/{gameId}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ResponseBody
+//    public GameGetDTO getGameById(@PathVariable long gameId){
+//        Game currentGame = gameService.getGame(gameId);
+//        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
+//    }
 
     @UserLoginToken
     @GetMapping("/games/leave/{gameId}")
@@ -117,23 +118,24 @@ public class GameController {
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
 
         GameTurnAfterGetDTO gameTurnAfterGetDTO = new GameTurnAfterGetDTO();
+
         gameTurnAfterGetDTO.setId(gameTurnGetDTO.getId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
-        gameTurnAfterGetDTO.setSubmittedAnswerIds(gameTurnGetDTO.getSubmittedAnswerIds());
+        gameTurnAfterGetDTO.setSubmitNum(gameTurnGetDTO.getSubmitNum());
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
-        gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
-//        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
-        gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());
-//        gameTurnAfterGetDTO.setGameTurnStatus(gameTurnGetDTO.getGameTurnStatus());
+////        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
+        gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
+        gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
 //        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 
-        if(gameTurnGetDTO.getAllPlayersIds()==null) {
+
+        if(gameService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
             gameTurnAfterGetDTO.setPlayers(null);
         }else {
-            for(Long iid: gameTurnGetDTO.getAllPlayersIds()){
+            for(Long iid: gameService.getAllPlayersIds(gameTurnGetDTO.getId())){
                 gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }

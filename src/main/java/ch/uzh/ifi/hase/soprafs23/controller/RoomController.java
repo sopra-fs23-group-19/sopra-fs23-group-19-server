@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,9 +21,11 @@ import java.util.List;
 public class RoomController {
     private final RoomService roomService;
     private final UserService userService;
-    RoomController(RoomService roomService, UserService userService) {
+    private final GameService gameService;
+    RoomController(RoomService roomService, UserService userService, GameService gameService) {
         this.roomService = roomService;
         this.userService = userService;
+        this.gameService = gameService;
     }
 
 //    @Autowired
@@ -103,22 +106,22 @@ public class RoomController {
 
         roomAfterGetDTO.setRoomSeats(roomGetDTO.getMode());
         roomAfterGetDTO.setId(roomGetDTO.getId());
-        roomAfterGetDTO.setGameId(roomGetDTO.getGameId());
-        roomAfterGetDTO.setGameTurnId(roomGetDTO.getGameTurnId());
+//        roomAfterGetDTO.setGameId(roomGetDTO.getGameId());
+//        roomAfterGetDTO.setGameTurnId(roomGetDTO.getGameTurnId());
         roomAfterGetDTO.setOwnerId(roomGetDTO.getOwnerId());
         roomAfterGetDTO.setRoomName(roomGetDTO.getRoomName());
         roomAfterGetDTO.setStatus(roomGetDTO.getStatus());
 
-        if(roomGetDTO.getPlayers()==null) {
+        if(roomService.getAllPlayersIds(roomGetDTO.getId())==null) {
             roomAfterGetDTO.setPlayers(null);
         }else {
-            for(Long iid: roomGetDTO.getPlayers()){
+            for(Long iid: roomService.getAllPlayersIds(roomGetDTO.getId())){
                 userService.changeStatusToPlaying(iid);
                 roomAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }
 
-        roomAfterGetDTO.setNumberOfPlayers(roomGetDTO.getPlayers().size());
+        //roomAfterGetDTO.setNumberOfPlayers(roomGetDTO.getPlayers().size());
 
         return roomAfterGetDTO;
     }

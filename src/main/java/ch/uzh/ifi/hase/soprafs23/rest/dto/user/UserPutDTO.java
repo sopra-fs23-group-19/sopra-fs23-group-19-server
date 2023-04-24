@@ -6,7 +6,7 @@ public class UserPutDTO {
     private String password;
     private Long id;
     private String guessingWord;
-  private Long currentGameId;
+  private Long roomId;
     public String getUsername() {
         return username;
     }
@@ -23,12 +23,12 @@ public class UserPutDTO {
 
         this.password = password;
     }
-    public Long getCurrentGameId() {
-        return currentGameId;
+    public Long getroomId() {
+        return roomId;
     }
 
-    public void setCurrentGameId(Long id) {
-        this.currentGameId = id;
+    public void setroomId(Long id) {
+        this.roomId = id;
     }
     public Long getId() {
         return id;

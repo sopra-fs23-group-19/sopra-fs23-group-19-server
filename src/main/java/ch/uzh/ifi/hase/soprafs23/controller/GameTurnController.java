@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 public class GameTurnController {
@@ -38,12 +39,12 @@ public class GameTurnController {
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameTurnAfterGetDTO getThreeWords(@PathVariable("gameTurnId") long gameTurnId){
+    public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId){
 
-        GameTurn gameTurn = wordsService.setThreeWords(gameTurnId);
-        GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+        // GameTurn gameTurn = wordsService.setThreeWords(gameTurnId);
+        //GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
-        return changeGetToAfter(gameTurnGetDTO);
+        return wordsService.getThreeWords();
     }
 
     // drawing player chooses the target word
@@ -140,20 +141,20 @@ public class GameTurnController {
         //only drawing player knows the words information
         if(userId == gameTurnGetDTO.getDrawingPlayerId())
         {
-            gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
+            //gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
             gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         }
-        gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());
+        gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
 
         //added
-        gameTurnAfterGetDTO.setSubmittedAnswerIds(gameTurnGetDTO.getSubmittedAnswerIds());
+        gameTurnAfterGetDTO.setSubmitNum(gameTurnGetDTO.getSubmitNum());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
         gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
 
-        if(gameTurnGetDTO.getAllPlayersIds()==null) {
+        if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
             gameTurnAfterGetDTO.setPlayers(null);
         }else {
-            for(Long iid: gameTurnGetDTO.getAllPlayersIds()){
+            for(Long iid: gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())){
                 gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }
@@ -162,27 +163,26 @@ public class GameTurnController {
     }
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
+
         GameTurnAfterGetDTO gameTurnAfterGetDTO = new GameTurnAfterGetDTO();
+
         gameTurnAfterGetDTO.setId(gameTurnGetDTO.getId());
+        gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
+        gameTurnAfterGetDTO.setSubmitNum(gameTurnGetDTO.getSubmitNum());
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
-        gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
-
-//        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
-
-
-        gameTurnAfterGetDTO.setGameId(gameTurnGetDTO.getGameId());
-
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
-        //added
-        gameTurnAfterGetDTO.setSubmittedAnswerIds(gameTurnGetDTO.getSubmittedAnswerIds());
+////        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
+        gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
-       gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
+//        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
-        if(gameTurnGetDTO.getAllPlayersIds()==null) {
+
+
+        if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
             gameTurnAfterGetDTO.setPlayers(null);
         }else {
-            for(Long iid: gameTurnGetDTO.getAllPlayersIds()){
+            for(Long iid: gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())){
                 gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }

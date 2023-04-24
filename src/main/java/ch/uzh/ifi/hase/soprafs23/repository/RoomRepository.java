@@ -11,4 +11,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     Room findByRoomName(String name);
 
+    // Room findByGameId(Long gameId);
+
 }

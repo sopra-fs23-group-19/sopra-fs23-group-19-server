@@ -32,26 +32,32 @@ public class GameTurn implements Serializable {
     @Column(nullable = false)
     private TurnStatus status;
 
-    @Column
-    @ElementCollection
-    private Set<Long> allPlayersIds = new HashSet<>();
+//    @Column
+//    @ElementCollection
+//    private Set<Long> allPlayersIds = new HashSet<>();
 
+//    @Column
+//    @ElementCollection
+//    private List<Long> submittedAnswerIds = new ArrayList<>();
     @Column
-    @ElementCollection
-    private List<Long> submittedAnswerIds = new ArrayList<>();
+    private int submitNum = 0;
 
 //    @Column(nullable = false)
 //    private int turnLength;  //game mode
 
     @Column
+    private int currentTurn;
+
+    @Column
     private String targetWord;
 
     @Column
-    private Long gameId;
+    private Long roomId;
 
-    @Column
-    @ElementCollection
-    private Set<String> wordsToBeChosen = new HashSet<>();
+//    @Column
+//    @ElementCollection
+//    private Set<String> wordsToBeChosen = new HashSet<>();
+
 
 //    @Column
 //    private Boolean DrawingPhase = false;
@@ -78,13 +84,13 @@ public class GameTurn implements Serializable {
         this.id = turnId;
     }
 
-    public List<Long> getSubmittedAnswerIds() {
-        return submittedAnswerIds;
-    }
-
-    public void setSubmittedAnswerIds(Long userId) {
-        this.submittedAnswerIds.add(userId);
-    }
+//    public List<Long> getSubmittedAnswerIds() {
+//        return submittedAnswerIds;
+//    }
+//
+//    public void setSubmittedAnswerIds(Long userId) {
+//        this.submittedAnswerIds.add(userId);
+//    }
 //    public int getTurnLength() {
 //        return turnLength;
 //    }
@@ -101,13 +107,13 @@ public class GameTurn implements Serializable {
         return drawingPlayerId;
     }
 
-    public void setAllPlayersIds(Set<Long> allPlayersIds) {
-        this.allPlayersIds = allPlayersIds;
-    }
-
-    public Set<Long> getAllPlayersIds() {
-        return allPlayersIds;
-    }
+//    public void setAllPlayersIds(Set<Long> allPlayersIds) {
+//        this.allPlayersIds = allPlayersIds;
+//    }
+//
+//    public Set<Long> getAllPlayersIds() {
+//        return allPlayersIds;
+//    }
 
     public String getImage() {
         return image;
@@ -125,21 +131,21 @@ public class GameTurn implements Serializable {
         this.targetWord = targetWord;
     }
 
-    public Long getGameId() {
-        return gameId;
-    }
-
-    public void setGameId(Long gameId) {
-        this.gameId = gameId;
-    }
-
-    public Set<String> getWordsToBeChosen() {
-        return wordsToBeChosen;
-    }
-
-    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-        this.wordsToBeChosen = wordsToBeChosen;
-    }
+//    public Long getGameId() {
+//        return gameId;
+//    }
+//
+//    public void setGameId(Long gameId) {
+//        this.gameId = gameId;
+//    }
+//
+//    public Set<String> getWordsToBeChosen() {
+//        return wordsToBeChosen;
+//    }
+//
+//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
+//        this.wordsToBeChosen = wordsToBeChosen;
+//    }
 
 //    public Boolean getDrawingPhase() {
 //        return DrawingPhase;
@@ -165,4 +171,32 @@ public class GameTurn implements Serializable {
 //        this.gameStatus = gameStatus;
 //    }
 
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public int getSubmitNum() {
+        return submitNum;
+    }
+
+    public static Long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
+    }
+
+    public void setSubmitNum(int submitNum) {
+        this.submitNum = submitNum;
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(int currentTurn) {
+        this.currentTurn = currentTurn;
+    }
 }
