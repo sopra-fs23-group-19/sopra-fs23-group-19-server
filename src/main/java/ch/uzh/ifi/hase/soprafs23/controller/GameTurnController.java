@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
-import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
@@ -35,7 +33,7 @@ public class GameTurnController {
     }
 
     // get three words to be chosen by the drawing player
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -48,7 +46,7 @@ public class GameTurnController {
     }
 
     // drawing player chooses the target word
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/words")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -58,7 +56,7 @@ public class GameTurnController {
     }
 
     // drawing player updates the image
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/drawings")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -69,7 +67,7 @@ public class GameTurnController {
     }
 
     // drawing player submits the image
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/gameRounds/finalDrawings")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -81,7 +79,7 @@ public class GameTurnController {
     }
 
     // guessing player submits the answer in advance
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -91,7 +89,7 @@ public class GameTurnController {
     }
 
     // get rank list from this turn
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/ranks/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -108,7 +106,7 @@ public class GameTurnController {
     }
 
     // users request refreshed information from backend every second
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/information/{gameTurnId}/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -1,12 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
-// import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
@@ -18,9 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User Controller This class is responsible for handling all REST request that are related to the
@@ -42,7 +37,7 @@ public class GameController {
     }
 
     // start a new game
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -81,7 +76,7 @@ public class GameController {
 
     // get rank list from this game
     //if game status is false.
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -106,7 +101,7 @@ public class GameController {
 //        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
 //    }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/games/leave/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

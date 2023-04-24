@@ -68,12 +68,14 @@ public class RoomService {
 
 //        roomRepository.flush();
         User user = userRepository.findByid(userId);
+        user.setRoomId(roomId);
 
         if(room.getMode()== userRepository.findByRoomId(roomId).size()){
             room.setStatus(RoomStatus.READY);
         }
 
         roomRepository.flush();
+        userRepository.flush();
 
         return room;
     }
