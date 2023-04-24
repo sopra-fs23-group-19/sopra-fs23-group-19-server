@@ -101,9 +101,8 @@ public class GameController {
 //    @GetMapping("/games/{gameId}")
 //    @ResponseStatus(HttpStatus.OK)
 //    @ResponseBody
-//    public GameGetDTO getGameById(@PathVariable long gameId){
-//        Game currentGame = gameService.getGame(gameId);
-//        return DTOMapper.INSTANCE.convertEntityToGameGetDTO(currentGame);
+//    public GameGetDTO getGameById(@PathVariable long gameId){ //roomId
+//        return gameService.changeRoomToGameGetDTO(gameId);
 //    }
 
     @UserLoginToken
