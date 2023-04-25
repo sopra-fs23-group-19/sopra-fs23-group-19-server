@@ -96,7 +96,7 @@ public class GameController {
 //    }
 
     @UserLoginToken
-    @GetMapping("/games/leave/{gameId}")
+    @PutMapping("/games/ending/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void QuitGame(@PathVariable long gameId){

@@ -36,7 +36,7 @@ public class RoomController {
     // owner doesn't need to join the room after creating
 
     @UserLoginToken
-    @PostMapping("/games")
+    @PostMapping("/rooms")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RoomAfterGetDTO createRoom(@RequestBody RoomPostDTO roomPostDTO) {
@@ -51,7 +51,7 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @PutMapping("/games/join")
+    @PutMapping("/rooms/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public RoomAfterGetDTO joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
@@ -67,7 +67,7 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @GetMapping(value = "/games/waitingArea/{roomId}")
+    @GetMapping(value = "/rooms/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public RoomAfterGetDTO retrieveRoom(@PathVariable Long roomId){
@@ -75,7 +75,7 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @GetMapping("/games")
+    @GetMapping("/rooms")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<RoomAfterGetDTO> getAllRooms() {
@@ -92,7 +92,7 @@ public class RoomController {
     }
 
     @UserLoginToken
-    @PutMapping("/games/leave")
+    @PutMapping("/rooms/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void leaveRoom(@RequestBody RoomPutDTO roomPutDTO) {
