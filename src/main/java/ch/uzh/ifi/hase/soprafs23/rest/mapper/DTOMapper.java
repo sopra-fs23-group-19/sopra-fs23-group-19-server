@@ -4,7 +4,6 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
@@ -100,15 +99,12 @@ public interface DTOMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "drawingPlayerId", target = "drawingPlayerId")
-    //@Mapping(source = "allPlayersIds", target = "allPlayersIds")
     @Mapping(source = "image", target = "image")
-    //@Mapping(source = "wordsToBeChosen", target = "wordsToBeChosen")
     @Mapping(source = "submitNum", target = "submitNum")
     @Mapping(source = "roomId", target = "roomId")
     @Mapping(source = "targetWord", target = "targetWord")
     @Mapping(source = "status", target = "status")
-    @Mapping(target = "players", ignore = true)
-//    @Mapping(source = "gameStatus", target = "gameStatus")
+    @Mapping(source = "currentTurn", target = "currentTurn")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 
     ///added by runze

@@ -10,9 +10,6 @@ import java.util.List;
 
 public class RoomAfterGetDTO {
     private Long id;
-//    private Long gameId;
-//    private Long gameTurnId;
-
     private String roomName;
 
     private int roomSeats;
@@ -31,6 +28,8 @@ public class RoomAfterGetDTO {
 
     private Long currentTurnId;  //most recent turn
     private TurnStatus currentTurnStatus; //most recent turn status
+
+
 
     public Long getCurrentTurnId() {
         return currentTurnId;

@@ -17,7 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class RoomController {
@@ -40,7 +42,6 @@ public class RoomController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public RoomAfterGetDTO createRoom(@RequestBody RoomPostDTO roomPostDTO) {
-        userService.retrieveUser(roomPostDTO.getOwnerId()).setStatus(UserStatus.ONLINE);
         // convert API user to internal representation
         return changeRoomToAfter(
                 roomService.createRoom(
@@ -57,7 +58,6 @@ public class RoomController {
     @ResponseBody
     public RoomAfterGetDTO joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
-        userService.retrieveUser(roomPutDTO.getUserId()).setStatus(UserStatus.ISPLAYING);
         return changeRoomToAfter(room);
 //         for(int i=0; i<players.size(); i++){
 //             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
@@ -108,8 +108,6 @@ public class RoomController {
 
         roomAfterGetDTO.setRoomSeats(roomGetDTO.getMode());
         roomAfterGetDTO.setId(roomGetDTO.getId());
-//        roomAfterGetDTO.setGameId(roomGetDTO.getGameId());
-//        roomAfterGetDTO.setGameTurnId(roomGetDTO.getGameTurnId());
         roomAfterGetDTO.setOwnerId(roomGetDTO.getOwnerId());
         roomAfterGetDTO.setRoomName(roomGetDTO.getRoomName());
         roomAfterGetDTO.setStatus(roomGetDTO.getStatus());
@@ -118,36 +116,33 @@ public class RoomController {
             roomAfterGetDTO.setPlayers(null);
         }else {
             for(Long iid: roomService.getAllPlayersIds(roomGetDTO.getId())){
-                userService.changeStatusToPlaying(iid);
+                // userService.changeStatusToPlaying(iid);
                 roomAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }
 
         roomAfterGetDTO.setNumberOfPlayers(roomService.getAllPlayersIds(roomGetDTO.getId()).size());
 
-        roomAfterGetDTO.setTurns(roomService.getAllTurns(roomGetDTO.getId()));
+        if(roomService.getAllTurns(roomGetDTO.getId())==null) {
+            roomAfterGetDTO.setTurns(null);
+        }else {
+            for(GameTurn t: roomService.getAllTurns(roomGetDTO.getId())){
+                roomAfterGetDTO.getTurns().add(t);
+            }
+        }
 
         List<GameTurn> turns = roomAfterGetDTO.getTurns();
-        for(GameTurn t: turns){
-            if(t.getStatus()!= TurnStatus.END){
-                roomAfterGetDTO.setCurrentTurnId(t.getId());
-                roomAfterGetDTO.setCurrentTurnStatus(t.getStatus());
+        for(int i=turns.size()-1; i>=0; i--){
+            // System.out.println(turns.get(i).getCurrentTurn());
+            if(turns.get(i).getStatus()!= TurnStatus.END){
+                roomAfterGetDTO.setCurrentTurnId(turns.get(i).getId());
+                roomAfterGetDTO.setCurrentTurnStatus(turns.get(i).getStatus());
             }
         }
 
         return roomAfterGetDTO;
     }
 
-//    public List<Long> transferStringToLong(String players){
-//        String[] strArray = players.split(",");
-//        List<Long> LongList = new ArrayList<>();
-//
-//        for (String s : strArray) {
-//            LongList.add(Long.valueOf(s));
-//        }
-//
-//        return LongList;
-//    }
 
 }
 

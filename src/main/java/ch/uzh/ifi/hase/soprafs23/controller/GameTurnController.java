@@ -176,7 +176,6 @@ public class GameTurnController {
 //        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 
-
         if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
             gameTurnAfterGetDTO.setPlayers(null);
         }else {

@@ -9,18 +9,6 @@ public class RoomPostDTO {
 
     private Long ownerId;
 
-    // string of players id
-
-//    private List<Long> players = new ArrayList<>();
-
-//    private RoomStatus status;
-
-//    public Long getTurnId() {
-//        return id;
-//    }
-//    public void setTurnId(Long id){
-//        this.id=id;
-//    }
 
     public String getRoomName(){
         return roomName;
@@ -44,20 +32,4 @@ public class RoomPostDTO {
         this.ownerId=ownerId;
     }
 
-
-//    public List<Long> getPlayers() {
-//        return players;
-//    }
-//
-//    public void setPlayers(List<Long> players) {
-//        this.players = players;
-//    }
-
-//    public void setStatus(RoomStatus status) {
-//        this.status = status;
-//    }
-//
-//    public RoomStatus getStatus() {
-//        return status;
-//    }
 }

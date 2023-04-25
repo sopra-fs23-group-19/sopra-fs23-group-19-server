@@ -45,15 +45,9 @@ public class GameController {
         // start game turn
         Room room = gameService.getRoom(roomId);
         GameTurn gameTurn = gameService.startGame(room);
-        // roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
-        // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
         return changeGetToAfter(gameTurnGetDTO);
-
-//        for(int i=0; i<playersIds.size(); i++){
-//            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
-//        }
     }
 
 //    @UserLoginToken

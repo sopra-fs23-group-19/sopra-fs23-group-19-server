@@ -20,8 +20,6 @@ public class GameTurn implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column
-//    private String image;
     @Column(name="IMAGE", columnDefinition="CLOB")
     @Lob
     private String image;
@@ -32,18 +30,8 @@ public class GameTurn implements Serializable {
     @Column(nullable = false)
     private TurnStatus status;
 
-//    @Column
-//    @ElementCollection
-//    private Set<Long> allPlayersIds = new HashSet<>();
-
-//    @Column
-//    @ElementCollection
-//    private List<Long> submittedAnswerIds = new ArrayList<>();
     @Column
     private int submitNum = 0;
-
-//    @Column(nullable = false)
-//    private int turnLength;  //game mode
 
     @Column
     private int currentTurn;
@@ -53,6 +41,8 @@ public class GameTurn implements Serializable {
 
     @Column
     private Long roomId;
+
+
 
 //    @Column
 //    @ElementCollection

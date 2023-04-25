@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 // import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -44,12 +45,6 @@ public class GameTurnService {
 
         // refresh current gameTurn status - add new image string
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
-//        String image = gameTurn.getImage();
-//        if(image == null) {
-//            gameTurn.setImage(gameTurnPutDTO.getImage());
-//        }else{
-//            gameTurn.setImage(image + gameTurnPutDTO.getImage());
-//        }
         gameTurn.setImage(gameTurnPutDTO.getImage());
         gameTurnRepository.saveAndFlush(gameTurn);
 
@@ -93,16 +88,7 @@ public class GameTurnService {
     // the drawing player finishes his/her drawing, and the guessing phase begins
     public GameTurn submitImage(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
-
-//        String image = gameTurn.getImage();
-//        if(image == null) {
-//            gameTurn.setImage(gameTurnPutDTO.getImage());
-//        }else{
-//            gameTurn.setImage(image + gameTurnPutDTO.getImage());
-//        }
-
         gameTurn.setImage( gameTurnPutDTO.getImage());
-//        gameTurn.setDrawingPhase(false);
         gameTurn.setStatus(TurnStatus.GUESSING);
         gameTurnRepository.flush();
 
@@ -115,40 +101,35 @@ public class GameTurnService {
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         // find user in the db
         User user = getUser(userInput.getId());
+        user.setGuessingWord(userInput.getGuessingWord());
+
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
+
+        Room room = roomRepository.findByid(gameTurn.getRoomId());
+
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
-            user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(1);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+1);  // total scores in this game accumulate
         }else{
-            user.setGuessingWord(userInput.getGuessingWord());
             user.setCurrentScore(0);
         }
-//        gameTurn.setSubmittedAnswerIds(userInput.getId());
-//        if(gameTurn.getSubmitNum() == gameTurn.getAllPlayersIds().size()-1)
-//        {       gameTurn.setStatus(TurnStatus.END);
-//            long currentGId = userInput.getroomId();
-//            Game game = getGame(currentGId);
-//            if(game.getCurrentGameTurn() == game.getTurnLength()){
-//                game.setGameStatus(false);
-//            }
-//            else {
-//                startNewGameTurn(currentGId);
-//            }
-//        }
 
         if(gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode()-1)
         {
             gameTurn.setStatus(TurnStatus.END);
             if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
                 roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
+                for(User u: userRepository.findByRoomId(room.getId())){
+                    u.setStatus(UserStatus.ONLINE);
+                }
             }
         }
 
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
+        roomRepository.flush();
     }
 
 
@@ -159,11 +140,6 @@ public class GameTurnService {
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
         List<User> allPlayers = userRepository.findByRoomId(gameTurn.getRoomId());
-        // find all players
-        //List<User> allPlayers = new ArrayList<>();
-//        for (Long id: allPlayersIds){
-//            allPlayers.add(getUser(id));
-//        }
 
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){

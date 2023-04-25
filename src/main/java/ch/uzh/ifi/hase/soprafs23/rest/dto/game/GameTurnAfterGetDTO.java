@@ -19,23 +19,11 @@ public class GameTurnAfterGetDTO {
 
     private String targetWord;
     private TurnStatus status;
-    public String getDrawingPlayerName() {
-        return drawingPlayerName;
-    }
-
-    public void setDrawingPlayerName(String name) {
-        this.drawingPlayerName = name;
-    }
-
- //   private Set<String> wordsToBeChosen;
-
-//    private Boolean DrawingPhase;
 
     private long roomId;
-//    private Boolean gameTurnStatus;
-//    private Boolean gameStatus;
-
     private int submitNum=0;
+
+
 
     public int getSubmitNum() {
         return submitNum;
@@ -96,6 +84,13 @@ public class GameTurnAfterGetDTO {
 
     public long getId() {
         return id;
+    }
+    public String getDrawingPlayerName() {
+        return drawingPlayerName;
+    }
+
+    public void setDrawingPlayerName(String name) {
+        this.drawingPlayerName = name;
     }
 
 //    public Set<String> getWordsToBeChosen() {
