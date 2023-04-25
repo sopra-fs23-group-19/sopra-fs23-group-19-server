@@ -118,13 +118,18 @@ public class GameTurnService {
 
         if(gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode()-1)
         {
-            gameTurn.setStatus(TurnStatus.END);
-            if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
-                roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
-//                for(User u: userRepository.findByRoomId(room.getId())){
-//                    u.setStatus(UserStatus.ONLINE);
-//                }
-            }
+            gameTurn.setStatus(TurnStatus.RANKING);
+//            if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
+//                roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
+////                for(User u: userRepository.findByRoomId(room.getId())){
+////                    u.setStatus(UserStatus.ONLINE);
+////                }
+//            }
+        }
+
+
+        for(User u: userRepository.findByRoomId(gameTurn.getRoomId())){
+            u.setConfirmRank(false);
         }
 
         userRepository.saveAndFlush(user);
@@ -372,6 +377,35 @@ public class GameTurnService {
         }
 
         return ids;
+    }
+
+    public GameTurn confirmRank(Long turnId, Long userId){
+        GameTurn gameTurn = gameTurnRepository.findByid(turnId);
+        List<User> users = userRepository.findByRoomId(roomRepository.findByid(gameTurn.getRoomId()).getId());
+
+        boolean allConfirm = true;
+        for(User u: users){
+
+            if(userId==u.getId()){
+                u.setConfirmRank(true);
+            }
+
+            if(u.isConfirmRank()!=true){
+                allConfirm=false;
+            }
+
+        }
+
+        if(allConfirm) {
+            gameTurn.setStatus(TurnStatus.END);
+            if (gameTurn.getCurrentTurn() == roomRepository.findByid(gameTurn.getRoomId()).getMode()) {
+                roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
+            }
+        }
+
+        System.out.println(gameTurn.getStatus());
+
+        return gameTurn;
     }
 
 }

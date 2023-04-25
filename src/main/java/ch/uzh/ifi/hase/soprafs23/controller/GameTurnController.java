@@ -119,6 +119,18 @@ public class GameTurnController {
         return changeGetAccordingToUserId(gameTurnGetDTO, userId);
     }
 
+    @UserLoginToken
+    @GetMapping("/gameRounds/rankConfirmation/{gameTurnId}/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public GameTurnAfterGetDTO confirmRank(@PathVariable("gameTurnId") long gameTurnId, @PathVariable("userId") long userId){
+
+        GameTurn gameTurn = gameTurnService.confirmRank(gameTurnId, userId);
+        GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
+
+        return changeGetToAfter(gameTurnGetDTO);
+    }
+
 //    @UserLoginToken
 //    @PostMapping("/games/gameRounds/{gameId}")
 //    @ResponseStatus(HttpStatus.CREATED)

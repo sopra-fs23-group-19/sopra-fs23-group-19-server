@@ -60,7 +60,18 @@ public class User implements Serializable {
     @Column
     private Long roomId;
 
-  public Long getId() {
+    @Column
+    private boolean confirmRank = false;
+
+    public boolean isConfirmRank() {
+        return confirmRank;
+    }
+
+    public void setConfirmRank(boolean confirmRank) {
+        this.confirmRank = confirmRank;
+    }
+
+    public Long getId() {
     return id;
   }
 
