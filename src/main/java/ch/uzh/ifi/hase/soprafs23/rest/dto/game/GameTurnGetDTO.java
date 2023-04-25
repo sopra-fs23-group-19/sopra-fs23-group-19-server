@@ -14,22 +14,21 @@ public class GameTurnGetDTO {
 
     private Long drawingPlayerId;
 
-    //private List<Long> allPlayersIds;
-
     private String image;
 
- //   private Set<String> wordsToBeChosen;
-
-//    private Boolean DrawingPhase;
-
     private Long roomId;
-//    private Boolean gameTurnStatus;
-
-//    private Boolean gameStatus;
     private int submitNum=0;
     private String targetWord;
+    private int currentTurn;
 
 
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(int currentTurn) {
+        this.currentTurn = currentTurn;
+    }
     public void setSubmitNum(int submitNum) {
         this.submitNum = submitNum;
     }
@@ -37,8 +36,6 @@ public class GameTurnGetDTO {
     public int getSubmitNum() {
         return submitNum;
     }
-
-
 
     public TurnStatus getStatus() {
         return status;
@@ -57,18 +54,12 @@ public class GameTurnGetDTO {
         this.status = status;
     }
 
-    private List<UserNameDTO> players = new ArrayList<>();
-
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
     }
 
     public void setDrawingPlayerId(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
-    }
-
-    public List<UserNameDTO> getPlayers() {
-        return players;
     }
 
     public void setRoomId(Long roomId) {
@@ -78,33 +69,6 @@ public class GameTurnGetDTO {
     public Long getRoomId() {
         return roomId;
     }
-
-    public void setPlayers(List<UserNameDTO> players) {
-        this.players = players;
-    }
-    //    public Set<Long> getAllPlayersIds() {
-//        return allPlayersIds;
-//    }
-//
-//    public Long getGameId() {
-//        return gameId;
-//    }
-//
-//    public void setGameId(Long gameId) {
-//        this.gameId = gameId;
-//    }
-
-//    public Boolean getGameTurnStatus() {
-//        return gameTurnStatus;
-//    }
-
-//    public void setGameTurnStatus(Boolean gameTurnStatus) {
-//        this.gameTurnStatus = gameTurnStatus;
-//    }
-
-//    public void setAllPlayersIds(List<Long> allPlayersIds) {
-//        this.allPlayersIds = allPlayersIds;
-//    }
 
     public String getImage() {
         return image;
@@ -125,36 +89,4 @@ public class GameTurnGetDTO {
     public Long getId() {
         return id;
     }
-
-//    public Set<String> getWordsToBeChosen() {
-//        return wordsToBeChosen;
-//    }
-//
-//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-//        this.wordsToBeChosen = wordsToBeChosen;
-//    }
-
-//    public Boolean getDrawingPhase() {
-//        return DrawingPhase;
-//    }
-//
-//    public void setDrawingPhase(Boolean drawingPhase) {
-//        DrawingPhase = drawingPhase;
-//    }
-
-//    public Boolean getGameStatus() {
-//        return gameStatus;
-//    }
-//
-//    public void setGameStatus(Boolean gameStatus) {
-//        this.gameStatus = gameStatus;
-//    }
-
-//    public String getTargetWord() {
-//        return targetWord;
-//    }
-//
-//    public void setTargetWord(String targetWord) {
-//        this.targetWord = targetWord;
-//    }
 }

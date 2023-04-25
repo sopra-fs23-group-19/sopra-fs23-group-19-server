@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 //import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -52,6 +53,7 @@ public class RoomService {
         roomRepository.flush();
 
         userRepository.findByid(newRoom.getOwnerId()).setRoomId(newRoom.getId());
+        userRepository.findByid(newRoom.getOwnerId()).setStatus(UserStatus.ONLINE);
         userRepository.flush();
 
         System.out.println("create----"+newRoom.getId());
@@ -75,6 +77,7 @@ public class RoomService {
 //        roomRepository.flush();
         User user = userRepository.findByid(userId);
         user.setRoomId(roomId);
+        user.setStatus(UserStatus.ISPLAYING);
 
         if(room.getMode()== userRepository.findByRoomId(roomId).size()){
             room.setStatus(RoomStatus.READY);

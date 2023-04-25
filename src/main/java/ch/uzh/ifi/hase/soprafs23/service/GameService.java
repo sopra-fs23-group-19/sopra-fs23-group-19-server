@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 //import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
@@ -12,7 +11,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,24 +49,6 @@ public class GameService {
     // initialize a new game
     // return the information of first game turn
     public GameTurn startGame(Room room) {
-        // start a new game
-//        Game game = new Game();
-//        // set turn length
-//        game.setTurnLength(room.getMode());
-//        game.setGameStatus(true);
-//        // set current turn index
-//        game.setCurrentGameTurn(1);
-//        // set all players ids
-//        Set<Long> allPlayerIds = new HashSet<>();
-//        for(Long id: room.getPlayers()){
-//            allPlayerIds.add(id);
-//        }
-//        game.setAllPlayersIds(allPlayerIds);
-//
-//        game = gameRepository.save(game);
-//        gameRepository.flush();
-//
-//        return game;
         room.setStatus(RoomStatus.PLAYING);
 
         for(int i =0; i<room.getMode();i++){
@@ -355,16 +335,9 @@ public class GameService {
     // rank all players in this game
     public List<User> rankAll(long gameId) { //find room
         Room room = roomRepository.findByid(gameId);
-//        Game game = getGame(gameId);
-//        Set<Long> allPlayersIds = new HashSet<>();
-//        for(Long id: game.getAllPlayersIds()){
-//            allPlayersIds.add(id);
-//        }
         // find all players
         List<User> allPlayers = userRepository.findByRoomId(room.getId());
-//        for (Long id: allPlayersIds){
-//            allPlayers.add(getUser(id));
-//        }
+
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
             playersScores.put(user, user.getCurrentGameScore());
@@ -373,9 +346,6 @@ public class GameService {
         List<User> rankedUsers =  playersScores.entrySet().stream()
                 .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
                 .map(entry -> entry.getKey()).collect(Collectors.toList());
-
-
-        //gameRepository.saveAndFlush(game);
 
         return rankedUsers;
     }

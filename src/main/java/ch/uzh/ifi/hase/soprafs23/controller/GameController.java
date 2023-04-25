@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
@@ -18,9 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User Controller This class is responsible for handling all REST request that are related to the
@@ -50,15 +47,9 @@ public class GameController {
         // start game turn
         Room room = gameService.getRoom(roomId);
         GameTurn gameTurn = gameService.startGame(room);
-        // roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
-        // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
         return changeGetToAfter(gameTurnGetDTO);
-
-//        for(int i=0; i<playersIds.size(); i++){
-//            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
-//        }
     }
 
 //    @UserLoginToken

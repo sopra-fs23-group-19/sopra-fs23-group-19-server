@@ -7,6 +7,7 @@ public class GameTurnPutDTO {
 //    private Long userId;
     private String targetWord;
 
+
     public Long getId() {
         return id;
     }
