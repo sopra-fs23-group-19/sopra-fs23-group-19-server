@@ -1,11 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.game;
 
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 public class GameTurnGetDTO {
     private Long id;
@@ -20,7 +15,6 @@ public class GameTurnGetDTO {
     private int submitNum=0;
     private String targetWord;
     private int currentTurn;
-
 
     public int getCurrentTurn() {
         return currentTurn;
@@ -89,4 +83,5 @@ public class GameTurnGetDTO {
     public Long getId() {
         return id;
     }
+
 }

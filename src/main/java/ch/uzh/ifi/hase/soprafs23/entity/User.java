@@ -49,13 +49,13 @@ public class User implements Serializable {
   private Date creationDate;
 
   @Column
-  private int currentScore; //turn
+  private int currentScore = 0; //turn
 
   @Column
   private String guessingWord;
 
   @Column
-  private int currentGameScore;
+  private int currentGameScore = 0;
 
     @Column
     private Long roomId;

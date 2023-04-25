@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -37,7 +38,7 @@ public class GameController {
     }
 
     // start a new game
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -70,7 +71,7 @@ public class GameController {
 
     // get rank list from this game
     //if game status is false.
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -94,7 +95,7 @@ public class GameController {
 //        return gameService.changeRoomToGameGetDTO(gameId);
 //    }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/games/leave/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -116,6 +117,7 @@ public class GameController {
 ////        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
+        gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
 //        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 

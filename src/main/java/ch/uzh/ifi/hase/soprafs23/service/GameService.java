@@ -4,6 +4,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 //import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -58,8 +59,13 @@ public class GameService {
             gameTurn.setStatus(TurnStatus.CHOOSE_WORD);
             gameTurn.setCurrentTurn(i+1);
             gameTurn.setDrawingPlayerId(userRepository.findByRoomId(room.getId()).get(i).getId());
+            userRepository.findByRoomId(room.getId()).get(i).setStatus(UserStatus.ISPLAYING);
+//            userRepository.findByRoomId(room.getId()).get(i).setCurrentScore(0);
+//            userRepository.findByRoomId(room.getId()).get(i).setCurrentGameScore(0);
+//            userRepository.findByRoomId(room.getId()).get(i).setGuessingWord(null);
 
             gameTurnRepository.saveAndFlush(gameTurn);
+            userRepository.flush();
         }
 
         List<GameTurn> turns = gameTurnRepository.findByRoomId(room.getId());
@@ -304,14 +310,14 @@ public class GameService {
 //        }
 //    }
 
-    public GameTurn getGameTurn(Long gameTurnId) {
-        GameTurn gameTn = gameTurnRepository.findByid(gameTurnId);
-        if(gameTn == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game turn information cannot be found!");
-        }else{
-            return gameTn;
-        }
-    }
+//    public GameTurn getGameTurn(Long gameTurnId) {
+//        GameTurn gameTn = gameTurnRepository.findByid(gameTurnId);
+//        if(gameTn == null){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game turn information cannot be found!");
+//        }else{
+//            return gameTn;
+//        }
+//    }
     public void endGame( long gameId) { //roomId
         Room room = roomRepository.findByid(gameId);
         if(room == null){
@@ -320,17 +326,26 @@ public class GameService {
         else
         {
             room.setStatus(RoomStatus.END_GAME);
+            List<User> users = userRepository.findByRoomId(gameId);
+            for (User user: users){
+                user.setGuessingWord(null);
+                user.setCurrentScore(0);
+                user.setCurrentGameScore(0);
+                user.setRoomId(null);
+                user.setStatus(UserStatus.ONLINE);
+                userRepository.saveAndFlush(user);
+            }
         }
     }
-
-    public User getUser(Long userid){
-        User user = userRepository.findByid(userid);
-        if(user == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the user is not found!");
-        }else{
-            return user;
-        }
-    }
+//
+//    public User getUser(Long userid){
+//        User user = userRepository.findByid(userid);
+//        if(user == null){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the user is not found!");
+//        }else{
+//            return user;
+//        }
+//    }
 
     // rank all players in this game
     public List<User> rankAll(long gameId) { //find room

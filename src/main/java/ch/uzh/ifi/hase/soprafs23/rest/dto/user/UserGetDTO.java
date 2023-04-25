@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.user;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+
 import java.util.Date;
 
 public class UserGetDTO {
@@ -18,6 +19,8 @@ public class UserGetDTO {
   private String guessingWord;
 
   private int currentGameScore;
+
+  private Long roomId;
 
   public int getBestScore(){return bestScore;}
   public void setBestScore(int bestScore){this.bestScore=bestScore;}
@@ -85,5 +88,13 @@ public class UserGetDTO {
 
     public void setCurrentGameScore(int currentGameScore) {
         this.currentGameScore = currentGameScore;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
     }
 }

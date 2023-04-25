@@ -77,7 +77,7 @@ public class RoomService {
 //        roomRepository.flush();
         User user = userRepository.findByid(userId);
         user.setRoomId(roomId);
-        user.setStatus(UserStatus.ISPLAYING);
+//        user.setStatus(UserStatus.ISPLAYING);
 
         if(room.getMode()== userRepository.findByRoomId(roomId).size()){
             room.setStatus(RoomStatus.READY);
@@ -136,9 +136,9 @@ public class RoomService {
 //        room.setGameTurnId(turnId);
 //    }
 
-    public List<Room> getRooms() {
-        return this.roomRepository.findAll();
-    }
+//    public List<Room> getRooms() {
+//        return this.roomRepository.findAll();
+//    }
 
     public List<Long> getAllPlayersIds(Long id){ //turn id
         Room room  = roomRepository.findByid(id);

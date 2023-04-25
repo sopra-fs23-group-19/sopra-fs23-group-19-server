@@ -2,12 +2,9 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
-// import ch.uzh.ifi.hase.soprafs23.entity.Game;
-import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-//import ch.uzh.ifi.hase.soprafs23.repository.GameRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -21,7 +18,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +55,7 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-        gameTurn.setStatus(TurnStatus.PAINITING);
+        gameTurn.setStatus(TurnStatus.PAINTING);
         gameTurnRepository.flush();
     }
 
@@ -107,7 +107,7 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnId);
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
 
-        Room room = roomRepository.findByid(gameTurn.getRoomId());
+        // Room room = roomRepository.findByid(gameTurn.getRoomId());
 
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setCurrentScore(1);  // set current score in this game turn
@@ -121,9 +121,9 @@ public class GameTurnService {
             gameTurn.setStatus(TurnStatus.END);
             if(gameTurn.getCurrentTurn()==roomRepository.findByid(gameTurn.getRoomId()).getMode()){
                 roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
-                for(User u: userRepository.findByRoomId(room.getId())){
-                    u.setStatus(UserStatus.ONLINE);
-                }
+//                for(User u: userRepository.findByRoomId(room.getId())){
+//                    u.setStatus(UserStatus.ONLINE);
+//                }
             }
         }
 
@@ -143,7 +143,12 @@ public class GameTurnService {
 
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
-            playersScores.put(user, user.getCurrentScore());
+            if(user.getId() == gameTurn.getDrawingPlayerId()){
+                user.setCurrentScore(0);
+                playersScores.put(user, 0);
+            }else{
+                playersScores.put(user, user.getCurrentScore());
+            }
         }
         // rank the user by scores
         List<User> rankedUsers =  playersScores.entrySet().stream()
@@ -153,8 +158,9 @@ public class GameTurnService {
         // set users' bestScore and totalScore
         for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
             entry.getKey().setTotalScore(entry.getKey().getTotalScore()+entry.getValue());
-            if(entry.getKey().getBestScore() < entry.getValue()){
-                entry.getKey().setBestScore(entry.getValue());
+            // entry.getKey().setCurrentScore(0);
+            if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
+                entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
             }
             userRepository.saveAndFlush(entry.getKey());
         }

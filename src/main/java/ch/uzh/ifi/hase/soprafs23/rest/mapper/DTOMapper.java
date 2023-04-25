@@ -73,6 +73,7 @@ public interface DTOMapper {
     @Mapping(target = "currentScore", source="currentScore")
     @Mapping(target = "guessingWord", source="guessingWord")
     @Mapping(target = "currentGameScore", source="currentGameScore")
+    @Mapping(target = "roomId", source="roomId")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "id", target = "id")
