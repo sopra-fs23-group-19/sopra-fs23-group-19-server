@@ -1,4 +1,4 @@
-package repository;
+package ch.uzh.ifi.hase.soprafs23.repository;
 
 import org.junit.jupiter.api.Test;
 
