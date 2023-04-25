@@ -146,6 +146,7 @@ public class GameTurnService {
                 roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }
         }
+
         userRepository.saveAndFlush(user);
         gameTurnRepository.saveAndFlush(gameTurn);
     }

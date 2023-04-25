@@ -3,8 +3,10 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 //import ch.uzh.ifi.hase.soprafs23.entity.Game;
+import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.slf4j.Logger;
@@ -26,11 +28,15 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
+    private final GameTurnRepository gameTurnRepository;
 
     @Autowired
-    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, @Qualifier("userRepository") UserRepository userRepository) {
+    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository,
+                       @Qualifier("userRepository") UserRepository userRepository,
+                       @Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository) {
         this.roomRepository = roomRepository;
         this.userRepository = userRepository;
+        this.gameTurnRepository = gameTurnRepository;
     }
 
     public Room createRoom(Room newRoom) {
@@ -142,6 +148,10 @@ public class RoomService {
         }
 
         return ids;
+    }
+
+    public List<GameTurn> getAllTurns(Long id){
+        return gameTurnRepository.findByRoomId(id);
     }
 
 }

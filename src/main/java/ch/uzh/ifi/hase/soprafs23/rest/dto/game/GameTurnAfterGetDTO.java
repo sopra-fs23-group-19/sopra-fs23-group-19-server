@@ -16,6 +16,9 @@ public class GameTurnAfterGetDTO {
 
     private String image;
     private String drawingPlayerName;
+
+    private String targetWord;
+    private TurnStatus status;
     public String getDrawingPlayerName() {
         return drawingPlayerName;
     }
@@ -42,7 +45,6 @@ public class GameTurnAfterGetDTO {
         this.submitNum = submitNum;
     }
 
-    private TurnStatus status;
     public TurnStatus getStatus() {
         return status;
     }
@@ -68,7 +70,6 @@ public class GameTurnAfterGetDTO {
         return roomId;
     }
 
-    private String targetWord;
     public String getTargetWord() {
         return targetWord;
     }
