@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserLoginGetDTO(userService.login(userInput));
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/users/logout/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -43,7 +42,7 @@ public class UserController {
         userService.logout(userId);
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping(value = "/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -83,7 +82,7 @@ public class UserController {
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
 
-  @UserLoginToken
+  //@UserLoginToken
   @PutMapping("/users/{userId}")
   //update user profile, return 204
   @ResponseStatus(HttpStatus.NO_CONTENT)

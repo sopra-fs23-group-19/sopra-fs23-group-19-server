@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
@@ -30,12 +29,8 @@ public class RoomController {
         this.gameService = gameService;
     }
 
-//    @Autowired
-//    SimpMessagingTemplate simpMessagingTemplate;
-
     // owner doesn't need to join the room after creating
-
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/rooms")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -47,26 +42,19 @@ public class RoomController {
                 )
         );
 
-        // simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(result.getOwnerId()), result.getPlayers());
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/rooms/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public RoomAfterGetDTO joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
         Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
         return changeRoomToAfter(room);
-//         for(int i=0; i<players.size(); i++){
-//             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
-//         }
-//        System.out.println(players);
-//        String s1 = "/topic/waiting/1";
-//        simpMessagingTemplate.convertAndSend(s1, "send message");
 
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping(value = "/rooms/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -74,13 +62,12 @@ public class RoomController {
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/rooms")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<RoomAfterGetDTO> getAllRooms() {
         // fetch all users in the internal representation
-//        List<Room> rooms = roomService.getRooms();
         List<Room> rooms = roomService.getAvailableRooms();
         List<RoomAfterGetDTO> roomAfterGetDTOS = new ArrayList<>();
 
@@ -91,7 +78,7 @@ public class RoomController {
         return roomAfterGetDTOS;
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/rooms/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -114,7 +101,6 @@ public class RoomController {
             roomAfterGetDTO.setPlayers(null);
         }else {
             for(Long iid: roomService.getAllPlayersIds(roomGetDTO.getId())){
-                // userService.changeStatusToPlaying(iid);
                 roomAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }
@@ -131,7 +117,6 @@ public class RoomController {
 
         List<GameTurn> turns = roomAfterGetDTO.getTurns();
         for(int i=turns.size()-1; i>=0; i--){
-            // System.out.println(turns.get(i).getCurrentTurn());
             if(turns.get(i).getStatus()!= TurnStatus.END){
                 roomAfterGetDTO.setCurrentTurnId(turns.get(i).getId());
                 roomAfterGetDTO.setCurrentTurnStatus(turns.get(i).getStatus());

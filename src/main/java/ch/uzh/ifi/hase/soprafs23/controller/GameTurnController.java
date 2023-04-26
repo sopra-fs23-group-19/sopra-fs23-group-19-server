@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
@@ -34,20 +33,17 @@ public class GameTurnController {
     }
 
     // get three words to be chosen by the drawing player
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId){
 
-        // GameTurn gameTurn = wordsService.setThreeWords(gameTurnId);
-        //GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
-
         return wordsService.getThreeWords();
     }
 
     // drawing player chooses the target word
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/words")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -57,7 +53,7 @@ public class GameTurnController {
     }
 
     // drawing player updates the image
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/drawings")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -68,7 +64,7 @@ public class GameTurnController {
     }
 
     // drawing player submits the image
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/gameRounds/finalDrawings")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -80,7 +76,7 @@ public class GameTurnController {
     }
 
     // guessing player submits the answer in advance
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -90,7 +86,7 @@ public class GameTurnController {
     }
 
     // get rank list from this turn
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/ranks/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -107,19 +103,19 @@ public class GameTurnController {
     }
 
     // users request refreshed information from backend every second
-    @UserLoginToken
-    @GetMapping("/gameRounds/information/{gameTurnId}/{userId}")
+    //@UserLoginToken
+    @GetMapping("/gameRounds/information/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameTurnAfterGetDTO getGameTurnInfo(@PathVariable("gameTurnId") long gameTurnId, @PathVariable("userId") long userId){
+    public GameTurnAfterGetDTO getGameTurnInfo(@PathVariable("gameTurnId") long gameTurnId){
 
         GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
 
-        return changeGetAccordingToUserId(gameTurnGetDTO, userId);
+        return changeGetToAfter(gameTurnGetDTO);
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping("/gameRounds/rankConfirmation/{gameTurnId}/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -131,47 +127,6 @@ public class GameTurnController {
         return changeGetToAfter(gameTurnGetDTO);
     }
 
-//    @UserLoginToken
-//    @PostMapping("/games/gameRounds/{gameId}")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public GameTurnAfterGetDTO startGameTurn(@PathVariable("gameId") long gameId){
-//
-//        GameTurn gameTurn = gameTurnService.startNewGameTurn(gameId);
-//        GameTurnGetDTO gameTurnGetDTO =  DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
-//
-//        return changeGetToAfter(gameTurnGetDTO);
-//    }
-
-
-    public GameTurnAfterGetDTO changeGetAccordingToUserId(GameTurnGetDTO gameTurnGetDTO,Long userId){
-        GameTurnAfterGetDTO gameTurnAfterGetDTO = new GameTurnAfterGetDTO();
-        gameTurnAfterGetDTO.setId(gameTurnGetDTO.getId());
-        gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
-        gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
-        //only drawing player knows the words information
-        if(userId == gameTurnGetDTO.getDrawingPlayerId())
-        {
-            //gameTurnAfterGetDTO.setWordsToBeChosen(gameTurnGetDTO.getWordsToBeChosen());
-            gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
-        }
-        gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
-
-        //added
-        gameTurnAfterGetDTO.setSubmitNum(gameTurnGetDTO.getSubmitNum());
-        gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
-        gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
-
-        if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
-            gameTurnAfterGetDTO.setPlayers(null);
-        }else {
-            for(Long iid: gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())){
-                gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
-            }
-        }
-
-        return gameTurnAfterGetDTO;
-    }
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
 
@@ -183,11 +138,9 @@ public class GameTurnController {
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
-////        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
         gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
-//        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 
         if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {

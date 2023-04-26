@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
-import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -38,7 +37,7 @@ public class GameController {
     }
 
     // start a new game
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -51,27 +50,9 @@ public class GameController {
         return changeGetToAfter(gameTurnGetDTO);
     }
 
-//    @UserLoginToken
-//    @PostMapping("/games/leave/{gameId}")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
-//    public void endGame(@PathVariable long gameId){
-//        // start game turn
-//        GameTurn gameTurn = gameService.startGameTurn(room);
-//        roomService.activateRoom(roomId,gameTurn.getGameId(),gameTurn.getId() );
-//        // List<Long> playersIds = transferStringToLong(gameTurn.getAllPlayersIds());
-//        GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
-//
-//        return changeGetToAfter(gameTurnGetDTO);
-//
-////        for(int i=0; i<playersIds.size(); i++){
-////            simpMessagingTemplate.convertAndSend("/game/startGame/"+ Long.toString(playersIds.get(i)), gameTurnGetDTO);
-////        }
-//    }
-
     // get rank list from this game
-    //if game status is false.
-    @UserLoginToken
+    //if game status is end_game.
+    //@UserLoginToken
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -86,16 +67,8 @@ public class GameController {
         }
         return userGetDTOs;
     }
-    ///every second get status, ids
-//    @UserLoginToken
-//    @GetMapping("/games/{gameId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public GameGetDTO getGameById(@PathVariable long gameId){ //roomId
-//        return gameService.changeRoomToGameGetDTO(gameId);
-//    }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/games/ending/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -114,11 +87,9 @@ public class GameController {
         gameTurnAfterGetDTO.setDrawingPlayerId(gameTurnGetDTO.getDrawingPlayerId());
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
-////        gameTurnAfterGetDTO.setDrawingPhase(gameTurnGetDTO.getDrawingPhase());
         gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
         gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
-//        gameTurnAfterGetDTO.setGameStatus(gameTurnGetDTO.getGameStatus());
 
 
         if(gameService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {

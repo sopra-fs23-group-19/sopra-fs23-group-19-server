@@ -15,9 +15,6 @@ public class RoomAfterGetDTO {
     private int roomSeats;
 
     private Long ownerId;
-
-    // string of players id
-
     private List<UserNameDTO> players = new ArrayList<>();
 
     private RoomStatus status;
@@ -61,19 +58,6 @@ public class RoomAfterGetDTO {
     public void setId(Long id){
         this.id=id;
     }
-
-//    public Long getGameId() {
-//        return gameId;
-//    }
-//    public void setGameId(Long id){
-//        this.gameId=id;
-//    }
-//    public Long getGameTurnId() {
-//        return gameTurnId;
-//    }
-//    public void setGameTurnId(Long id){
-//        this.gameTurnId=id;
-//    }
 
     public String getRoomName(){
         return roomName;

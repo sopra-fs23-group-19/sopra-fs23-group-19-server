@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class GameTurnAfterGetDTO {
     private long id;
@@ -93,14 +92,6 @@ public class GameTurnAfterGetDTO {
         this.drawingPlayerName = name;
     }
 
-//    public Set<String> getWordsToBeChosen() {
-//        return wordsToBeChosen;
-//    }
-//
-//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-//        this.wordsToBeChosen = wordsToBeChosen;
-//    }
-
     public void setPlayers(List<UserNameDTO> players) {
         this.players = players;
     }
@@ -109,11 +100,4 @@ public class GameTurnAfterGetDTO {
         return players;
     }
 
-//    public String getTargetWord() {
-//        return targetWord;
-//    }
-//
-//    public void setTargetWord(String targetWord) {
-//        this.targetWord = targetWord;
-//    }
 }

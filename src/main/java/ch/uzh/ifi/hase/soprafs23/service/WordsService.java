@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,15 +71,4 @@ public class WordsService {
         return listOfWords;
     }
 
-
-//    public GameTurn setThreeWords(Long gameTurnInputId) {
-//        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnInputId);
-//        if(gameTurn == null){
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This game turn is not found!");
-//        }
-//
-//        gameTurn.setWordsToBeChosen(getThreeWords());
-//        gameTurnRepository.saveAndFlush(gameTurn);
-//        return gameTurn;
-//    }
 }

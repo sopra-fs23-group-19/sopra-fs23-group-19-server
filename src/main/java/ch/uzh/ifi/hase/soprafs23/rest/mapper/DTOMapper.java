@@ -111,17 +111,6 @@ public interface DTOMapper {
     @Mapping(source = "currentTurn", target = "currentTurn")
     GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
 
-    ///added by runze
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "gameTurnList", target = "gameTurnList")
-//    @Mapping(source = "gameTurnStatus", target = "gameTurnStatus")
-//    @Mapping(source = "drawingPlayerIds", target = "drawingPlayerIds")
-//    @Mapping(source = "allPlayersIds", target = "allPlayersIds")
-//    @Mapping(source = "gameStatus", target = "gameStatus")
-//    @Mapping(source = "currentGameTurn", target = "currentGameTurn")
-//    GameGetDTO convertEntityToGameGetDTO(Game game);
-
-
     @Mapping(source = "id", target = "id")
     @Mapping(source = "image", target = "image")
     @Mapping(source = "targetWord", target = "targetWord")

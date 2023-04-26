@@ -32,7 +32,6 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-//  @Column(unique = true)
  @Column(nullable = false, unique = true)
   private String token;
 

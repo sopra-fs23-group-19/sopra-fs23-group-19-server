@@ -5,10 +5,6 @@ import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "GAMETURN")
@@ -43,21 +39,6 @@ public class GameTurn implements Serializable {
     private Long roomId;
 
 
-
-//    @Column
-//    @ElementCollection
-//    private Set<String> wordsToBeChosen = new HashSet<>();
-
-
-//    @Column
-//    private Boolean DrawingPhase = false;
-
-//    @Column
-//    private Boolean gameTurnStatus = false;
-
-//    @Column
-//    private Boolean gameStatus = false;
-
     public TurnStatus getStatus() {
         return status;
     }
@@ -74,21 +55,6 @@ public class GameTurn implements Serializable {
         this.id = turnId;
     }
 
-//    public List<Long> getSubmittedAnswerIds() {
-//        return submittedAnswerIds;
-//    }
-//
-//    public void setSubmittedAnswerIds(Long userId) {
-//        this.submittedAnswerIds.add(userId);
-//    }
-//    public int getTurnLength() {
-//        return turnLength;
-//    }
-
-//    public void setTurnLength(int turnLen) {
-//        this.turnLength = turnLen;
-//    }
-
     public void setDrawingPlayerId(Long drawingPlayerId) {
         this.drawingPlayerId = drawingPlayerId;
     }
@@ -96,14 +62,6 @@ public class GameTurn implements Serializable {
     public Long getDrawingPlayerId() {
         return drawingPlayerId;
     }
-
-//    public void setAllPlayersIds(Set<Long> allPlayersIds) {
-//        this.allPlayersIds = allPlayersIds;
-//    }
-//
-//    public Set<Long> getAllPlayersIds() {
-//        return allPlayersIds;
-//    }
 
     public String getImage() {
         return image;
@@ -120,47 +78,6 @@ public class GameTurn implements Serializable {
     public void setTargetWord(String targetWord) {
         this.targetWord = targetWord;
     }
-
-//    public Long getGameId() {
-//        return gameId;
-//    }
-//
-//    public void setGameId(Long gameId) {
-//        this.gameId = gameId;
-//    }
-//
-//    public Set<String> getWordsToBeChosen() {
-//        return wordsToBeChosen;
-//    }
-//
-//    public void setWordsToBeChosen(Set<String> wordsToBeChosen) {
-//        this.wordsToBeChosen = wordsToBeChosen;
-//    }
-
-//    public Boolean getDrawingPhase() {
-//        return DrawingPhase;
-//    }
-
-//    public void setDrawingPhase(Boolean drawingPhase) {
-//        DrawingPhase = drawingPhase;
-//    }
-
-//    public Boolean getGameTurnStatus() {
-//        return gameTurnStatus;
-//    }
-
-//    public void setGameTurnStatus(Boolean gameTurnStatus) {
-//        this.gameTurnStatus = gameTurnStatus;
-//    }
-
-//    public Boolean getGameStatus() {
-//        return gameStatus;
-//    }
-//
-//    public void setGameStatus(Boolean gameStatus) {
-//        this.gameStatus = gameStatus;
-//    }
-
 
     public Long getRoomId() {
         return roomId;

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
-//import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
@@ -46,7 +45,6 @@ public class RoomService {
         // flush() is called
 
         newRoom.setStatus(RoomStatus.WAITING);
-//        newRoom.getPlayers().add(newRoom.getOwnerId());
 
         newRoom = roomRepository.save(newRoom);
 
@@ -72,12 +70,8 @@ public class RoomService {
 
     public Room joinRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
-        //room.getPlayers().add(userId);
-
-//        roomRepository.flush();
         User user = userRepository.findByid(userId);
         user.setRoomId(roomId);
-//        user.setStatus(UserStatus.ISPLAYING);
 
         if(room.getMode()== userRepository.findByRoomId(roomId).size()){
             room.setStatus(RoomStatus.READY);
@@ -125,20 +119,6 @@ public class RoomService {
         }
         return availableRooms;
     }
-
-//    public void activateRoom(Long roomId, Long gameId, Long turnId){
-//        Room room = roomRepository.findByid(roomId);
-//        if (room == null) {
-//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room was not found");
-//        }
-//        room.setStatus(RoomStatus.PLAYING);
-//        room.setGameId(gameId);
-//        room.setGameTurnId(turnId);
-//    }
-
-//    public List<Room> getRooms() {
-//        return this.roomRepository.findAll();
-//    }
 
     public List<Long> getAllPlayersIds(Long id){ //turn id
         Room room  = roomRepository.findByid(id);

@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.room;
 
 public class RoomPostDTO {
-    // private Long id;
 
     private String roomName;
 
