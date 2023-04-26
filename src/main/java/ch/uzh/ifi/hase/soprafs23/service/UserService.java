@@ -62,6 +62,7 @@ public class UserService {
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
 //            user.setToken(null);
+            userRepository.flush();
         }else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
         }

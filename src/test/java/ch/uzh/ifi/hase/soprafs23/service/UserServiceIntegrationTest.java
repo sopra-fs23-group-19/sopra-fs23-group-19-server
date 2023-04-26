@@ -35,6 +35,42 @@ public class UserServiceIntegrationTest {
     }
 
     @Test
+    public void login_success(){
+        User user = new User();
+        user.setPassword("Firstname Lastname");
+        user.setUsername("firstname@lastname");
+        user.setStatus(UserStatus.OFFLINE);
+        user.setId(1L);
+        user.setToken("1");
+
+        User created = userService.createUser(user);
+        User createdUser = userService.login(user);
+
+        assertEquals(created.getId(), createdUser.getId());
+        assertEquals(created.getPassword(), createdUser.getPassword());
+        assertEquals(created.getUsername(), createdUser.getUsername());
+        assertNotNull(createdUser.getToken());
+        assertEquals(UserStatus.ONLINE, createdUser.getStatus());
+    }
+
+    @Test
+    public void logout_success(){
+        User user = new User();
+        user.setPassword("Firstname Lastname");
+        user.setUsername("firstname@lastname");
+        user.setId(1L);
+        user.setToken("1");
+
+        User created = userService.createUser(user);
+        User createdUser = userService.login(created);
+        userService.logout(createdUser.getId());
+
+        User afterLogout = userService.retrieveUser(created.getId());
+        assertEquals(UserStatus.OFFLINE, afterLogout.getStatus());
+    }
+
+
+    @Test
     public void createUser_validInputs_success() {
         // given
         assertNull(userRepository.findByUsername("testUsername"));
