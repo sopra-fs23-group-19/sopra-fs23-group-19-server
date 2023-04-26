@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
-import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +27,10 @@ public class GameController {
 
     private final GameService gameService;
     private final UserService userService;
-    private final RoomService roomService;
-    GameController(GameService gameService, UserService userService, RoomService roomService ) {
+    GameController(GameService gameService, UserService userService) {
 
         this.gameService = gameService;
         this.userService = userService;
-        this.roomService = roomService;
     }
 
     // start a new game
@@ -70,7 +67,7 @@ public class GameController {
 
     //@UserLoginToken
     @PutMapping("/games/ending/{gameId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
     public void QuitGame(@PathVariable long gameId){
         gameService.endGame(gameId);
