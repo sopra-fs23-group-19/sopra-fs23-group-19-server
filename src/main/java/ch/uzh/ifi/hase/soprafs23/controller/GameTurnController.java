@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.GameTurnService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import ch.uzh.ifi.hase.soprafs23.service.WordsService;
@@ -23,13 +24,18 @@ public class GameTurnController {
 
     private final UserService userService;
     private final GameTurnService gameTurnService;
+    private final GameService gameService;
     private final WordsService wordsService;
 
-    GameTurnController(UserService userService, GameTurnService gameTurnService, WordsService wordsService) {
+    GameTurnController(UserService userService,
+                       GameTurnService gameTurnService,
+                       WordsService wordsService,
+                       GameService gameService) {
 
         this.userService = userService;
         this.gameTurnService = gameTurnService;
         this.wordsService = wordsService;
+        this.gameService = gameService;
     }
 
     // get three words to be chosen by the drawing player
@@ -37,7 +43,7 @@ public class GameTurnController {
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId){
+    public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId) {
 
         return wordsService.getThreeWords();
     }
@@ -143,10 +149,10 @@ public class GameTurnController {
         gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
 
 
-        if(gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
+        if(gameService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {
             gameTurnAfterGetDTO.setPlayers(null);
         }else {
-            for(Long iid: gameTurnService.getAllPlayersIds(gameTurnGetDTO.getId())){
+            for(Long iid: gameService.getAllPlayersIds(gameTurnGetDTO.getId())){
                 gameTurnAfterGetDTO.getPlayers().add(DTOMapper.INSTANCE.convertEntityToUserNameDTO(userService.retrieveUser(iid)));
             }
         }

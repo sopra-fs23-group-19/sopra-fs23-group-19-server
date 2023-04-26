@@ -70,7 +70,7 @@ public class User implements Serializable {
         this.confirmRank = confirmRank;
     }
 
-    public Long getId() {
+    public long getId() {
     return id;
   }
 

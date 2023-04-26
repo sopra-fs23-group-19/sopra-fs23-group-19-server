@@ -1,10 +1,5 @@
 package ch.uzh.ifi.hase.soprafs23.service;
 
-import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,15 +19,7 @@ import java.util.Set;
 @Transactional
 public class WordsService {
 
-    private final Logger log = LoggerFactory.getLogger(GameService.class);
-    private final GameTurnRepository gameTurnRepository;
-
-    @Autowired
-    public WordsService(@Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository) {
-        this.gameTurnRepository = gameTurnRepository;
-    }
-
-    public String getWord(){
+    public String getWord() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://pictionary-charades-word-generator.p.rapidapi.com/pictionary?difficulty=easy"))
                 .header("X-RapidAPI-Key", "f1ba58b38bmsh7f13519be0f7c4ep180d7cjsn1d03862b849f")
@@ -40,7 +27,6 @@ public class WordsService {
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response;
-
         {
             try {
                 response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -58,7 +44,7 @@ public class WordsService {
     }
 
 
-    public Set<String> getThreeWords(){
+    public Set<String> getThreeWords() {
 
         Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){

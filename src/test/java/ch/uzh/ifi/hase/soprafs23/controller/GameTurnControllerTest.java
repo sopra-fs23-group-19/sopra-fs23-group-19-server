@@ -4,10 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
-import ch.uzh.ifi.hase.soprafs23.service.GameTurnService;
-import ch.uzh.ifi.hase.soprafs23.service.RoomService;
-import ch.uzh.ifi.hase.soprafs23.service.UserService;
-import ch.uzh.ifi.hase.soprafs23.service.WordsService;
+import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -49,6 +46,9 @@ class GameTurnControllerTest {
 
     @MockBean
     private GameTurnService gameTurnService;
+
+    @MockBean
+    private GameService gameService;
 
     @MockBean
     private RoomService roomService;

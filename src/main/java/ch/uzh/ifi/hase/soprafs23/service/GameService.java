@@ -10,8 +10,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -19,15 +17,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
 public class GameService {
-
-    private final Logger log = LoggerFactory.getLogger(GameService.class);
     private final GameTurnRepository gameTurnRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
@@ -85,28 +84,23 @@ public class GameService {
     }
 
     public void endGame( long gameId) { //roomId
-        Room room = roomRepository.findByid(gameId);
-        if(room == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the game is not found!");
-        }
-        else
-        {
-            room.setStatus(RoomStatus.END_GAME);
-            List<User> users = userRepository.findByRoomId(gameId);
-            for (User user: users){
-                user.setGuessingWord(null);
-                user.setCurrentScore(0);
-                user.setCurrentGameScore(0);
-                user.setRoomId(null);
-                user.setStatus(UserStatus.ONLINE);
-                userRepository.saveAndFlush(user);
-            }
+        Room room = getRoom(gameId);
+
+        room.setStatus(RoomStatus.END_GAME);
+        List<User> users = userRepository.findByRoomId(gameId);
+        for (User user: users){
+            user.setGuessingWord(null);
+            user.setCurrentScore(0);
+            user.setCurrentGameScore(0);
+            user.setRoomId(null);
+            user.setStatus(UserStatus.ONLINE);
+            userRepository.saveAndFlush(user);
         }
     }
 
     // rank all players in this game
     public List<User> rankAll(long gameId) { //find room
-        Room room = roomRepository.findByid(gameId);
+        Room room = getRoom(gameId);
         // find all players
         List<User> allPlayers = userRepository.findByRoomId(room.getId());
 

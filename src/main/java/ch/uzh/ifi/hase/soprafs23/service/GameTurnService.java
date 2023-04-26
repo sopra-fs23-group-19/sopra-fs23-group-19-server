@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
-import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -159,20 +157,8 @@ public class GameTurnService {
         return rankedUsers;
     }
 
-    public List<Long> getAllPlayersIds(Long id){ //turn id
-        Room room  = roomRepository.findByid(gameTurnRepository.findByid(id).getRoomId());
 
-        List<User> users = userRepository.findByRoomId(room.getId());
-
-        List<Long> ids = new ArrayList<>();
-        for(User u:users){
-            ids.add(u.getId());
-        }
-
-        return ids;
-    }
-
-    public GameTurn confirmRank(Long turnId, Long userId){
+    public GameTurn confirmRank(long turnId, long userId){
         GameTurn gameTurn = gameTurnRepository.findByid(turnId);
         List<User> users = userRepository.findByRoomId(roomRepository.findByid(gameTurn.getRoomId()).getId());
 
@@ -196,7 +182,9 @@ public class GameTurnService {
             }
         }
 
-        System.out.println(gameTurn.getStatus());
+        userRepository.flush();
+        gameTurnRepository.flush();
+        roomRepository.flush();
 
         return gameTurn;
     }

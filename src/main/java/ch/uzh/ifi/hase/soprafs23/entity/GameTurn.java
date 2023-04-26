@@ -87,9 +87,9 @@ public class GameTurn implements Serializable {
         return submitNum;
     }
 
-    public static Long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+//    public static Long getSerialVersionUID() {
+//        return serialVersionUID;
+//    }
 
     public void setRoomId(Long roomId) {
         this.roomId = roomId;
