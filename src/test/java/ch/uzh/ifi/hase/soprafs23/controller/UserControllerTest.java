@@ -159,7 +159,6 @@ public class UserControllerTest {
         user.setPassword("Firstname Lastname");
         user.setUsername("firstname@lastname");
         user.setStatus(UserStatus.OFFLINE);
-        //user.setCreation_date(q);
         user.setId(1L);
         user.setToken("1");
         //user.setBirthday(null);
