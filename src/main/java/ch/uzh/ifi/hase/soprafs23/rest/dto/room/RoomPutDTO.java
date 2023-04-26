@@ -13,7 +13,7 @@ public class RoomPutDTO {
     public Long getUserId(){
         return userId;
     }
-    public void setUserId(){
+    public void setUserId(Long userId){
         this.userId=userId;
     }
 }
