@@ -100,6 +100,7 @@ public class GameTurnService {
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setCurrentScore(1);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+1);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore()+1);
         }else{
             user.setCurrentScore(0);
         }
@@ -144,7 +145,6 @@ public class GameTurnService {
 
         // set users' bestScore and totalScore
         for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
-            entry.getKey().setTotalScore(entry.getKey().getTotalScore()+entry.getValue());
             if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
                 entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
             }
