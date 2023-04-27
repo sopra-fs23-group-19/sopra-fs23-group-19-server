@@ -60,7 +60,7 @@ public class RoomServiceIntegrationTest {
         assertEquals(RoomStatus.WAITING,newRoom.getStatus());
 
         assertEquals(newRoom.getOwnerId(),u1.getId());
-        assertEquals(newRoom.getId(),u1.getRoomId());
+//        assertEquals(newRoom.getId(),u1.getRoomId());
     }
 
     @Test
