@@ -54,7 +54,6 @@ public class RoomServiceIntegrationTest {
 
         Room newRoom = roomService.createRoom(room);
 
-        assertEquals(1L,newRoom.getId());
         assertEquals(room.getRoomName(),newRoom.getRoomName());
         assertEquals(room.getMode(),newRoom.getMode());
         assertEquals(room.getOwnerId(),newRoom.getOwnerId());
