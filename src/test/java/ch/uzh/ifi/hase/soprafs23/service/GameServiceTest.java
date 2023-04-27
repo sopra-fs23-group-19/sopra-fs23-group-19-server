@@ -15,8 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -25,8 +23,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@WebAppConfiguration
-@SpringBootTest
 class GameServiceTest {
 
     @Mock
@@ -56,14 +52,6 @@ class GameServiceTest {
         MockitoAnnotations.openMocks(this);
 
         // given
-        testRoom = new Room();
-        testRoom.setId(1L);
-        testRoom.setRoomName("hhh");
-        testRoom.setOwnerId(1L);
-        testRoom.setStatus(RoomStatus.PLAYING);
-        testRoom.setMode(2);
-        Mockito.when(roomRepository.save(Mockito.any())).thenReturn(testRoom);
-
         testUser1 = new User();
         testUser1.setId(1L);
         testUser1.setUsername("hello");
@@ -81,6 +69,14 @@ class GameServiceTest {
         testUser2.setStatus(UserStatus.ISPLAYING);
         testUser2.setCurrentGameScore(1);
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser2);
+
+        testRoom = new Room();
+        testRoom.setId(1L);
+        testRoom.setRoomName("hhh");
+        testRoom.setOwnerId(1L);
+        testRoom.setStatus(RoomStatus.PLAYING);
+        testRoom.setMode(2);
+        Mockito.when(roomRepository.save(Mockito.any())).thenReturn(testRoom);
 
         testGameTurn1 = new GameTurn();
         testGameTurn1.setId(1L);
