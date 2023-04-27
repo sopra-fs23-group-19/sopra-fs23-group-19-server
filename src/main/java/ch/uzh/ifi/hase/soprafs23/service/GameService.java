@@ -87,6 +87,7 @@ public class GameService {
         Room room = getRoom(gameId);
 
         room.setStatus(RoomStatus.END_GAME);
+        roomRepository.saveAndFlush(room);
         List<User> users = userRepository.findByRoomId(gameId);
         for (User user: users){
             user.setGuessingWord(null);
