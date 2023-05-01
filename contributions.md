@@ -40,6 +40,10 @@
 |week 4| Jingjing Li  | [client#44](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/44) |Implement a text field which is enabled during the guessing phase.|
 |week 4| Geyu Meng  | [client#51](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/51)| Implement function which makes sure switching between eraser and pen tool is ok.|
 |week 4| Geyu Meng  | [client#45](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/45)| Implement a pen icon(button) on the whiteboard.|
+|week 4| Shiyu Ran  | [server#72](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/72)| Implement the external API function in the backend.|
+|week 4| Shiyu Ran  | [server#75](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/75)| Implement a backend service which tells frontend when the drawing phase starts and the timer should start count down.|
+|week 4| Shiyu Ran  | [server#93](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/93)| Implement a backend service which moves the phase to the guessing phase.|
+|week 4| Shiyu Ran  | [server#86, #85](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/86)| Implement the score rank method in the backend.|
 |week 5| Runze Li  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)|Implement real-time painting display for guessing players|
 |week 5| Runze Li  | [client#52](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/52)| Switch between guessing page and turn ranking page done|
 |week 5| Runze Li  | [client#55](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/55)| Implement quitting game after game ends|
