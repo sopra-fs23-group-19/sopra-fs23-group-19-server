@@ -50,3 +50,5 @@
 |week 5| Jingjing Li  | [client#38](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/38) |Implement the friends requests view in the Notification page.|
 |week 5| Geyu Meng  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)| Implement real-time painting display for guessing players. They cannot make changes to the whiteboard or enter answers during drawing phase.|
 |week 5| Geyu Meng  | [client#21](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/21)| Implement the "Friends" overview page.|
+|week 5| Shiyu Ran  | [server#129](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/129)| Write tests about game part (unit, integration, restAPI).|
+|week 5| Shiyu Ran  | [server#130](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/130)| Fix bugs about game logic in the backend.|
