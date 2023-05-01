@@ -42,3 +42,5 @@
 |week 5| Runze Li  | [client#52](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/52)| Switch between guessing page and turn ranking page done|
 |week 5| Runze Li  | [client#55](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/55)| Implement quitting game after game ends|
 |week 5| Runze Li  | [commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/473eada03495d6ec2c54ccec1a9ef03f0351e414),  [commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/f1ea1baa2e1b10a09bfa2497c57ee978294a6c42),[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/b7dd57b5f3f71bdae844ea0ad6c1db1b8a0de135)| Fix frontend bugs, small issues|
+|week 5| Manyi Wang | [#127](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/127)| Add tests for room and user related services|
+|week 5| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/128)| Implement the backend-service- confirm rank|
