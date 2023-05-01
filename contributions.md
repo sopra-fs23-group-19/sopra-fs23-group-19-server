@@ -38,6 +38,8 @@
 |week 4| Runze Li  | [#69](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/69)| Fix backend problem, data saving format, refactor code|
 |week 4| Jingjing Li  | [client#40](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/40) |Implement three buttons which display given words and allow word selection.|
 |week 4| Jingjing Li  | [client#44](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/44) |Implement a text field which is enabled during the guessing phase.|
+|week 4| Geyu Meng  | [client#51](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/51)| Implement function which makes sure switching between eraser and pen tool is ok.|
+|week 4| Geyu Meng  | [client#45](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/45)| Implement a pen icon(button) on the whiteboard.|
 |week 5| Runze Li  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)|Implement real-time painting display for guessing players|
 |week 5| Runze Li  | [client#52](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/52)| Switch between guessing page and turn ranking page done|
 |week 5| Runze Li  | [client#55](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/55)| Implement quitting game after game ends|
@@ -46,3 +48,5 @@
 |week 5| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/128)| Implement the backend-service- confirm rank|
 |week 5| Jingjing Li  | [client#34](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/34) |Implementing the Notification page which displays invitations to join a game room.|
 |week 5| Jingjing Li  | [client#38](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/38) |Implement the friends requests view in the Notification page.|
+|week 5| Geyu Meng  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)| Implement real-time painting display for guessing players. They cannot make changes to the whiteboard or enter answers during drawing phase.|
+|week 5| Geyu Meng  | [client#21](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/21)| Implement the "Friends" overview page.|
