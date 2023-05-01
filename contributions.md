@@ -38,3 +38,7 @@
 |week 4| Runze Li  | [#69](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/69)| Fix backend problem, data saving format, refactor code|
 |week 4| Jingjing Li  | [client#40](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/40) |Implement three buttons which display given words and allow word selection.|
 |week 4| Jingjing Li  | [client#44](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/44) |Implement a text field which is enabled during the guessing phase.|
+|week 5| Runze Li  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)|Implement real-time painting display for guessing players|
+|week 5| Runze Li  | [client#52](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/52)| Switch between guessing page and turn ranking page done|
+|week 5| Runze Li  | [client#55](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/55)| Implement quitting game after game ends|
+|week 5| Runze Li  | commit 473eada03495d6ec2c54ccec1a9ef03f0351e414, f1ea1baa2e1b10a09bfa2497c57ee978294a6c42,b7dd57b5f3f71bdae844ea0ad6c1db1b8a0de135| Fix frontend bugs, small issues|
