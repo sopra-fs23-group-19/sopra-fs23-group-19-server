@@ -19,7 +19,7 @@
 |week 1| Manyi Wang | [#22](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/22) | Implement the backend service- show profile|
 |week 2&3| Manyi Wang | [#43](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/43) | Implement the backend-service- create room|
 |week 2&3| Manyi Wang | [#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/42) | Implement the backend service- join room|
-|week 2&3| Shiyu Ran | [#92](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/92) | Implement the backend service to process painting submission.| 
+|week 2&3| Shiyu Ran | [#92, #79](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/92) | Implement the backend service to process painting submission.| 
 |week 2&3| Shiyu Ran | [#57](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/57) | Implement the "start" game button and related function to start a game.|
 |week 2&3| Shiyu Ran | [#42](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/42) |Implement the backend service for game creation.|
 |week 2&3| Runze Li  | [client#24](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/24) |Implement the Game creation page.|
@@ -41,9 +41,10 @@
 |week 4| Geyu Meng  | [client#51](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/51)| Implement function which makes sure switching between eraser and pen tool is ok.|
 |week 4| Geyu Meng  | [client#45](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/45)| Implement a pen icon(button) on the whiteboard.|
 |week 4| Shiyu Ran  | [server#72](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/72)| Implement the external API function in the backend.|
-|week 4| Shiyu Ran  | [server#75](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/75)| Implement a backend service which tells frontend when the drawing phase starts and the timer should start count down.|
-|week 4| Shiyu Ran  | [server#93](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/93)| Implement a backend service which moves the phase to the guessing phase.|
+|week 4| Shiyu Ran  | [server#75, #93](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/75)| Implement a backend service which tells frontend when the drawing phase starts and the timer should start count down.|
+|week 4| Shiyu Ran  | [server#50](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/50)| Implement a backend service that compares answers to the correct words and calculates scores for each player.|
 |week 4| Shiyu Ran  | [server#86, #85](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/86)| Implement the score rank method in the backend.|
+|week 4| Shiyu Ran  | [server#87](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/87)| Implement a backend method to update scores in the user profile.|
 |week 5| Runze Li  | [client#56](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/56)|Implement real-time painting display for guessing players|
 |week 5| Runze Li  | [client#52](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/52)| Switch between guessing page and turn ranking page done|
 |week 5| Runze Li  | [client#55](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/55)| Implement quitting game after game ends|
