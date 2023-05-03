@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Internal User Representation
@@ -61,6 +61,10 @@ public class User implements Serializable {
 
     @Column
     private boolean confirmRank = false;
+
+    @Column
+    @ElementCollection
+    private List<User> friends = new ArrayList<>();
 
     public boolean isConfirmRank() {
         return confirmRank;
@@ -156,6 +160,14 @@ public class User implements Serializable {
 
     public void setCurrentGameScore(int currentGameScore) {
         this.currentGameScore = currentGameScore;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(User friend) {
+        this.friends.add(friend);
     }
 
 }

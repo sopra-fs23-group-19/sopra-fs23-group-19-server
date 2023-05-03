@@ -91,4 +91,44 @@ public class UserController {
       userService.updateUsernameOrPassword(userPutDTO);
   }
 
+
+  // search users by username
+  @GetMapping("/users/searchFriends")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<UserGetDTO> searchUsers(@RequestBody UserGetDTO userGetDTO)  {
+        List<User> users = userService.searchUsers(userGetDTO);
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : users) {
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        }
+        return userGetDTOs;
+  }
+
+  // send friends invitation
+//  @PutMapping("/users/addFriends/{userId}")
+//  @ResponseStatus(HttpStatus.NO_CONTENT)
+//  @ResponseBody
+//  public void addFriends(@RequestBody UserGetDTO userGetDTO, @PathVariable("userId") Long userId){
+//        userService.
+//  }
+
+
+  // return friends list
+  @GetMapping("/users/returnFriends/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<UserGetDTO> returnFriends(@PathVariable("userId") Long userId){
+      List<User> users = userService.returnFriends(userId);
+      List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+      // convert each user to the API representation
+      for (User user : users) {
+          userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+      }
+      return userGetDTOs;
+  }
+
 }
