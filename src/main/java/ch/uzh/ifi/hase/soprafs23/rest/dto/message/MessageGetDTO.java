@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.message;
 
 import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
+import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 
 public class MessageGetDTO {
     private long messageId;
@@ -11,6 +12,15 @@ public class MessageGetDTO {
     private long roomId;
     private MessageStatus status;
     private String roomName;
+    private MessageType type;
+
+    public MessageType getType() {
+        return type;
+    }
+
+    public void setType(MessageType type) {
+        this.type = type;
+    }
 
     public String getRoomName() {
         return roomName;

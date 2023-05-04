@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
@@ -34,18 +35,26 @@ public class MessageController {
         return messageService.completeReturnMessage(messageGetDTO);
     }
 
+    @PostMapping("/notification/friend")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public MessageGetDTO addFriendMessage(@RequestBody FriendMessagePostDTO friendMessagePostDTO) {
+
+        MessageGetDTO messageGetDTO =  DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.addFriend(friendMessagePostDTO));
+        return messageService.completeReturnMessage(messageGetDTO);
+    }
+
     //@UserLoginToken
     @GetMapping("/notification/game/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getGameMessagesByUser(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getMessagesByUser(@PathVariable long userid) { //return all messages
         List<Message> messages = messageService.getMessagesByUser(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            if(message.getType()== MessageType.GAME) {
-                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-            }
+            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+
         }
 
         return result;
@@ -55,14 +64,13 @@ public class MessageController {
     @GetMapping("/notification/game/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getPendingGameMessages(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getPendingMessages(@PathVariable long userid) { //return all messages
         List<Message> messages = messageService.getPendingMessages(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            if(message.getType()==MessageType.GAME) {
-                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-            }
+            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+
         }
 
         return result;
@@ -80,7 +88,7 @@ public class MessageController {
     @PostMapping("/notification/game/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public MessageGetDTO confirmGame(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId) {
+    public MessageGetDTO confirmMessage(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId) {
 
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
