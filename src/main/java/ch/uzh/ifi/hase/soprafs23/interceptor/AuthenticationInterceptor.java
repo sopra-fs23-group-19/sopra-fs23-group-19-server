@@ -41,7 +41,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 return true;
             }
         }
-        //Check if Annotated with @UserLoginToken
+        //Check if Annotated with //@UserLoginToken
         if (method.isAnnotationPresent(UserLoginToken.class)) {
             UserLoginToken userLoginToken = method.getAnnotation(UserLoginToken.class);
             if (userLoginToken.required()) {

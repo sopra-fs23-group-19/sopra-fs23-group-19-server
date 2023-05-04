@@ -32,7 +32,7 @@ public class RoomController {
     @Autowired
     SimpMessagingTemplate simpMessagingTemplate;
 
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/games")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -51,7 +51,7 @@ public class RoomController {
         return result;
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PutMapping("/games/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -35,7 +35,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserLoginGetDTO(userService.login(userInput));
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @PostMapping("/users/logout/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
@@ -43,7 +43,7 @@ public class UserController {
         userService.logout(userId);
     }
 
-    @UserLoginToken
+    //@UserLoginToken
     @GetMapping(value = "/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -83,7 +83,7 @@ public class UserController {
     return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
   }
 
-  @UserLoginToken
+  //@UserLoginToken
   @PutMapping("/users/{userId}")
   //update user profile, return 204
   @ResponseStatus(HttpStatus.NO_CONTENT)

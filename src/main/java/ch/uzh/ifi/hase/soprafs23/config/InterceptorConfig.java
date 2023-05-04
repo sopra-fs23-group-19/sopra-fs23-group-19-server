@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer  {
     @Autowired
     AuthenticationInterceptor authenticationInterceptor;
-    //Intercept all requests and decide before sending to controllers by judging whether there is a @UserLoginToken annotation
+    //Intercept all requests and decide before sending to controllers by judging whether there is a //@UserLoginToken annotation
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
