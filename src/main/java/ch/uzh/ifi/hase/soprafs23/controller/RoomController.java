@@ -58,12 +58,12 @@ public class RoomController {
     public void joinRoom(@RequestBody RoomPutDTO roomPutDTO) {
          Room room = roomService.joinRoom(roomPutDTO.getUserId(),roomPutDTO.getRoomId());
          List<Long> players = transferStringToLong(room.getPlayers());
-//         for(int i=0; i<players.size(); i++){
-//             simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
-//         }
+        for(int i=0; i<players.size(); i++){
+            simpMessagingTemplate.convertAndSend("/topic/waiting/"+Long.toString(players.get(i)), players);
+        }
         System.out.println(players);
-        String s1 = "/topic/waiting/1";
-        simpMessagingTemplate.convertAndSend(s1, "send message");
+//         String s1 = "/topic/waiting/1";
+//         simpMessagingTemplate.convertAndSend(s1, "send message");
         
     }
 
