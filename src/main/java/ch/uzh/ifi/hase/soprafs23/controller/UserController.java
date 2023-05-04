@@ -93,8 +93,8 @@ public class UserController {
 
 
   // search users by username
-  @GetMapping("/users/searchFriends")
-  @ResponseStatus(HttpStatus.OK)
+  @PostMapping("/users/searchFriends")
+  @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public List<UserGetDTO> searchUsers(@RequestBody UserGetDTO userGetDTO)  {
         List<User> users = userService.searchUsers(userGetDTO);
