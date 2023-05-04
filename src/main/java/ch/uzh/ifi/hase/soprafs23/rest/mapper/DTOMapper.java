@@ -2,10 +2,13 @@ package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
 //import ch.uzh.ifi.hase.soprafs23.entity.Game;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
 import org.mapstruct.Mapper;
@@ -124,4 +127,23 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     UserNameDTO convertEntityToUserNameDTO(User user);
+
+    @Mapping(source="useridFrom",target="useridFrom")
+    @Mapping(source = "useridTo",target="useridTo")
+    @Mapping(source = "roomId",target = "roomId")
+    @Mapping(target="id",ignore = true)
+    @Mapping(target="status",ignore = true)
+    @Mapping(target = "type",ignore = true)
+    Message convertGameMessagePostDTOTOEntity(GameMessagePostDTO gameMessagePostDTO);
+
+
+    @Mapping(source = "id",target = "messageId")
+    @Mapping(source = "roomId",target = "roomId")
+    @Mapping(source = "useridFrom", target = "useridFrom")
+    @Mapping(source = "status",target = "status")
+    @Mapping(target="usernameTo",ignore = true)
+    @Mapping(target = "usernameFrom",ignore = true)
+    @Mapping(target = "roomName", ignore = true)
+    @Mapping(target = "useridTo", source = "useridTo")
+    MessageGetDTO convertEntityToMessageGetDTO(Message message);
 }

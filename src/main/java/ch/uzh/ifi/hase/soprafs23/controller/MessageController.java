@@ -7,8 +7,6 @@ import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomBeforePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.MessageService;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;

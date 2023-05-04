@@ -72,10 +72,11 @@ public class MessageService {
     }
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){
-        messageGetDTO.setRoomName(roomRepository.findById(messageGetDTO.getRoomId()).getRoomName());
-        messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).getUsername());
-        messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).getUsername());
-
+        if(roomRepository.findById(messageGetDTO.getRoomId()).isPresent()) {
+            messageGetDTO.setRoomName(roomRepository.findById(messageGetDTO.getRoomId()).get().getRoomName());
+            messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).get().getUsername());
+            messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
+        }
         return messageGetDTO;
     }
 }
