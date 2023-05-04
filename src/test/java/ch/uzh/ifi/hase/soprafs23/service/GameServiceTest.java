@@ -179,6 +179,7 @@ class GameServiceTest {
         Mockito.when(roomRepository.findByid(testRoom.getId())).thenReturn(testRoom);
         Mockito.when(userRepository.findByRoomId(testRoom.getId())).thenReturn(listOfUsers);
         Mockito.when(userRepository.saveAndFlush(Mockito.any())).thenReturn(testUser1);
+        Mockito.when(roomRepository.saveAndFlush(Mockito.any())).thenReturn(testRoom);
 
         gameService.endGame(testRoom.getId());
         assertEquals(null, testUser1.getGuessingWord());

@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @WebAppConfiguration
 @SpringBootTest
@@ -54,34 +54,24 @@ class GameServiceIntegrationTest {
     public void setup() {
 
         testUser1 = new User();
-        testUser1.setId(1L);
+//        testUser1.setId(1L);
         testUser1.setUsername("hello");
         testUser1.setPassword("111");
         testUser1.setToken("1");
-        testUser1.setStatus(UserStatus.ISPLAYING);
-        testUser1.setCurrentGameScore(2);
-        testUser1.setCurrentScore(1);
-        testUser1.setGuessingWord("apple");
-        testUser1.setRoomId(1L);
         createdUser1 = userService.createUser(testUser1);
 
 
         testUser2 = new User();
-        testUser2.setId(2L);
+//        testUser2.setId(2L);
         testUser2.setUsername("world");
         testUser2.setPassword("111");
         testUser2.setToken("2");
-        testUser2.setStatus(UserStatus.ISPLAYING);
-        testUser2.setCurrentGameScore(1);
-        testUser2.setCurrentScore(0);
-        testUser2.setGuessingWord("orange");
-        testUser2.setRoomId(1L);
         createdUser2 = userService.createUser(testUser2);
 
         testRoom = new Room();
-        testRoom.setId(1L);
+//        testRoom.setId(1L);
         testRoom.setRoomName("hhh");
-        testRoom.setOwnerId(1L);
+        testRoom.setOwnerId(createdUser1.getId());
         testRoom.setMode(2);
         createdRoom = roomService.createRoom(testRoom);
         createdRoom = roomService.joinRoom(createdUser2.getId(), createdRoom.getId());
@@ -91,19 +81,22 @@ class GameServiceIntegrationTest {
     @Test
     public void createGame_success() {
 
-        assertEquals(1L, createdGameTurn1.getId());
-        assertEquals(1L, createdGameTurn1.getRoomId());
+        assertNotNull(createdGameTurn1.getId());
+        assertNotNull(createdGameTurn1.getRoomId());
     }
 
-//    @Test
-//    public void endGame_reset() {
-//
-//        gameService.endGame(createdRoom.getId());
-//
-//        assertNull(createdUser1.getRoomId());
-//        assertNull(createdUser2.getRoomId());
-//
-//    }
+    @Test
+    public void endGame_reset() {
+
+        gameService.endGame(createdRoom.getId());
+
+        assertNull(createdUser2.getRoomId());
+        assertNull(createdUser2.getGuessingWord());
+        assertEquals(0, createdUser2.getCurrentScore());
+        assertEquals(0, createdUser2.getCurrentGameScore());
+        assertEquals(UserStatus.ONLINE, createdUser2.getStatus());
+
+    }
 
     @AfterEach
     public void cleanUp() {
