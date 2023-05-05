@@ -20,10 +20,10 @@ import java.util.Date;
 @Table(name = "USER")
 public class User implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+  private static final Long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(nullable = false, unique = true)
@@ -32,26 +32,45 @@ public class User implements Serializable {
   @Column(nullable = false)
   private String password;
 
-  @Column(unique = true)
+ @Column(nullable = false, unique = true)
   private String token;
 
   @Column(nullable = false)
   private UserStatus status;
 
+  @Column
+  private int bestScore = 0;
 
   @Column
-  private int bestScore;
-
-  @Column
-  private int totalScore;
-
-  @Column(nullable = false)
-  private boolean isLoggedIn;
+  private int totalScore = 0;
 
   @GeneratedValue
   private Date creationDate;
 
-  public Long getId() {
+  @Column
+  private int currentScore = 0; //turn
+
+  @Column
+  private String guessingWord;
+
+  @Column
+  private int currentGameScore = 0;
+
+    @Column
+    private Long roomId;
+
+    @Column
+    private boolean confirmRank = false;
+
+    public boolean isConfirmRank() {
+        return confirmRank;
+    }
+
+    public void setConfirmRank(boolean confirmRank) {
+        this.confirmRank = confirmRank;
+    }
+
+    public Long getId() {
     return id;
   }
 
@@ -59,6 +78,13 @@ public class User implements Serializable {
     this.id = id;
   }
 
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long id) {
+        this.roomId = id;
+    }
 
   public String getPassword() {
     return password;
@@ -92,22 +118,44 @@ public class User implements Serializable {
     this.status = status;
   }
 
-
   public int getBestScore(){return bestScore;}
+
   public void setBestScore(int bestScore){this.bestScore=bestScore;}
+
   public int getTotalScore(){return totalScore;}
+
   public void setTotalScore(int totalScore){this.totalScore=totalScore;}
-
-  public boolean getLoggedIn() {return this.isLoggedIn; }
-
-  public void setLoggedIn(boolean b) {this.isLoggedIn = b; }
 
   public Date getCreationDate() {
       return creationDate;
   }
+
   public void setCreationDate(Date creationDate) {
       this.creationDate = creationDate;
   }
 
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public String getGuessingWord() {
+        return guessingWord;
+    }
+
+    public void setGuessingWord(String guessingWord) {
+        this.guessingWord = guessingWord;
+    }
+
+    public int getCurrentGameScore() {
+        return currentGameScore;
+    }
+
+    public void setCurrentGameScore(int currentGameScore) {
+        this.currentGameScore = currentGameScore;
+    }
 
 }

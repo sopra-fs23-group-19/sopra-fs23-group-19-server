@@ -40,7 +40,7 @@ public class UserService {
     this.userRepository = userRepository;
     }
 
-    public String login(User loginUser){
+    public User login(User loginUser){
         User userByUsername = userRepository.findByUsername(loginUser.getUsername());
 
         if(userByUsername==null){
@@ -49,50 +49,58 @@ public class UserService {
 
         if(userByUsername!=null && userByUsername.getPassword().equals(loginUser.getPassword())){
             userByUsername.setStatus(UserStatus.ONLINE);
-            userByUsername.setToken(UUID.randomUUID().toString());
-            return userByUsername.getToken();
+//            userByUsername.setToken(UUID.randomUUID().toString());
+            return userByUsername;
         }else{
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Wrong password.");
         }
     }
 
-    public void logout(long id){
-        User user = userRepository.findById(id);
+    public void logout(Long id){
+        User user = userRepository.findByid(id);
 
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
-            user.setToken(null);
+//            user.setToken(null);
+            userRepository.flush();
         }else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
         }
+    }
+
+    public User retrieveUser(Long userId){
+        User user =  userRepository.findByid(userId);
+
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");}
+        return user;
+    }
+
+    public boolean findByToken(String token){
+        if(userRepository.findByToken(token)==null){
+            return false;
+        }
+        return true;
+    }
+
+    public String findById(Long id){
+        if(userRepository.findById(id)==null){
+//            return false;
+            return "" ;//empty
+        }
+        User user = userRepository.findByid(id);
+
+        return user.getUsername();
     }
 
     public List<User> getUsers() {
     return this.userRepository.findAll();
     }
 
-    //  public User createUser(User newUser) {
-    //    newUser.setToken(UUID.randomUUID().toString());
-    //    newUser.setStatus(UserStatus.OFFLINE);
-    //    checkIfUserExists(newUser);
-    //    // saves the given entity but data is only persisted in the database once
-    //    // flush() is called
-    //    newUser = userRepository.save(newUser);
-    //    userRepository.flush();
-    //
-    //    log.debug("Created Information for User: {}", newUser);
-    //    return newUser;
-    //  }
-
-
-//  public List<User> getUsers() {
-//	return this.userRepository.findAll();
-//  }
 
   public User createUser(User newUser) {
       newUser.setToken(UUID.randomUUID().toString());
 	  newUser.setStatus(UserStatus.ONLINE);
-	  newUser.setLoggedIn(true);
 
       checkIfUserExists(newUser);
       checkNullPassword(newUser);
@@ -108,6 +116,15 @@ public class UserService {
 
 	  log.debug("Created Information for User: {}", newUser);
 	  return newUser;
+  }
+
+  public void changeStatusToPlaying(Long userId){
+      User user =  userRepository.findByid(userId);
+      if (user == null) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");
+      }else{
+          user.setStatus(UserStatus.ISPLAYING);
+      }
   }
   
   private void checkNullPassword(User newUser) {
@@ -136,8 +153,8 @@ public class UserService {
   }
 
   public void updateUsernameOrPassword(UserPutDTO userPutDTO) {
-    long userId =  userPutDTO.getId();
-    User user = userRepository.findById(userId);
+    Long userId =  userPutDTO.getId();
+    User user = userRepository.findByid(userId);
 
     if(user == null){
         // user with userId was not found, return 404

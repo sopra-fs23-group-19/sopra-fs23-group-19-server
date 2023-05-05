@@ -1,11 +1,18 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+
+import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Message;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginPostDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
-import org.mapstruct.*;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 /**
@@ -32,38 +39,112 @@ public interface DTOMapper {
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
-    @Mapping(target = "loggedIn", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "guessingWord", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
+    @Mapping(target = "roomId", ignore =true)
+    @Mapping(target = "confirmRank", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
-
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
-    @Mapping(source = "password", target = "password")
     @Mapping(source = "status", target = "status")
     @Mapping(source = "creationDate", target = "creationDate")
     @Mapping(source = "token", target = "token")
-    @Mapping(source = "loggedIn", target = "loggedIn")
+    UserLoginGetDTO convertEntityToUserLoginGetDTO(User user);
+
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    @Mapping(target = "status",ignore = true)
+    @Mapping(target = "id",ignore = true)
+    @Mapping(target = "token", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "guessingWord", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
+    @Mapping(target = "roomId", ignore =true)
+    @Mapping(target = "confirmRank", ignore = true)
+
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "status", target = "status")
-    @Mapping(source = "loggedIn", target = "loggedIn")
     @Mapping(source = "creationDate", target = "creationDate")
+    @Mapping(source = "token", target = "token")
+    @Mapping(target = "bestScore", source="bestScore")
+    @Mapping(target = "totalScore", source="totalScore")
+    @Mapping(target = "currentScore", source="currentScore")
+    @Mapping(target = "guessingWord", source="guessingWord")
+    @Mapping(target = "currentGameScore", source="currentGameScore")
+    @Mapping(target = "roomId", source="roomId")
     UserGetDTO convertEntityToUserGetDTO(User user);
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "username", target = "username")
     @Mapping(source = "password", target = "password")
+    @Mapping(source = "guessingWord", target = "guessingWord")
+    @Mapping(source = "roomId", target = "roomId")
     @Mapping(target = "token", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "bestScore", ignore = true)
     @Mapping(target = "totalScore", ignore = true)
-    @Mapping(target = "loggedIn", ignore = true)
     @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
+    @Mapping(target = "confirmRank", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "roomName", target = "roomName")
+    @Mapping(source = "ownerId", target = "ownerId")
+    @Mapping(source = "mode", target = "mode")
+    @Mapping(target = "status", ignore = true)
+    Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
+
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "drawingPlayerId", target = "drawingPlayerId")
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "submitNum", target = "submitNum")
+    @Mapping(source = "roomId", target = "roomId")
+    @Mapping(source = "targetWord", target = "targetWord")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "currentTurn", target = "currentTurn")
+    GameTurnGetDTO convertEntityToGameTurnGetDTO(GameTurn gameTurn);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "image", target = "image")
+    @Mapping(source = "targetWord", target = "targetWord")
+    @Mapping(target = "drawingPlayerId", ignore = true)
+    @Mapping(target = "roomId", ignore = true)
+    @Mapping(target = "submitNum", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "currentTurn", ignore = true)
+    GameTurn convertGameTurnPutDTOtoEntity(GameTurnPutDTO gameTurnPutDTO);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    UserNameDTO convertEntityToUserNameDTO(User user);
+
+    @Mapping(source="useridFrom",target="useridFrom")
+    @Mapping(source = "useridTo",target="useridTo")
+    @Mapping(source = "roomId",target = "roomId")
+    @Mapping(target="id",ignore = true)
+    @Mapping(target="status",ignore = true)
+    @Mapping(target = "type",ignore = true)
+    Message convertGameMessagePostDTOTOEntity(GameMessagePostDTO gameMessagePostDTO);
+
+
+    @Mapping(source = "id",target = "messageId")
+    @Mapping(source = "roomId",target = "roomId")
+    @Mapping(source = "useridFrom", target = "useridFrom")
+    @Mapping(source = "status",target = "status")
+    @Mapping(target="usernameTo",ignore = true)
+    @Mapping(target = "usernameFrom",ignore = true)
+    @Mapping(target = "roomName", ignore = true)
+    @Mapping(target = "useridTo", source = "useridTo")
+    MessageGetDTO convertEntityToMessageGetDTO(Message message);
 }

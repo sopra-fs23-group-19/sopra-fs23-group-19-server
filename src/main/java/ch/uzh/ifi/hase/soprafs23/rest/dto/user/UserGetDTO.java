@@ -1,15 +1,31 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.user;
 
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
+
 import java.util.Date;
 
 public class UserGetDTO {
 
   private Long id;
   private String username;
+
+  private String token;
   private UserStatus status;
-  private boolean isLoggedIn;
   private Date creationDate;
+  private int bestScore;
+  private int totalScore;
+
+  private int currentScore;
+  private String guessingWord;
+
+  private int currentGameScore;
+
+  private Long roomId;
+
+  public int getBestScore(){return bestScore;}
+  public void setBestScore(int bestScore){this.bestScore=bestScore;}
+  public int getTotalScore(){return totalScore;}
+  public void setTotalScore(int totalScore){this.totalScore=totalScore;}
 
   public Long getId() {
     return id;
@@ -35,13 +51,6 @@ public class UserGetDTO {
     this.status = status;
   }
 
-  public boolean isLoggedIn(){
-      return isLoggedIn;
-  }
-
-  public void setLoggedIn(boolean loggedIn) {
-      this.isLoggedIn = loggedIn;
-  }
 
   public Date getCreationDate(){
       return creationDate;
@@ -50,4 +59,42 @@ public class UserGetDTO {
   public void setCreationDate(Date date){
       this.creationDate = date;
   }
+  public String getToken() {
+      return token;
+  }
+  public void setToken(String token) {
+      this.token = token;
+  }
+
+    public int getCurrentScore() {
+        return currentScore;
+    }
+
+    public void setCurrentScore(int currentScore) {
+        this.currentScore = currentScore;
+    }
+
+    public String getGuessingWord() {
+        return guessingWord;
+    }
+
+    public void setGuessingWord(String guessingWord) {
+        this.guessingWord = guessingWord;
+    }
+
+    public int getCurrentGameScore() {
+        return currentGameScore;
+    }
+
+    public void setCurrentGameScore(int currentGameScore) {
+        this.currentGameScore = currentGameScore;
+    }
+
+    public Long getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(Long roomId) {
+        this.roomId = roomId;
+    }
 }
