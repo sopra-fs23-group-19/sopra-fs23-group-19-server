@@ -45,6 +45,7 @@ public interface DTOMapper {
     @Mapping(target = "currentGameScore", ignore = true)
     @Mapping(target = "roomId", ignore =true)
     @Mapping(target = "confirmRank", ignore = true)
+    @Mapping(target = "friends", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -66,7 +67,7 @@ public interface DTOMapper {
     @Mapping(target = "currentGameScore", ignore = true)
     @Mapping(target = "roomId", ignore =true)
     @Mapping(target = "confirmRank", ignore = true)
-
+    @Mapping(target = "friends", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -95,6 +96,7 @@ public interface DTOMapper {
     @Mapping(target = "currentScore", ignore = true)
     @Mapping(target = "currentGameScore", ignore = true)
     @Mapping(target = "confirmRank", ignore = true)
+    @Mapping(target = "friends", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -129,6 +131,7 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     UserNameDTO convertEntityToUserNameDTO(User user);
 
+
     @Mapping(source="useridFrom",target="useridFrom")
     @Mapping(source = "useridTo",target="useridTo")
     @Mapping(source = "roomId",target = "roomId")
@@ -147,4 +150,21 @@ public interface DTOMapper {
     @Mapping(target = "roomName", ignore = true)
     @Mapping(target = "useridTo", source = "useridTo")
     MessageGetDTO convertEntityToMessageGetDTO(Message message);
+
+    @Mapping(source = "username", target = "username")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "bestScore", ignore = true)
+    @Mapping(target = "totalScore", ignore = true)
+    @Mapping(target = "creationDate", ignore = true)
+    @Mapping(target = "currentScore", ignore = true)
+    @Mapping(target = "guessingWord", ignore = true)
+    @Mapping(target = "currentGameScore", ignore = true)
+    @Mapping(target = "roomId", ignore =true)
+    @Mapping(target = "confirmRank", ignore = true)
+    @Mapping(target = "friends", ignore = true)
+    User cnvertUserGetDTOtoEntity(UserGetDTO userGetDTO);
+
 }

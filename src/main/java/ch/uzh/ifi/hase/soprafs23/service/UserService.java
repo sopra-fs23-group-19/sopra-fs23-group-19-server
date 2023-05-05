@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import org.slf4j.Logger;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -188,4 +186,25 @@ public class UserService {
       }
   }
 
+    public List<User> searchUsers(UserGetDTO userGetDTO) {
+        User user = DTOMapper.INSTANCE.cnvertUserGetDTOtoEntity(userGetDTO);
+        if (user.getUsername() == null){
+            return this.userRepository.findAll();
+        }else{
+            User userFound = userRepository.findByUsername(user.getUsername());
+            if(userFound == null){
+                return this.userRepository.findAll();
+            }else{
+                List<User> foundUsers = new ArrayList<>(){{
+                    add(userFound);
+                }};
+                return foundUsers;
+            }
+        }
+    }
+
+    public List<User> returnFriends(Long userId) {
+      User user = userRepository.findByid(userId);
+      return user.getFriends();
+    }
 }
