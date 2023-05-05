@@ -3,7 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
-import ch.uzh.ifi.hase.soprafs23.entity.Room;
+import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
@@ -89,5 +89,23 @@ public class MessageService {
             messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
         }
         return messageGetDTO;
+    }
+
+    public Message refreshFriends(long messageId, ConfirmMessageDTO confirmMessageDTO) {
+        Message message = messageRepository.findById(messageId);
+        User userFrom = userRepository.findByid(message.getUseridFrom());
+        User userTo = userRepository.findByid(message.getUseridFrom());
+        if (confirmMessageDTO.getAction().equals("agree")){
+            message.setStatus(MessageStatus.AGREE);
+            userFrom.setFriends(userTo);
+            userTo.setFriends(userFrom);
+        }else{
+            message.setStatus(MessageStatus.REJECT);
+        }
+
+        messageRepository.saveAndFlush(message);
+        userRepository.flush();
+
+        return message;
     }
 }

@@ -107,14 +107,6 @@ public class UserController {
         return userGetDTOs;
   }
 
-  // send friends invitation
-//  @PutMapping("/users/addFriends/{userId}")
-//  @ResponseStatus(HttpStatus.NO_CONTENT)
-//  @ResponseBody
-//  public void addFriends(@RequestBody UserGetDTO userGetDTO, @PathVariable("userId") Long userId){
-//        userService.
-//  }
-
 
   // return friends list
   @GetMapping("/users/returnFriends/{userId}")

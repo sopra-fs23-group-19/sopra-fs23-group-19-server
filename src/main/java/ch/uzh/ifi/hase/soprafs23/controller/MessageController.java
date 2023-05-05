@@ -90,4 +90,14 @@ public class MessageController {
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
 
+    // agree or reject friends invitations
+    //@UserLoginToken
+    @PostMapping("/notification/friends/{messageId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId){
+        Message message = messageService.refreshFriends(messageId,confirmMessageDTO);
+        return DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message);
+    }
+
 }
