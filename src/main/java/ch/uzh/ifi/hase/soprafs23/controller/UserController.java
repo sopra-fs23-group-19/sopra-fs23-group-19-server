@@ -123,4 +123,14 @@ public class UserController {
       return userGetDTOs;
   }
 
+    // get friends' profiles
+    @PostMapping("/users/friendsProfiles")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public UserGetDTO getFriendsProfiles(@RequestBody UserFriendsPostDTO userFriendsPostDTO){
+
+        User userTo = userService.retrieveFriends(userFriendsPostDTO);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userTo);
+    }
+
 }
