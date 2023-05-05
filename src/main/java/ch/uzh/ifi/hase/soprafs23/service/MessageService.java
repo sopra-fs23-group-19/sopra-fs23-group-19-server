@@ -8,6 +8,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -69,6 +70,16 @@ public class MessageService {
         messageRepository.flush();
 
         return message;
+    }
+
+    public Message addFriend(FriendMessagePostDTO friendMessagePostDTO){
+        Message message = new Message();
+        message.setStatus(MessageStatus.PENDING);
+        message.setType(MessageType.FRIEND);
+        message.setUseridFrom(friendMessagePostDTO.getUseridFrom());
+        message.setUseridTo(friendMessagePostDTO.getUseridTo());
+
+        return messageRepository.saveAndFlush(message);
     }
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){

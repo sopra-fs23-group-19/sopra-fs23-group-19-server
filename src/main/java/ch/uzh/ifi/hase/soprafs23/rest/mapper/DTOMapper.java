@@ -149,6 +149,7 @@ public interface DTOMapper {
     @Mapping(target = "usernameFrom",ignore = true)
     @Mapping(target = "roomName", ignore = true)
     @Mapping(target = "useridTo", source = "useridTo")
+    @Mapping(target = "type", source = "type")
     MessageGetDTO convertEntityToMessageGetDTO(Message message);
 
     @Mapping(source = "username", target = "username")
