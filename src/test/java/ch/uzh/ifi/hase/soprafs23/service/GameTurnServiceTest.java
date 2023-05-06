@@ -68,8 +68,10 @@ class GameTurnServiceTest {
         testUser1.setPassword("111");
         testUser1.setToken("1");
         testUser1.setStatus(UserStatus.ISPLAYING);
-        testUser1.setCurrentGameScore(2);
-        testUser1.setCurrentScore(1);
+//        testUser1.setCurrentGameScore(2);
+//        testUser1.setCurrentScore(1);
+        testUser1.setCurrentGameScore(20);
+        testUser1.setCurrentScore(10);
         testUser1.setGuessingWord("apple");
         testUser1.setConfirmRank(true);
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser1);
@@ -80,7 +82,8 @@ class GameTurnServiceTest {
         testUser2.setPassword("111");
         testUser2.setToken("2");
         testUser2.setStatus(UserStatus.ISPLAYING);
-        testUser2.setCurrentGameScore(1);
+//        testUser2.setCurrentGameScore(1);
+        testUser2.setCurrentGameScore(10);
         testUser2.setCurrentScore(0);
         testUser2.setGuessingWord("orange");
         testUser2.setConfirmRank(true);
@@ -216,7 +219,8 @@ class GameTurnServiceTest {
         assertEquals(testGameTurn1.getStatus(), TurnStatus.RANKING);
         assertEquals(testUser2.isConfirmRank(), false);
         assertEquals(testUser2.getCurrentScore(), 0);
-        assertEquals(testUser2.getCurrentGameScore(), 1);
+//        assertEquals(testUser2.getCurrentGameScore(), 1);
+        assertEquals(testUser2.getCurrentGameScore(), 10);
         assertEquals(testGameTurn1.getSubmitNum(), 1);
 
     }
@@ -245,8 +249,10 @@ class GameTurnServiceTest {
         gameTurnService.calculateScore(userPutDTO, testGameTurn2.getId());
         assertEquals(testGameTurn2.getStatus(), TurnStatus.RANKING);
         assertEquals(testUser1.isConfirmRank(), false);
-        assertEquals(testUser1.getCurrentScore(), 1);
-        assertEquals(testUser1.getCurrentGameScore(), 3);
+//        assertEquals(testUser1.getCurrentScore(), 1);
+        assertEquals(testUser1.getCurrentScore(), 10);
+//        assertEquals(testUser1.getCurrentGameScore(), 3);
+        assertEquals(testUser1.getCurrentGameScore(), 30);
         assertEquals(testGameTurn2.getSubmitNum(), 1);
 
     }

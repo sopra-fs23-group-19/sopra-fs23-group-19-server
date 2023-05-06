@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.json.*;
 
 @Service
 @Transactional
@@ -96,12 +105,21 @@ public class GameTurnService {
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
-
+        String userGuess = userInput.getGuessingWord();
+        String target = gameTurn.getTargetWord();
+        double similarity = getWordSimilarity(userGuess, target );
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
-            user.setCurrentScore(1);  // set current score in this game turn
-            user.setCurrentGameScore(user.getCurrentGameScore()+1);  // total scores in this game accumulate
-            user.setTotalScore(user.getTotalScore()+1);
-        }else{
+            user.setCurrentScore(10);  // set current score in this game turn
+            user.setCurrentGameScore(user.getCurrentGameScore()+10);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore()+10);
+        }
+        else if (similarity > 0.9)
+        {
+            user.setCurrentScore(5);  // set current score in this game turn
+            user.setCurrentGameScore(user.getCurrentGameScore()+5);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore()+5);
+        }
+        else{
             user.setCurrentScore(0);
         }
 
@@ -187,6 +205,36 @@ public class GameTurnService {
         roomRepository.flush();
 
         return gameTurn;
+    }
+    // get the word similarity
+    public double getWordSimilarity( String word0, String word1) {
+        String requestContent = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/?text1="+
+                URLEncoder.encode(word0, StandardCharsets.UTF_8).replace("+", "%20")+"&text2="+URLEncoder.encode(word1, StandardCharsets.UTF_8).replace("+", "%20");
+//        System.out.println(requestContent);
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(requestContent))
+                .header("X-RapidAPI-Key", "f1ba58b38bmsh7f13519be0f7c4ep180d7cjsn1d03862b849f")
+                .header("X-RapidAPI-Host", "twinword-text-similarity-v1.p.rapidapi.com")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response;
+        {
+            try {
+                response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            }
+            catch (IOException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word similarity is not found.");
+            }
+            catch (InterruptedException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word similarity is not found.");
+            }
+        }
+
+        String str = response.body().toString();
+        JSONObject result = new JSONObject(str);
+        double similarity =  result.getDouble("similarity");
+
+        return similarity;
     }
 
 }
