@@ -58,6 +58,10 @@ public class MessageService {
         return result;
     }
 
+    public List<Message> getAllFriendsMessages(long userId){
+        return getMessagesByUser(userId);
+    }
+
     public Message getMessageInfo(long id){
         return messageRepository.findById(id);
     }

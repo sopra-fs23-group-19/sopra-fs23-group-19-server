@@ -90,9 +90,26 @@ public class MessageController {
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
 
+    // get all friends' messages
+    //@UserLoginToken
+    @GetMapping("/notification/friends/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<MessageGetDTO> confirmMessage(@PathVariable long userId) {
+        List<Message> messages = messageService.getAllFriendsMessages(userId);
+        List<MessageGetDTO> result = new ArrayList<>();
+
+        for(Message message:messages){
+            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+
+        }
+
+        return result;
+    }
+
     // agree or reject friends invitations
     //@UserLoginToken
-    @PostMapping("/notification/friends/{messageId}")
+    @PostMapping("/friends/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId){
