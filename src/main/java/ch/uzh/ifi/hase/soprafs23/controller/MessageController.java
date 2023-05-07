@@ -45,16 +45,48 @@ public class MessageController {
     }
 
     //@UserLoginToken
+//    @GetMapping("/notification/game/{userid}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ResponseBody
+//    public List<MessageGetDTO> getMessagesByUser(@PathVariable long userid) { //return all messages
+//        List<Message> messages = messageService.getMessagesByUser(userid);
+//        List<MessageGetDTO> result = new ArrayList<>();
+//
+//        for(Message message:messages){
+//            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+//
+//        }
+//
+//        return result;
+//    }
+
     @GetMapping("/notification/game/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getMessagesByUser(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getGameMessagesByUser(@PathVariable long userid) { //return all messages
         List<Message> messages = messageService.getMessagesByUser(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            if(message.getType()==MessageType.GAME) {
+                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            }
+        }
 
+        return result;
+    }
+
+    @GetMapping("/notification/friend/{userid}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<MessageGetDTO> getFriendMessagesByUser(@PathVariable long userid) { //return all messages
+        List<Message> messages = messageService.getMessagesByUser(userid);
+        List<MessageGetDTO> result = new ArrayList<>();
+
+        for(Message message:messages){
+            if(message.getType()==MessageType.FRIEND) {
+                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            }
         }
 
         return result;
