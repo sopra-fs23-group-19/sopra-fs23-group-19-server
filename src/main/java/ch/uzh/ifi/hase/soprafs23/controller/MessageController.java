@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
@@ -97,12 +98,13 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<MessageGetDTO> confirmMessage(@PathVariable long userId) {
-        List<Message> messages = messageService.getMessagesByUser(userId);
+        List<Message> messages = messageService.getMessagesByUserFrom(userId);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            result.add(messageService.completeFriendsMessages(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-
+            if(message.getStatus().equals(MessageStatus.PENDING)) {
+                result.add(messageService.completeFriendsMessages(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            }
         }
 
         return result;
