@@ -93,16 +93,48 @@ public class MessageController {
     }
 
     //@UserLoginToken
+//    @GetMapping("/notification/game/pending/{userid}")
+//    @ResponseStatus(HttpStatus.OK)
+//    @ResponseBody
+//    public List<MessageGetDTO> getPendingMessages(@PathVariable long userid) { //return all messages
+//        List<Message> messages = messageService.getPendingMessages(userid);
+//        List<MessageGetDTO> result = new ArrayList<>();
+//
+//        for(Message message:messages){
+//            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+//
+//        }
+//
+//        return result;
+//    }
+
     @GetMapping("/notification/game/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getPendingMessages(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getPendingGameMessages(@PathVariable long userid) { //return all messages
         List<Message> messages = messageService.getPendingMessages(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            if(message.getType()==MessageType.GAME) {
+                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            }
+        }
 
+        return result;
+    }
+
+    @GetMapping("/notification/friend/pending/{userid}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<MessageGetDTO> getPendingFriendMessages(@PathVariable long userid) { //return all messages
+        List<Message> messages = messageService.getPendingMessages(userid);
+        List<MessageGetDTO> result = new ArrayList<>();
+
+        for(Message message:messages){
+            if(message.getType()==MessageType.FRIEND) {
+                result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            }
         }
 
         return result;
