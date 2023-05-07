@@ -37,7 +37,8 @@ public class MessageController {
     @ResponseBody
     public MessageGetDTO addFriendMessage(@RequestBody FriendMessagePostDTO friendMessagePostDTO) {
 
-        MessageGetDTO messageGetDTO =  DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.addFriend(friendMessagePostDTO));
+        MessageGetDTO messageGetDTO =  messageService.completeFriendsMessages(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.addFriend(friendMessagePostDTO)));
+
         return messageService.completeReturnMessage(messageGetDTO);
     }
 
@@ -96,11 +97,11 @@ public class MessageController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<MessageGetDTO> confirmMessage(@PathVariable long userId) {
-        List<Message> messages = messageService.getAllFriendsMessages(userId);
+        List<Message> messages = messageService.getMessagesByUser(userId);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
-            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
+            result.add(messageService.completeFriendsMessages(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
 
         }
 
@@ -113,8 +114,10 @@ public class MessageController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId){
-        Message message = messageService.refreshFriends(messageId,confirmMessageDTO);
-        return DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message);
+        Message message = messageService.comfirmGame(messageId,confirmMessageDTO);
+        MessageGetDTO messageGetDTO = DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.refreshFriends(message));
+
+        return messageService.completeFriendsMessages(messageGetDTO);
     }
 
 }

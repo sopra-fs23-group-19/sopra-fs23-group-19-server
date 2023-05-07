@@ -3,7 +3,8 @@ package ch.uzh.ifi.hase.soprafs23.rest.dto.user;
 public class UserFriendsPostDTO {
 
     private Long useridFrom;
-    private Long useridTo;
+
+    private String useridNameTo;
 
     public Long getUseridFrom() {
         return useridFrom;
@@ -12,13 +13,13 @@ public class UserFriendsPostDTO {
     public void setUseridFrom(Long useridFrom) {
         this.useridFrom = useridFrom;
     }
-
-    public Long getUseridTo() {
-        return useridTo;
+    public String getUseridNameTo() {
+        return useridNameTo;
     }
 
-    public void setUseridTo(Long useridTo) {
-        this.useridTo = useridTo;
+    public void setUseridNameTo(String useridNameTo) {
+        this.useridNameTo = useridNameTo;
     }
+
 
 }

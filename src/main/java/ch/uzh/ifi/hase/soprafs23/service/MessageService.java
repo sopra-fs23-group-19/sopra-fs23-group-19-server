@@ -27,9 +27,9 @@ public class MessageService {
 
     @Autowired
     public MessageService(@Qualifier("messageRepository") MessageRepository messageRepository,
-                          @Qualifier("userRepository") UserRepository userPository,
+                          @Qualifier("userRepository") UserRepository userRepository,
                           @Qualifier("roomRepository")RoomRepository roomRepository) {
-        this.userRepository=userPository;
+        this.userRepository=userRepository;
         this.roomRepository=roomRepository;
         this.messageRepository = messageRepository;
     }
@@ -58,9 +58,6 @@ public class MessageService {
         return result;
     }
 
-    public List<Message> getAllFriendsMessages(long userId){
-        return getMessagesByUser(userId);
-    }
 
     public Message getMessageInfo(long id){
         return messageRepository.findById(id);
@@ -95,21 +92,23 @@ public class MessageService {
         return messageGetDTO;
     }
 
-    public Message refreshFriends(long messageId, ConfirmMessageDTO confirmMessageDTO) {
-        Message message = messageRepository.findById(messageId);
+    public Message refreshFriends(Message message) {
         User userFrom = userRepository.findByid(message.getUseridFrom());
-        User userTo = userRepository.findByid(message.getUseridFrom());
-        if (confirmMessageDTO.getAction().equals("agree")){
-            message.setStatus(MessageStatus.AGREE);
-            userFrom.setFriends(userTo);
-            userTo.setFriends(userFrom);
-        }else{
-            message.setStatus(MessageStatus.REJECT);
+        User userTo = userRepository.findByid(message.getUseridTo());
+        if (message.getStatus().equals(MessageStatus.AGREE)){
+            userFrom.getFriends().add(userTo);
+            userTo.getFriends().add(userFrom);
         }
 
-        messageRepository.saveAndFlush(message);
         userRepository.flush();
 
         return message;
+    }
+
+    public MessageGetDTO completeFriendsMessages(MessageGetDTO messageGetDTO) {
+        messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).get().getUsername());
+        messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
+
+        return messageGetDTO;
     }
 }

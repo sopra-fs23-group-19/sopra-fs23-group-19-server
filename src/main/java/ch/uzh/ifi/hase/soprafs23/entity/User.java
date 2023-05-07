@@ -166,8 +166,8 @@ public class User implements Serializable {
         return friends;
     }
 
-    public void setFriends(User friend) {
-        this.friends.add(friend);
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
     }
 
 }
