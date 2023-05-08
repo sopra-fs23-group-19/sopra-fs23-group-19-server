@@ -92,13 +92,13 @@ public class MessageController {
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
 
-    // get all friends' messages
+    // get all messages
     //@UserLoginToken
     @GetMapping("/notification/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<MessageGetDTO> confirmMessage(@PathVariable long userId) {
-        List<Message> messages = messageService.getMessagesByUserFrom(userId);
+        List<Message> messages = messageService.getMessagesByUser(userId);
         List<MessageGetDTO> result = new ArrayList<>();
 
         for(Message message:messages){
