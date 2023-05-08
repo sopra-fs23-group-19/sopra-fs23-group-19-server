@@ -107,7 +107,10 @@ public class GameTurnService {
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
         String userGuess = userInput.getGuessingWord();
         String target = gameTurn.getTargetWord();
-        double similarity = getWordSimilarity(userGuess, target );
+        double similarity = 0;
+        if(userGuess != "" && userGuess != null && target!= "" && target!=null )
+        {
+        similarity = getWordSimilarity(userGuess, target );}
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setCurrentScore(10);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+10);  // total scores in this game accumulate
@@ -208,6 +211,9 @@ public class GameTurnService {
     }
     // get the word similarity
     public double getWordSimilarity( String word0, String word1) {
+//        System.out.println(word0);
+//        System.out.println(word1);
+
         String requestContent = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/?text1="+
                 URLEncoder.encode(word0, StandardCharsets.UTF_8).replace("+", "%20")+"&text2="+URLEncoder.encode(word1, StandardCharsets.UTF_8).replace("+", "%20");
 //        System.out.println(requestContent);
@@ -231,9 +237,13 @@ public class GameTurnService {
         }
 
         String str = response.body().toString();
+//        System.out.println(str);
         JSONObject result = new JSONObject(str);
-        double similarity =  result.getDouble("similarity");
+        double similarity = 0;
+        if (result.has("similarity")) {
+             similarity = result.getDouble("similarity");
 
+        }
         return similarity;
     }
 
