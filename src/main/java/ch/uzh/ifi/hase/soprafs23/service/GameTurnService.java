@@ -108,9 +108,11 @@ public class GameTurnService {
         String userGuess = userInput.getGuessingWord();
         String target = gameTurn.getTargetWord();
         double similarity = 0;
-        if(userGuess != "" && userGuess != null && target!= "" && target!=null )
-        {
-        similarity = getWordSimilarity(userGuess, target );}
+        //currently to save the external API, comment it.
+//        if(userGuess != "" && userGuess != null && target!= "" && target!=null )
+//        {
+//        similarity = getWordSimilarity(userGuess, target );
+//        }
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
             user.setCurrentScore(10);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+10);  // total scores in this game accumulate
