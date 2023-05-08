@@ -59,4 +59,6 @@
 |week 5| Shiyu Ran  | [server#130](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/130)| Fix bugs about game logic in the backend.|
 |week 6| Runze Li | [client#92](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/92)|Add welcome page, improve UI, use sound.|
 |week 6| Runze Li | [server#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/131)| Implement word similarity service. Use an external API.|
+|week 6| Manyi Wang | [#127](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/55)| invite players join the room|
+|week 6| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/53)| Accept/reject invitation|
 
