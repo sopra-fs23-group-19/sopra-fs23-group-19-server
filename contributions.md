@@ -64,3 +64,5 @@
 |week 6| Shiyu Ran | [#59,#36](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/59; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/36)| Search user by username; Get all friends.|
 |week 6| Shiyu Ran | [#64,#65,#67](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/64; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/65; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/67)| Accept/Reject friends, and refresh user's friends list|
 |week 6| Shiyu Ran | [#37](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/37)| Retrieve friends' profiles.|
+|week 6| Jingjing Li | [client#33](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/33)|Implement the friends list in the waiting page. |
+|week 6| Jingjing Li | [client#37](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/37)|Help Geyu Meng to implement the sending friend request button in the frontend. |
