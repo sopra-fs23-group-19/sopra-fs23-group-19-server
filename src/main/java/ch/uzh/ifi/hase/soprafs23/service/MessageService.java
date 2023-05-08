@@ -44,10 +44,6 @@ public class MessageService {
         return messageRepository.findByUseridTo(userid);
     }
 
-    public List<Message> getMessagesByUserFrom(long useridFrom){
-        return messageRepository.findByUseridFrom(useridFrom);
-    }
-
     public List<Message> getPendingMessages(long userid){
         List<Message> result = new ArrayList<>();
 
