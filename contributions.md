@@ -61,4 +61,6 @@
 |week 6| Runze Li | [server#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/131)| Implement word similarity service. Use an external API.|
 |week 6| Manyi Wang | [#127](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/55)| invite players join the room|
 |week 6| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/53)| Accept/reject invitation|
-
+|week 6| Shiyu Ran | [#59,#36](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/59; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/36)| Search user by username; Get all friends.|
+|week 6| Shiyu Ran | [#64,#65,#67](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/64; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/65; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/67)| Accept/Reject friends, and refresh user's friends list|
+|week 6| Shiyu Ran | [#37](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/37)| Retrieve friends' profiles.|
