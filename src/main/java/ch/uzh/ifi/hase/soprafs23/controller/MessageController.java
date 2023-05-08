@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
+import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
@@ -8,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.MessageService;
+import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -180,8 +183,6 @@ public class MessageController {
     public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId){
         Message message = messageService.comfirmGame(messageId,confirmMessageDTO);
         MessageGetDTO messageGetDTO = DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.refreshFriends(message));
-
         return messageService.completeFriendsMessages(messageGetDTO);
     }
-
 }
