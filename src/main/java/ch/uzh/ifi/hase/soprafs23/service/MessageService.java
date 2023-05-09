@@ -60,11 +60,11 @@ public class MessageService {
 
 
     public Message getMessageInfo(long id){
-        return messageRepository.findById(id);
+        return messageRepository.findByid(id);
     }
 
     public Message comfirmGame(long id, ConfirmMessageDTO confirmMessageDTO){
-        Message message = messageRepository.findById(id);
+        Message message = messageRepository.findByid(id);
 
         message.setStatus(MessageStatus.valueOf(confirmMessageDTO.getAction()));
 
@@ -84,10 +84,12 @@ public class MessageService {
     }
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){
-        if(roomRepository.findById(messageGetDTO.getRoomId()).isPresent()) {
-            messageGetDTO.setRoomName(roomRepository.findById(messageGetDTO.getRoomId()).get().getRoomName());
-            messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).get().getUsername());
-            messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
+        System.out.println(messageGetDTO.getRoomId());
+        System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
+        if(roomRepository.findByid(messageGetDTO.getRoomId())!=null) {
+            messageGetDTO.setRoomName(roomRepository.findByid(messageGetDTO.getRoomId()).getRoomName());
+            messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
+            messageGetDTO.setUsernameTo(userRepository.findByid(messageGetDTO.getUseridTo()).getUsername());
         }
         return messageGetDTO;
     }
@@ -109,6 +111,7 @@ public class MessageService {
 
         messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).get().getUsername());
         messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
+
         return messageGetDTO;
     }
 }
