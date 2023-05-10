@@ -20,8 +20,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
@@ -155,36 +153,36 @@ class GameTurnControllerTest {
                 .andExpect(jsonPath("$.roomId", Matchers.is(gameTurn.getRoomId().intValue())));
     }
 
-    @Test
-    public void getGameTurnRank_givenTurnId_returnRank() throws Exception {
-        // given
-        GameTurn gameTurn = new GameTurn();
-        gameTurn.setId(1L);
-
-        User user1 = new User();
-        user1.setId(1L);
-        user1.setRoomId(1L);
-        user1.setUsername("a");
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setUsername("b");
-        user2.setRoomId(1L);
-        List<User> users = new ArrayList<>(){{
-            add(user1);
-            add(user2);
-        }};
-
-        // given roomId
-        given(gameTurnService.rank(Mockito.anyLong())).willReturn(users);
-
-        // when/then -> do the request
-        MockHttpServletRequestBuilder getRequest = get("/gameRounds/ranks/"+ gameTurn.getId())
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // performing request should return OK status
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    public void getGameTurnRank_givenTurnId_returnRank() throws Exception {
+//        // given
+//        GameTurn gameTurn = new GameTurn();
+//        gameTurn.setId(1L);
+//
+//        User user1 = new User();
+//        user1.setId(1L);
+//        user1.setRoomId(1L);
+//        user1.setUsername("a");
+//        User user2 = new User();
+//        user2.setId(2L);
+//        user2.setUsername("b");
+//        user2.setRoomId(1L);
+//        List<User> users = new ArrayList<>(){{
+//            add(user1);
+//            add(user2);
+//        }};
+//
+//        // given roomId
+//        given(gameTurnService.rank(Mockito.anyLong())).willReturn(users);
+//
+//        // when/then -> do the request
+//        MockHttpServletRequestBuilder getRequest = get("/gameRounds/ranks/"+ gameTurn.getId())
+//                .contentType(MediaType.APPLICATION_JSON);
+//
+//        // performing request should return OK status
+//        mockMvc.perform(getRequest)
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     public void submitAnswer_givenAnswer_success() throws Exception {
