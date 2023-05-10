@@ -18,12 +18,11 @@ import static java.util.stream.Collectors.toList;
 @Transactional
 public class WordsService {
 
-    private static Map<Long,List<String>> words = new HashMap<>(){{
-        put(1L,List.of("snake","water","earth","apple","train","ship","teacher","hand","computer","cucumber"));
-        put(2L,List.of("potato","cow","basketball","plane","bicycle","guitar","car","leg","bread","powder"));
-        put(3L,List.of("flower","bat","king","phone","cake","pineapple","sun","eye","desk","rice"));
-        put(4L,List.of("sunglasses","egg","mountain","stone","restaurant","hospital","hook","mouth","bag","telescope"));
-    }};
+    private static final List<String> words = Arrays.asList(
+            "snake","water","earth","apple","train","ship","teacher","hand","computer","cucumber",
+            "potato","cow","basketball","plane","bicycle","guitar","car","leg","bread","powder",
+            "flower","bat","king","phone","cake","pineapple","sun","eye","desk","rice",
+            "sunglasses","egg","mountain","stone","restaurant","hospital","hook","mouth","bag","telescope");
 
     public String getWord() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -60,10 +59,10 @@ public class WordsService {
         // if getting empty from external API
         if(listOfWords.size()<3){
             int leftNum = 3 - listOfWords.size();
-            List<String> wordsAll = words.get(gameTurnId);
+            List<String> wordsAll = new ArrayList<>(words);
             // filter same words
             List<String> wordsBackup = wordsAll.stream()
-                    .filter(item -> listOfWords.contains(item))
+                    .filter(item -> !listOfWords.contains(item))
                     .collect(toList());
             for(int i=0;i<leftNum;i++){
                 int randomIndex = new Random().nextInt(wordsBackup.size());

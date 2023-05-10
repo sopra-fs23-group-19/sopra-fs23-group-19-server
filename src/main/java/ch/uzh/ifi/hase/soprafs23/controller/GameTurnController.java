@@ -42,7 +42,7 @@ public class GameTurnController {
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId) {
+    public Set<String> getThreeWords(@PathVariable("gameTurnId") Long gameTurnId) {
 
         return wordsService.getThreeWords(gameTurnId);
     }
@@ -85,7 +85,7 @@ public class GameTurnController {
     @PutMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable("gameTurnId") long gameTurnId){
+    public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable("gameTurnId") Long gameTurnId){
 
         gameTurnService.calculateScore(userPutDTO, gameTurnId);
     }
@@ -95,7 +95,7 @@ public class GameTurnController {
     @GetMapping("/gameRounds/ranks/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public TurnRankGetDTO getRank( @PathVariable long gameTurnId){
+    public TurnRankGetDTO getRank( @PathVariable Long gameTurnId){
 
 
 //        List<User> rankedUsers = gameTurnService.rank(gameTurnId);
@@ -131,7 +131,7 @@ public class GameTurnController {
     @GetMapping("/gameRounds/information/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameTurnAfterGetDTO getGameTurnInfo(@PathVariable("gameTurnId") long gameTurnId){
+    public GameTurnAfterGetDTO getGameTurnInfo(@PathVariable("gameTurnId") Long gameTurnId){
 
         GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);
@@ -143,7 +143,7 @@ public class GameTurnController {
     @GetMapping("/gameRounds/rankConfirmation/{gameTurnId}/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public GameTurnAfterGetDTO confirmRank(@PathVariable("gameTurnId") long gameTurnId, @PathVariable("userId") long userId){
+    public GameTurnAfterGetDTO confirmRank(@PathVariable("gameTurnId") Long gameTurnId, @PathVariable("userId") Long userId){
 
         GameTurn gameTurn = gameTurnService.confirmRank(gameTurnId, userId);
         GameTurnGetDTO gameTurnGetDTO = DTOMapper.INSTANCE.convertEntityToGameTurnGetDTO(gameTurn);

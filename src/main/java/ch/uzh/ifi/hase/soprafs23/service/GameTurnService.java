@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
@@ -89,6 +90,25 @@ public class GameTurnService {
         }
     }
 
+    public Room getRoom(Long roomId) {
+        Room room = roomRepository.findByid(roomId);
+        if(room == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, the room is not found!");
+        }else{
+            return room;
+        }
+    }
+
+    public List<User> getAllUsers(Long gameId){
+        List<User> users = userRepository.findByRoomId(gameId);
+        if (users == null || users.size()==0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sorry, there is something wrong when fetching users." +
+                    "Maybe the gameId is not correct?");
+        }else{
+            return users;
+        }
+    }
+
     // the drawing player finishes his/her drawing, and the guessing phase begins
     public GameTurn submitImage(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
@@ -100,7 +120,7 @@ public class GameTurnService {
     }
 
     // calculate the score when each player handles his/her answer
-    public void calculateScore(UserPutDTO userPutDTO, long gameTurnId) {
+    public void calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
 
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         // find user in the db
@@ -162,12 +182,12 @@ public class GameTurnService {
 
 
 
-    public List<User> rank(long gameTurnId) {
+    public List<User> rank(Long gameTurnId) {
 
     // rank all users by scores in this game turn
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
-        List<User> allPlayers = userRepository.findByRoomId(gameTurn.getRoomId());
+        List<User> allPlayers = getAllUsers(gameTurn.getRoomId());
 
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
@@ -193,9 +213,9 @@ public class GameTurnService {
     }
 
 
-    public GameTurn confirmRank(long turnId, long userId){
-        GameTurn gameTurn = gameTurnRepository.findByid(turnId);
-        List<User> users = userRepository.findByRoomId(roomRepository.findByid(gameTurn.getRoomId()).getId());
+    public GameTurn confirmRank(Long turnId, Long userId){
+        GameTurn gameTurn = getGameTurn(turnId);
+        List<User> users = getAllUsers(getRoom(gameTurn.getRoomId()).getId());
 
         boolean allConfirm = true;
         for(User u: users){
@@ -212,10 +232,10 @@ public class GameTurnService {
 
         if(allConfirm) {
             gameTurn.setStatus(TurnStatus.END);
-            gameTurn.setCurrentTurn(gameTurn.getCurrentTurn()+1);
-            if (gameTurn.getCurrentTurn() == roomRepository.findByid(gameTurn.getRoomId()).getMode()) {
-                roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
+            if (gameTurn.getCurrentTurn() == getRoom(gameTurn.getRoomId()).getMode()) {
+                getRoom(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }
+            gameTurn.setCurrentTurn(gameTurn.getCurrentTurn()+1);
         }
 
         userRepository.flush();

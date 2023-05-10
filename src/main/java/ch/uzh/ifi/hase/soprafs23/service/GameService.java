@@ -52,14 +52,22 @@ public class GameService {
             gameTurn.setRoomId(room.getId());
             gameTurn.setStatus(TurnStatus.CHOOSE_WORD);
             gameTurn.setCurrentTurn(i+1);
-            gameTurn.setDrawingPlayerId(userRepository.findByRoomId(room.getId()).get(i).getId());
-            userRepository.findByRoomId(room.getId()).get(i).setStatus(UserStatus.ISPLAYING);
+            User user = userRepository.findByRoomId(room.getId()).get(i);
+            if (user == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Sorry, we cannot start, maybe some users have left this room?");
+            }
+            gameTurn.setDrawingPlayerId(user.getId());
+            user.setStatus(UserStatus.ISPLAYING);
 
             gameTurnRepository.saveAndFlush(gameTurn);
             userRepository.flush();
         }
 
         List<GameTurn> turns = gameTurnRepository.findByRoomId(room.getId());
+        if(turns == null || turns.size()==0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"There is something wrong when starting a new game, " +
+                    "this room will be dismissed; you can create a new room or join another room.");
+        }
         GameTurn result =  null;
 
         for(GameTurn t:turns){
@@ -83,12 +91,31 @@ public class GameService {
         }
     }
 
-    public void endGame( long gameId) { //roomId
+    public GameTurn getGameTurn(Long gameTurnId){
+        GameTurn gameTurn = gameTurnRepository.findByid(gameTurnId);
+        if(gameTurn == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Sorry, this turn does not exist, maybe you haven't started it yet?");
+        }else{
+            return gameTurn;
+        }
+    }
+
+    public List<User> getAllUsers(Long gameId){
+        List<User> users = userRepository.findByRoomId(gameId);
+        if (users == null || users.size()==0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sorry, there is something wrong when fetching users." +
+                    "Maybe the gameId is not correct?");
+        }else{
+            return users;
+        }
+    }
+
+    public void endGame(Long gameId) { //roomId
         Room room = getRoom(gameId);
 
         room.setStatus(RoomStatus.END_GAME);
         roomRepository.saveAndFlush(room);
-        List<User> users = userRepository.findByRoomId(gameId);
+        List<User> users = getAllUsers(gameId);
         for (User user: users){
             user.setGuessingWord(null);
             user.setCurrentScore(0);
@@ -100,10 +127,10 @@ public class GameService {
     }
 
     // rank all players in this game
-    public List<User> rankAll(long gameId) { //find room
+    public List<User> rankAll(Long gameId) { //find room
         Room room = getRoom(gameId);
         // find all players
-        List<User> allPlayers = userRepository.findByRoomId(room.getId());
+        List<User> allPlayers = getAllUsers(room.getId());
 
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
@@ -118,8 +145,8 @@ public class GameService {
     }
 
     public List<Long> getAllPlayersIds(Long id){ //turn id
-        Room room  = roomRepository.findByid(gameTurnRepository.findByid(id).getRoomId());
-
+        GameTurn gameTurn = getGameTurn(id);
+        Room room  = getRoom(gameTurn.getRoomId());
         List<User> users = userRepository.findByRoomId(room.getId());
 
         List<Long> ids = new ArrayList<>();
@@ -132,6 +159,9 @@ public class GameService {
 
     public List<User> getLeaderboardRank() {
         List<User> allUsers = userRepository.findAll();
+        if(allUsers == null || allUsers.size()==0){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sorry, there is something wrong when fetching all users.");
+        }
         Map<User,Integer> userTotalScores = new HashMap<>();
         for (User user: allUsers){
             userTotalScores.put(user, user.getTotalScore());

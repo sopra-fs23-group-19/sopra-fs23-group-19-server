@@ -39,7 +39,7 @@ public class GameController {
     @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public GameTurnAfterGetDTO startGame(@PathVariable long roomId){
+    public GameTurnAfterGetDTO startGame(@PathVariable Long roomId){
         // start game turn
         Room room = gameService.getRoom(roomId);
         GameTurn gameTurn = gameService.startGame(room);
@@ -54,7 +54,7 @@ public class GameController {
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getGameRank(@PathVariable long gameId){
+    public List<UserGetDTO> getGameRank(@PathVariable Long gameId){
 
         List<User> rankedUsers = gameService.rankAll(gameId);
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
@@ -70,7 +70,7 @@ public class GameController {
     @PutMapping("/games/ending/{gameId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void QuitGame(@PathVariable long gameId){
+    public void QuitGame(@PathVariable Long gameId){
         gameService.endGame(gameId);
     }
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameTurnAfterGetDTO {
-    private long id;
+    private Long id;
 
     private Long drawingPlayerId;
 
@@ -19,7 +19,7 @@ public class GameTurnAfterGetDTO {
     private String targetWord;
     private TurnStatus status;
 
-    private long roomId;
+    private Long roomId;
     private int submitNum=0;
 
 
@@ -49,11 +49,11 @@ public class GameTurnAfterGetDTO {
         this.drawingPlayerId = drawingPlayerId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
-    public long getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
@@ -77,11 +77,11 @@ public class GameTurnAfterGetDTO {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
     public String getDrawingPlayerName() {
