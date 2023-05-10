@@ -130,4 +130,17 @@ public class GameService {
         return ids;
     }
 
+    public List<User> getLeaderboardRank() {
+        List<User> allUsers = userRepository.findAll();
+        Map<User,Integer> userTotalScores = new HashMap<>();
+        for (User user: allUsers){
+            userTotalScores.put(user, user.getTotalScore());
+        }
+        // rank the user by total scores
+        List<User> rankedUsers =  userTotalScores.entrySet().stream()
+                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
+                .map(entry -> entry.getKey()).collect(Collectors.toList());
+
+        return rankedUsers;
+    }
 }

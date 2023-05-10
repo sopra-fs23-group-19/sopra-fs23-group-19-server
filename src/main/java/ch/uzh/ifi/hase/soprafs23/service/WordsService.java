@@ -10,14 +10,20 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional
 public class WordsService {
+
+    private static Map<Long,List<String>> words = new HashMap<>(){{
+        put(1L,List.of("snake","water","earth","apple","train","ship","teacher","hand","computer","cucumber"));
+        put(2L,List.of("potato","cow","basketball","plane","bicycle","guitar","car","leg","bread","powder"));
+        put(3L,List.of("flower","bat","king","phone","cake","pineapple","sun","eye","desk","rice"));
+        put(4L,List.of("sunglasses","egg","mountain","stone","restaurant","hospital","hook","mouth","bag","telescope"));
+    }};
 
     public String getWord() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -44,15 +50,26 @@ public class WordsService {
     }
 
 
-    public Set<String> getThreeWords() {
+    public Set<String> getThreeWords(Long gameTurnId) {
 
         Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){
             listOfWords.add(getWord());
         }
 
+        // if getting empty from external API
         if(listOfWords.size()<3){
-            listOfWords.add(getWord());
+            int leftNum = 3 - listOfWords.size();
+            List<String> wordsAll = words.get(gameTurnId);
+            // filter same words
+            List<String> wordsBackup = wordsAll.stream()
+                    .filter(item -> listOfWords.contains(item))
+                    .collect(toList());
+            for(int i=0;i<leftNum;i++){
+                int randomIndex = new Random().nextInt(wordsBackup.size());
+                listOfWords.add(wordsBackup.get(randomIndex));
+                wordsBackup.remove(wordsBackup.get(randomIndex));
+            }
         }
         return listOfWords;
     }

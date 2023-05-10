@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.json.*;
 
 @Service
 @Transactional
@@ -61,9 +60,15 @@ public class GameTurnService {
     public void setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
-        gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-        gameTurn.setStatus(TurnStatus.PAINTING);
-        gameTurnRepository.flush();
+        // if targetWord is null
+        if (gameTurnInput.getTargetWord() == null){
+            gameTurn.setStatus(TurnStatus.END);
+            gameTurnRepository.saveAndFlush(gameTurn);
+        }else{
+            gameTurn.setTargetWord(gameTurnInput.getTargetWord());
+            gameTurn.setStatus(TurnStatus.PAINTING);
+            gameTurnRepository.saveAndFlush(gameTurn);
+        }
     }
 
     public GameTurn getGameTurn(Long gameTurnId){
@@ -105,6 +110,10 @@ public class GameTurnService {
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
+
+        // find drawingPlayer
+        User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
+
         String userGuess = userInput.getGuessingWord();
         String target = gameTurn.getTargetWord();
         double similarity = 0;
@@ -114,15 +123,23 @@ public class GameTurnService {
 //        similarity = getWordSimilarity(userGuess, target );
 //        }
         if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
-            user.setCurrentScore(10);  // set current score in this game turn
-            user.setCurrentGameScore(user.getCurrentGameScore()+10);  // total scores in this game accumulate
-            user.setTotalScore(user.getTotalScore()+10);
+            user.setCurrentScore(12);  // set current score in this game turn
+            user.setCurrentGameScore(user.getCurrentGameScore()+12);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore()+12);
+            // set drawingPlayer's score
+            drawingPlayer.setCurrentScore(4);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+4);
+            drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+4);
         }
         else if (similarity > 0.9)
         {
-            user.setCurrentScore(5);  // set current score in this game turn
-            user.setCurrentGameScore(user.getCurrentGameScore()+5);  // total scores in this game accumulate
-            user.setTotalScore(user.getTotalScore()+5);
+            user.setCurrentScore(6);  // set current score in this game turn
+            user.setCurrentGameScore(user.getCurrentGameScore()+6);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore()+6);
+            // set drawingPlayer's score
+            drawingPlayer.setCurrentScore(2);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+2);
+            drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+2);
         }
         else{
             user.setCurrentScore(0);
@@ -138,7 +155,7 @@ public class GameTurnService {
             u.setConfirmRank(false);
         }
 
-        userRepository.saveAndFlush(user);
+        userRepository.flush();
         gameTurnRepository.saveAndFlush(gameTurn);
         roomRepository.flush();
     }
@@ -154,12 +171,7 @@ public class GameTurnService {
 
         Map<User,Integer> playersScores = new HashMap<>();
         for (User user: allPlayers){
-            if(user.getId() == gameTurn.getDrawingPlayerId()){
-                user.setCurrentScore(0);
-                playersScores.put(user, 0);
-            }else{
-                playersScores.put(user, user.getCurrentScore());
-            }
+            playersScores.put(user, user.getCurrentScore());
         }
         // rank the user by scores
         List<User> rankedUsers =  playersScores.entrySet().stream()
@@ -200,6 +212,7 @@ public class GameTurnService {
 
         if(allConfirm) {
             gameTurn.setStatus(TurnStatus.END);
+            gameTurn.setCurrentTurn(gameTurn.getCurrentTurn()+1);
             if (gameTurn.getCurrentTurn() == roomRepository.findByid(gameTurn.getRoomId()).getMode()) {
                 roomRepository.findByid(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }

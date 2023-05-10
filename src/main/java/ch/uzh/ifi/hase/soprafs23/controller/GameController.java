@@ -74,6 +74,20 @@ public class GameController {
         gameService.endGame(gameId);
     }
 
+    @GetMapping("/leaderboard")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> getRank(){
+        List<User> rankedUsers = gameService.getLeaderboardRank();
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : rankedUsers) {
+            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        }
+        return userGetDTOs;
+    }
+
 
     public GameTurnAfterGetDTO changeGetToAfter(GameTurnGetDTO gameTurnGetDTO){
 

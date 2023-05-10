@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
-import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.TurnRankGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
@@ -15,7 +15,6 @@ import ch.uzh.ifi.hase.soprafs23.service.WordsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -45,7 +44,7 @@ public class GameTurnController {
     @ResponseBody
     public Set<String> getThreeWords(@PathVariable("gameTurnId") long gameTurnId) {
 
-        return wordsService.getThreeWords();
+        return wordsService.getThreeWords(gameTurnId);
     }
 
     // drawing player chooses the target word
@@ -96,16 +95,35 @@ public class GameTurnController {
     @GetMapping("/gameRounds/ranks/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> getRank( @PathVariable long gameTurnId){
+    public TurnRankGetDTO getRank( @PathVariable long gameTurnId){
 
+
+//        List<User> rankedUsers = gameTurnService.rank(gameTurnId);
+//        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+//
+//        // convert each user to the API representation
+//        for (User user : rankedUsers) {
+//            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+//        }
+//        return userGetDTOs;
         List<User> rankedUsers = gameTurnService.rank(gameTurnId);
-        List<UserGetDTO> userGetDTOs = new ArrayList<>();
-
-        // convert each user to the API representation
-        for (User user : rankedUsers) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+        TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
+        GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
+        turnRankGetDTO.setRankedList(rankedUsers);
+        turnRankGetDTO.setDrawingPlayerId(gameTurn.getDrawingPlayerId());
+        turnRankGetDTO.setDrawingPlayerName(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getUsername());
+        turnRankGetDTO.setImage(gameTurn.getImage());
+        // calculate correct answers
+        int correct = 0;
+        for (User user: rankedUsers){
+            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
+                if (user.getCurrentScore() == 12){
+                    correct += 1;
+                }
+            }
         }
-        return userGetDTOs;
+        turnRankGetDTO.setCorrectAnswers(correct);
+        return turnRankGetDTO;
     }
 
     // users request refreshed information from backend every second

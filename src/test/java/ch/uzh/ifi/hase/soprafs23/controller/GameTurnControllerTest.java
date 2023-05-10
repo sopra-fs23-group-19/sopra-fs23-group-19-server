@@ -76,7 +76,7 @@ class GameTurnControllerTest {
         gameTurn.setId(1L);
         Set<String> words = Set.of("a", "b", "c");
 
-        given(wordsService.getThreeWords()).willReturn(words);
+        given(wordsService.getThreeWords(1L)).willReturn(words);
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/words/"+gameTurn.getId())
