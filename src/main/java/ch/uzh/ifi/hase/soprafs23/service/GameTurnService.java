@@ -130,6 +130,7 @@ public class GameTurnService {
         // find gameTurn info in the db
         GameTurn gameTurn = getGameTurn(gameTurnId);
         gameTurn.setSubmitNum(gameTurn.getSubmitNum()+1);
+        Room room = getRoom(gameTurn.getRoomId());
 
         // find drawingPlayer
         User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
@@ -147,19 +148,31 @@ public class GameTurnService {
             user.setCurrentGameScore(user.getCurrentGameScore()+12);  // total scores in this game accumulate
             user.setTotalScore(user.getTotalScore()+12);
             // set drawingPlayer's score
-            drawingPlayer.setCurrentScore(4);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+4);
-            drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+4);
+            if (room.getMode()==4){  // 4-mode game
+                drawingPlayer.setCurrentScore(4);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+4);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+4);
+            }else{   // 2-mode game
+                drawingPlayer.setCurrentScore(12);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+12);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+12);
+            }
         }
-        else if (similarity > 0.9)
-        {
+        else if (similarity > 0.9) {
             user.setCurrentScore(6);  // set current score in this game turn
-            user.setCurrentGameScore(user.getCurrentGameScore()+6);  // total scores in this game accumulate
-            user.setTotalScore(user.getTotalScore()+6);
+            user.setCurrentGameScore(user.getCurrentGameScore() + 6);  // total scores in this game accumulate
+            user.setTotalScore(user.getTotalScore() + 6);
             // set drawingPlayer's score
-            drawingPlayer.setCurrentScore(2);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+2);
-            drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+2);
+            if (room.getMode() == 4) {  // 4-mode game
+                drawingPlayer.setCurrentScore(2);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 2);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 2);
+            }
+            else { // 2-mode game
+                drawingPlayer.setCurrentScore(6);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
+            }
         }
         else{
             user.setCurrentScore(0);

@@ -115,14 +115,16 @@ public class GameService {
 
         room.setStatus(RoomStatus.END_GAME);
         roomRepository.saveAndFlush(room);
-        List<User> users = getAllUsers(gameId);
-        for (User user: users){
-            user.setGuessingWord(null);
-            user.setCurrentScore(0);
-            user.setCurrentGameScore(0);
-            user.setRoomId(null);
-            user.setStatus(UserStatus.ONLINE);
-            userRepository.saveAndFlush(user);
+        List<User> users = userRepository.findByRoomId(gameId);
+        if(users != null){
+            for (User user: users){
+                user.setGuessingWord(null);
+                user.setCurrentScore(0);
+                user.setCurrentGameScore(0);
+                user.setRoomId(null);
+                user.setStatus(UserStatus.ONLINE);
+                userRepository.saveAndFlush(user);
+            }
         }
     }
 
