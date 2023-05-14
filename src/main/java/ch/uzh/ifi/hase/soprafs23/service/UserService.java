@@ -189,12 +189,14 @@ public class UserService {
 
     public List<User> searchUsers(UserGetDTO userGetDTO) {
         User user = DTOMapper.INSTANCE.cnvertUserGetDTOtoEntity(userGetDTO);
-        if (user.getUsername() == null){
-            return this.userRepository.findAll();
+        if (user.getUsername() == null || user.getUsername() == ""){
+//            return this.userRepository.findAll();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "please input a valid username");
         }else{
             User userFound = userRepository.findByUsername(user.getUsername());
             if(userFound == null){
-                return this.userRepository.findAll();
+//                return this.userRepository.findAll();
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
             }else{
                 List<User> foundUsers = new ArrayList<>(){{
                     add(userFound);

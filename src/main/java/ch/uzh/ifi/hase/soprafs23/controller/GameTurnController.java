@@ -113,6 +113,7 @@ public class GameTurnController {
         turnRankGetDTO.setDrawingPlayerId(gameTurn.getDrawingPlayerId());
         turnRankGetDTO.setDrawingPlayerName(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getUsername());
         turnRankGetDTO.setImage(gameTurn.getImage());
+        turnRankGetDTO.setTargetWord(gameTurn.getTargetWord());
         // calculate correct answers
         int correct = 0;
         for (User user: rankedUsers){

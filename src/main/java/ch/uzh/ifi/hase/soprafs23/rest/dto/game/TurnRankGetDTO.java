@@ -12,13 +12,19 @@ public class TurnRankGetDTO {
     private Long drawingPlayerId;
     private String drawingPlayerName;
     private List<User> rankedList = new ArrayList<>();
-
+    private String targetWord;
     public int getCorrectAnswers() {
         return correctAnswers;
     }
 
     public void setCorrectAnswers(int correctAnswers) {
         this.correctAnswers = correctAnswers;
+    }
+    public String getTargetWord() {
+        return targetWord;
+    }
+    public void setTargetWord(String targetWord) {
+        this.targetWord = targetWord;
     }
 
     public Long getDrawingPlayerId() {
@@ -53,4 +59,5 @@ public class TurnRankGetDTO {
     public void setRankedList(List<User> rankedList) {
         this.rankedList = rankedList;
     }
+
 }
