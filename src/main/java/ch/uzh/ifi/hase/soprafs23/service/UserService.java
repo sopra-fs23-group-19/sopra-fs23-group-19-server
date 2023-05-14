@@ -213,7 +213,7 @@ public class UserService {
 
     public User retrieveFriends(UserFriendsPostDTO userFriendsPostDTO) {
 
-      long userIdFrom = userFriendsPostDTO.getUseridFrom();
+      Long userIdFrom = userFriendsPostDTO.getUseridFrom();
       User userFrom = userRepository.findByid(userIdFrom);
       User userTo = userRepository.findByUsername(userFriendsPostDTO.getUseridNameTo());
       List<User> friends = userFrom.getFriends();

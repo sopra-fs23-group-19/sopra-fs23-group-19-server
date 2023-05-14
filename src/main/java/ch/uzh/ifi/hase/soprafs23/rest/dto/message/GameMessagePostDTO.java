@@ -1,31 +1,31 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.message;
 
 public class GameMessagePostDTO {
-    private long useridFrom;
-    private long useridTo;
-    private long roomId;
+    private Long useridFrom;
+    private Long useridTo;
+    private Long roomId;
 
-    public long getUseridFrom() {
+    public Long getUseridFrom() {
         return useridFrom;
     }
 
-    public void setUseridFrom(long useridFrom) {
+    public void setUseridFrom(Long useridFrom) {
         this.useridFrom = useridFrom;
     }
 
-    public void setUseridTo(long useridTo) {
+    public void setUseridTo(Long useridTo) {
         this.useridTo = useridTo;
     }
 
-    public long getUseridTo() {
+    public Long getUseridTo() {
         return useridTo;
     }
 
-    public long getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 }

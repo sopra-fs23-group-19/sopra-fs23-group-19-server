@@ -47,7 +47,7 @@ public class MessageController {
 //    @GetMapping("/notification/game/{userid}")
 //    @ResponseStatus(HttpStatus.OK)
 //    @ResponseBody
-//    public List<MessageGetDTO> getMessagesByUser(@PathVariable long userid) { //return all messages
+//    public List<MessageGetDTO> getMessagesByUser(@PathVariable Long userid) { //return all messages
 //        List<Message> messages = messageService.getMessagesByUser(userid);
 //        List<MessageGetDTO> result = new ArrayList<>();
 //
@@ -62,7 +62,7 @@ public class MessageController {
     @GetMapping("/notification/game/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getGameMessagesByUser(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getGameMessagesByUser(@PathVariable Long userid) { //return all messages
         List<Message> messages = messageService.getMessagesByUser(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class MessageController {
     @GetMapping("/notification/friend/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getFriendMessagesByUser(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getFriendMessagesByUser(@PathVariable Long userid) { //return all messages
         List<Message> messages = messageService.getMessagesByUser(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class MessageController {
 //    @GetMapping("/notification/game/pending/{userid}")
 //    @ResponseStatus(HttpStatus.OK)
 //    @ResponseBody
-//    public List<MessageGetDTO> getPendingMessages(@PathVariable long userid) { //return all messages
+//    public List<MessageGetDTO> getPendingMessages(@PathVariable Long userid) { //return all messages
 //        List<Message> messages = messageService.getPendingMessages(userid);
 //        List<MessageGetDTO> result = new ArrayList<>();
 //
@@ -110,7 +110,7 @@ public class MessageController {
     @GetMapping("/notification/game/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getPendingGameMessages(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getPendingGameMessages(@PathVariable Long userid) { //return all messages
         List<Message> messages = messageService.getPendingMessages(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
@@ -126,7 +126,7 @@ public class MessageController {
     @GetMapping("/notification/friend/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<MessageGetDTO> getPendingFriendMessages(@PathVariable long userid) { //return all messages
+    public List<MessageGetDTO> getPendingFriendMessages(@PathVariable Long userid) { //return all messages
         List<Message> messages = messageService.getPendingMessages(userid);
         List<MessageGetDTO> result = new ArrayList<>();
 
@@ -143,7 +143,7 @@ public class MessageController {
     @GetMapping("/notification/game/information/{messageId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public MessageGetDTO getMessageInfo(@PathVariable long messageId) { //return all messages
+    public MessageGetDTO getMessageInfo(@PathVariable Long messageId) { //return all messages
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.getMessageInfo(messageId)));
     }
 
@@ -151,7 +151,7 @@ public class MessageController {
     @PostMapping("/notification/game/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public MessageGetDTO confirmMessage(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId) {
+    public MessageGetDTO confirmMessage(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable Long messageId) {
 
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
@@ -161,7 +161,7 @@ public class MessageController {
 //    @GetMapping("/notification/friends/{userId}")
 //    @ResponseStatus(HttpStatus.OK)
 //    @ResponseBody
-//    public List<MessageGetDTO> confirmMessage(@PathVariable long userId) {
+//    public List<MessageGetDTO> confirmMessage(@PathVariable Long userId) {
 //        List<Message> messages = messageService.getMessagesByUser(userId);
 //        List<MessageGetDTO> result = new ArrayList<>();
 //
@@ -179,7 +179,7 @@ public class MessageController {
     @PostMapping("/friends/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable long messageId){
+    public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable Long messageId){
         Message message = messageService.comfirmGame(messageId,confirmMessageDTO);
         MessageGetDTO messageGetDTO = DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.refreshFriends(message));
         return messageService.completeFriendsMessages(messageGetDTO);

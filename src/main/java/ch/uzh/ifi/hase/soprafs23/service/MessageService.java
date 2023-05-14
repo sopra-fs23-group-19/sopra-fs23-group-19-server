@@ -40,11 +40,11 @@ public class MessageService {
         return messageRepository.saveAndFlush(message);
     }
 
-    public List<Message> getMessagesByUser(long userid){
+    public List<Message> getMessagesByUser(Long userid){
         return messageRepository.findByUseridTo(userid);
     }
 
-    public List<Message> getPendingMessages(long userid){
+    public List<Message> getPendingMessages(Long userid){
         List<Message> result = new ArrayList<>();
 
         List<Message> allMesssages = getMessagesByUser(userid);
@@ -59,11 +59,11 @@ public class MessageService {
     }
 
 
-    public Message getMessageInfo(long id){
+    public Message getMessageInfo(Long id){
         return messageRepository.findByid(id);
     }
 
-    public Message comfirmGame(long id, ConfirmMessageDTO confirmMessageDTO){
+    public Message comfirmGame(Long id, ConfirmMessageDTO confirmMessageDTO){
         Message message = messageRepository.findByid(id);
 
         message.setStatus(MessageStatus.valueOf(confirmMessageDTO.getAction()));

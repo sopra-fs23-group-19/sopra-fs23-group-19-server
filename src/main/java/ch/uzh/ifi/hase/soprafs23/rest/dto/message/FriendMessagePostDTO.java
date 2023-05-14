@@ -1,22 +1,22 @@
 package ch.uzh.ifi.hase.soprafs23.rest.dto.message;
 
 public class FriendMessagePostDTO {
-    private long useridFrom;
-    private long useridTo;
+    private Long useridFrom;
+    private Long useridTo;
 
-    public long getUseridFrom() {
+    public Long getUseridFrom() {
         return useridFrom;
     }
 
-    public void setUseridFrom(long useridFrom) {
+    public void setUseridFrom(Long useridFrom) {
         this.useridFrom = useridFrom;
     }
 
-    public void setUseridTo(long useridTo) {
+    public void setUseridTo(Long useridTo) {
         this.useridTo = useridTo;
     }
 
-    public long getUseridTo() {
+    public Long getUseridTo() {
         return useridTo;
     }
 }
