@@ -62,14 +62,13 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
         // if targetWord is null
-        if (gameTurnInput.getTargetWord() == null){
-            gameTurn.setStatus(TurnStatus.END);
-            gameTurnRepository.saveAndFlush(gameTurn);
-        }else{
-            gameTurn.setTargetWord(gameTurnInput.getTargetWord());
-            gameTurn.setStatus(TurnStatus.PAINTING);
-            gameTurnRepository.saveAndFlush(gameTurn);
-        }
+//        if (gameTurnInput.getTargetWord() == null){
+//            gameTurn.setStatus(TurnStatus.END);
+//            gameTurnRepository.saveAndFlush(gameTurn);
+//        }else{
+        gameTurn.setTargetWord(gameTurnInput.getTargetWord());
+        gameTurn.setStatus(TurnStatus.PAINTING);
+        gameTurnRepository.saveAndFlush(gameTurn);
     }
 
     public GameTurn getGameTurn(Long gameTurnId){
@@ -148,7 +147,7 @@ public class GameTurnService {
             user.setCurrentGameScore(user.getCurrentGameScore()+12);  // total scores in this game accumulate
             user.setTotalScore(user.getTotalScore()+12);
             // set drawingPlayer's score
-            if (room.getMode()==4){  // 4-mode game
+            if (room.getMode() == 4){  // 4-mode game
                 drawingPlayer.setCurrentScore(4);
                 drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+4);
                 drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+4);
