@@ -97,6 +97,7 @@ public class UserController {
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public UserGetDTO searchUsers(@RequestBody UserGetDTO userGetDTO)  {
+        System.out.println(userGetDTO.getUsername());
         User user = userService.searchUsers(userGetDTO);
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);

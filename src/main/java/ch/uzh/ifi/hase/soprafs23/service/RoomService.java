@@ -137,10 +137,6 @@ public class RoomService {
 
         List<Long> ids = new ArrayList<>();
 
-        if(ids.size() == 0){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No users in this room!");
-        }
-
         for(User u:users){
             ids.add(u.getId());
         }
