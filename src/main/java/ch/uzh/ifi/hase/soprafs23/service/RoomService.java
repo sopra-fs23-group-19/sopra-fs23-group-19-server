@@ -71,10 +71,12 @@ public class RoomService {
     public Room joinRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
         List<User> userList = userRepository.findByRoomId(roomId);
-
+        System.out.println("in join"+userList.size());
         if(room.getMode() > userList.size()) {
             User user = userRepository.findByid(userId);
             user.setRoomId(roomId);
+
+            System.out.println("user"+user.getUsername());
 
             if (room.getMode() == userRepository.findByRoomId(roomId).size()) {
                 room.setStatus(RoomStatus.READY);
