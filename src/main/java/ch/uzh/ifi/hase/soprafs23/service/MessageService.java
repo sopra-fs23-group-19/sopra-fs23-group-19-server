@@ -85,7 +85,7 @@ public class MessageService {
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){
         System.out.println(messageGetDTO.getRoomId());
-        System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
+        // System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
         if(roomRepository.findByid(messageGetDTO.getRoomId())!=null) {
             messageGetDTO.setRoomName(roomRepository.findByid(messageGetDTO.getRoomId()).getRoomName());
             messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
