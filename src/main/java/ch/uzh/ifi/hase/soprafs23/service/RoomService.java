@@ -72,7 +72,7 @@ public class RoomService {
         Room room = retrieveRoom(roomId);
         List<User> userList = userRepository.findByRoomId(roomId);
 
-        if(room.getMode() < userList.size()) {
+        if(room.getMode() > userList.size()) {
             User user = userRepository.findByid(userId);
             user.setRoomId(roomId);
 
