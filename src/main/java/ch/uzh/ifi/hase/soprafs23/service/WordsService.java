@@ -45,7 +45,11 @@ public class WordsService {
         }
         String str = response.body();
         List<String> words = Arrays.asList(str.split("\""));
-        return words.get(words.size()-2);
+        String word = words.get(words.size()-2);
+//        String regEx = "[`~!@#$%^&*()+=|{}:;\\\\[\\\\]._<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？']";
+//        word = Pattern.compile(regEx).matcher(word).replaceAll("").trim();
+        word = word.replaceAll("[^A-Za-z]", "");
+        return word;
     }
 
 
