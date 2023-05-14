@@ -64,7 +64,7 @@ public class User implements Serializable {
 
     @Column
     @ElementCollection
-    private List<User> friends = new ArrayList<>();
+    private List<Long> friends = new ArrayList<>();
 
     public boolean isConfirmRank() {
         return confirmRank;
@@ -162,12 +162,11 @@ public class User implements Serializable {
         this.currentGameScore = currentGameScore;
     }
 
-    public List<User> getFriends() {
+    public static Long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public List<Long> getFriends() {
         return friends;
     }
-
-    public void setFriends(List<User> friends) {
-        this.friends = friends;
-    }
-
 }

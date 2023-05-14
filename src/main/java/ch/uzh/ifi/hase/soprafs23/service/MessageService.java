@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 
 import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
+import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
@@ -12,7 +13,9 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -35,16 +38,36 @@ public class MessageService {
     }
 
     public Message inviteGame(Message message){
-        message.setStatus(MessageStatus.PENDING);
-        message.setType(MessageType.GAME);
-        return messageRepository.saveAndFlush(message);
+        List<Message> messageList = messageRepository.findAll();
+
+        for(Message m: messageList){
+            if(m.getType() == MessageType.GAME && m.getUseridTo() == message.getUseridTo()
+                    && m.getUseridFrom() == message.getUseridFrom()
+                    && m.getStatus()== MessageStatus.PENDING){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
+            }
+
+            if(m.getType() == MessageType.GAME && m.getUseridTo() == message.getUseridTo()
+                    && m.getUseridFrom() == message.getUseridFrom()
+                    && m.getStatus()== MessageStatus.AGREE){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Your request was already approved.");
+            }
+        }
+
+        if(roomRepository.findByid(message.getRoomId()).getStatus() == RoomStatus.WAITING) {
+            message.setStatus(MessageStatus.PENDING);
+            message.setType(MessageType.GAME);
+            return messageRepository.saveAndFlush(message);
+        }else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Game already started!");
+        }
     }
 
-    public List<Message> getMessagesByUser(long userid){
+    public List<Message> getMessagesByUser(Long userid){
         return messageRepository.findByUseridTo(userid);
     }
 
-    public List<Message> getPendingMessages(long userid){
+    public List<Message> getPendingMessages(Long userid){
         List<Message> result = new ArrayList<>();
 
         List<Message> allMesssages = getMessagesByUser(userid);
@@ -59,15 +82,22 @@ public class MessageService {
     }
 
 
-    public Message getMessageInfo(long id){
+    public Message getMessageInfo(Long id){
         return messageRepository.findByid(id);
     }
 
-    public Message comfirmGame(long id, ConfirmMessageDTO confirmMessageDTO){
+    public Message comfirmGame(Long id, ConfirmMessageDTO confirmMessageDTO){
         Message message = messageRepository.findByid(id);
 
-        message.setStatus(MessageStatus.valueOf(confirmMessageDTO.getAction()));
+        if(message == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Messages not found!");
+        }
 
+        if(message.getStatus() == MessageStatus.PENDING) {
+            message.setStatus(MessageStatus.valueOf(confirmMessageDTO.getAction()));
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "You already reacted to this message!");
+        }
         messageRepository.flush();
 
         return message;
@@ -80,12 +110,28 @@ public class MessageService {
         message.setUseridFrom(friendMessagePostDTO.getUseridFrom());
         message.setUseridTo(friendMessagePostDTO.getUseridTo());
 
+        List<Message> messageList = messageRepository.findAll();
+
+        for(Message m: messageList){
+            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridTo()
+                    && m.getUseridFrom() == message.getUseridFrom()
+                    && m.getStatus()== message.getStatus()){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
+            }
+
+            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridTo()
+                    && m.getUseridFrom() == message.getUseridFrom()
+                    && m.getStatus()== MessageStatus.AGREE){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Your request was already approved.");
+            }
+        }
+
         return messageRepository.saveAndFlush(message);
     }
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){
         System.out.println(messageGetDTO.getRoomId());
-        System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
+        // System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
         if(roomRepository.findByid(messageGetDTO.getRoomId())!=null) {
             messageGetDTO.setRoomName(roomRepository.findByid(messageGetDTO.getRoomId()).getRoomName());
             messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
@@ -98,8 +144,8 @@ public class MessageService {
         User userFrom = userRepository.findByid(message.getUseridFrom());
         User userTo = userRepository.findByid(message.getUseridTo());
         if (message.getStatus().equals(MessageStatus.AGREE)){
-            userFrom.getFriends().add(userTo);
-            userTo.getFriends().add(userFrom);
+            userFrom.getFriends().add(userTo.getId());
+            userTo.getFriends().add(userFrom.getId());
         }
 
         userRepository.flush();

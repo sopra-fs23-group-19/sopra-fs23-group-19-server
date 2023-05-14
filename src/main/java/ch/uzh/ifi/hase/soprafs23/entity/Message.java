@@ -8,20 +8,20 @@ import javax.persistence.*;
 @Entity
 @Table(name = "MESSAGE")
 public class Message {
-    private static final long serialVersionUID = 1L;
+    private static final Long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column
-    private long useridFrom;
+    private Long useridFrom;
 
     @Column
-    private long useridTo;
+    private Long useridTo;
 
     @Column
-    private long roomId;
+    private Long roomId;
 
     @Column
     private MessageStatus status;
@@ -45,35 +45,35 @@ public class Message {
         return status;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public long getUseridFrom() {
+    public Long getUseridFrom() {
         return useridFrom;
     }
 
-    public long getUseridTo() {
+    public Long getUseridTo() {
         return useridTo;
     }
 
-    public void setUseridFrom(long useridFrom) {
+    public void setUseridFrom(Long useridFrom) {
         this.useridFrom = useridFrom;
     }
 
-    public void setUseridTo(long useridTo) {
+    public void setUseridTo(Long useridTo) {
         this.useridTo = useridTo;
     }
 }

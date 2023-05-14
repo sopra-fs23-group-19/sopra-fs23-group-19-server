@@ -187,36 +187,45 @@ public class UserService {
       }
   }
 
-    public List<User> searchUsers(UserGetDTO userGetDTO) {
-        User user = DTOMapper.INSTANCE.cnvertUserGetDTOtoEntity(userGetDTO);
-        if (user.getUsername() == null || user.getUsername() == ""){
+    public User searchUsers(UserGetDTO userGetDTO) {
+        String username = userGetDTO.getUsername();
+        if (username == null || username == ""){
 //            return this.userRepository.findAll();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "please input a valid username");
-        }else{
-            User userFound = userRepository.findByUsername(user.getUsername());
-            if(userFound == null){
-//                return this.userRepository.findAll();
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
-            }else{
-                List<User> foundUsers = new ArrayList<>(){{
-                    add(userFound);
-                }};
-                return foundUsers;
-            }
         }
+
+        User userFound = userRepository.findByUsername(username);
+        if(userFound == null){
+//                return this.userRepository.findAll();
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found");
+        }
+        return userFound;
     }
 
     public List<User> returnFriends(Long userId) {
       User user = userRepository.findByid(userId);
-      return user.getFriends();
+      List<User> friends = new ArrayList<>();
+      List<Long> ids = user.getFriends();
+
+      for(Long id:ids){
+          friends.add(userRepository.findByid(id));
+      }
+      return friends;
     }
 
     public User retrieveFriends(UserFriendsPostDTO userFriendsPostDTO) {
 
-      long userIdFrom = userFriendsPostDTO.getUseridFrom();
+      Long userIdFrom = userFriendsPostDTO.getUseridFrom();
       User userFrom = userRepository.findByid(userIdFrom);
       User userTo = userRepository.findByUsername(userFriendsPostDTO.getUseridNameTo());
-      List<User> friends = userFrom.getFriends();
+
+      List<User> friends = new ArrayList<>();
+      List<Long> ids = userFrom.getFriends();
+
+      for(Long id:ids){
+        friends.add(userRepository.findByid(id));
+      }
+
       if (friends.contains(userTo)){
           return userTo;
       }else{

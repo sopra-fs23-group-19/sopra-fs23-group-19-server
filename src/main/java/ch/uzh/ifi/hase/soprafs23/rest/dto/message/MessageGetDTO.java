@@ -4,12 +4,12 @@ import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 
 public class MessageGetDTO {
-    private long messageId;
-    private long useridFrom;
+    private Long messageId;
+    private Long useridFrom;
     private String usernameFrom;
     private String usernameTo;
-    private long useridTo;
-    private long roomId;
+    private Long useridTo;
+    private Long roomId;
     private MessageStatus status;
     private String roomName;
     private MessageType type;
@@ -34,7 +34,7 @@ public class MessageGetDTO {
         return status;
     }
 
-    public void setUseridFrom(long useridFrom) {
+    public void setUseridFrom(Long useridFrom) {
         this.useridFrom = useridFrom;
     }
 
@@ -42,23 +42,23 @@ public class MessageGetDTO {
         this.status = status;
     }
 
-    public long getUseridFrom() {
+    public Long getUseridFrom() {
         return useridFrom;
     }
 
-    public void setRoomId(long roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
-    public long getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public long getUseridTo() {
+    public Long getUseridTo() {
         return useridTo;
     }
 
-    public void setUseridTo(long useridTo) {
+    public void setUseridTo(Long useridTo) {
         this.useridTo = useridTo;
     }
 
@@ -70,11 +70,11 @@ public class MessageGetDTO {
         this.usernameTo = usernameTo;
     }
 
-    public long getMessageId() {
+    public Long getMessageId() {
         return messageId;
     }
 
-    public void setMessageId(long messageId) {
+    public void setMessageId(Long messageId) {
         this.messageId = messageId;
     }
 

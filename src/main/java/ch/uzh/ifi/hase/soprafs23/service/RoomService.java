@@ -70,17 +70,25 @@ public class RoomService {
 
     public Room joinRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
-        User user = userRepository.findByid(userId);
-        user.setRoomId(roomId);
+        List<User> userList = userRepository.findByRoomId(roomId);
+        System.out.println("in join"+userList.size());
+        if(room.getMode() > userList.size()) {
+            User user = userRepository.findByid(userId);
+            user.setRoomId(roomId);
 
-        if(room.getMode()== userRepository.findByRoomId(roomId).size()){
-            room.setStatus(RoomStatus.READY);
+            System.out.println("user"+user.getUsername());
+
+            if (room.getMode() == userRepository.findByRoomId(roomId).size()) {
+                room.setStatus(RoomStatus.READY);
+            }
+
+            roomRepository.flush();
+            userRepository.flush();
+
+            return room;
+        }else{
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Room is full!");
         }
-
-        roomRepository.flush();
-        userRepository.flush();
-
-        return room;
     }
 
     public Room leaveRoom(Long userId, Long roomId){
@@ -114,7 +122,11 @@ public class RoomService {
         for (Room room: allRooms){
             if(room.getStatus() == RoomStatus.WAITING)
             {
-                availableRooms.add(room);
+                if(userRepository.findByRoomId(room.getId())!=null){
+                    if(userRepository.findByRoomId(room.getId()).size()!=0){
+                        availableRooms.add(room);
+                    }
+                }
             }
         }
         return availableRooms;
@@ -126,6 +138,7 @@ public class RoomService {
         List<User> users = userRepository.findByRoomId(room.getId());
 
         List<Long> ids = new ArrayList<>();
+
         for(User u:users){
             ids.add(u.getId());
         }

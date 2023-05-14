@@ -96,15 +96,11 @@ public class UserController {
   @PostMapping("/users/searchFriends")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public List<UserGetDTO> searchUsers(@RequestBody UserGetDTO userGetDTO)  {
-        List<User> users = userService.searchUsers(userGetDTO);
-        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+  public UserGetDTO searchUsers(@RequestBody UserGetDTO userGetDTO)  {
+        System.out.println(userGetDTO.getUsername());
+        User user = userService.searchUsers(userGetDTO);
 
-        // convert each user to the API representation
-        for (User user : users) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-        }
-        return userGetDTOs;
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
   }
 
 
