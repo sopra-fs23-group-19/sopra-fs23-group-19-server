@@ -77,3 +77,6 @@
 |week 7| Jingjing Li | [client#99](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/99)|Modify ui in game.|
 |week 7| Manyi Wang | [#139](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/139)| add exception of user/room/message services|
 |week 7| Manyi Wang | [#138](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/138)[#137](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/137)[#136](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/136)| fix bugs of workflow|
+|week 7| Geyu Meng | [client#100](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/100)|Modify ui of login and register page, friends page, and notification page.|
+|week 7| Geyu Meng | [client#101](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/101)|Fix bugs indicated by sonar cloud.|
+|week 7| Geyu Meng | [client#102](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/102)|Add background music|
