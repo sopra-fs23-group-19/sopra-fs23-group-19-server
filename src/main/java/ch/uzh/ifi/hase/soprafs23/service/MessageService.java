@@ -161,8 +161,8 @@ public class MessageService {
 
     public MessageGetDTO completeFriendsMessages(MessageGetDTO messageGetDTO) {
 
-        messageGetDTO.setUsernameFrom(userRepository.findById(messageGetDTO.getUseridFrom()).get().getUsername());
-        messageGetDTO.setUsernameTo(userRepository.findById(messageGetDTO.getUseridTo()).get().getUsername());
+        messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
+        messageGetDTO.setUsernameTo(userRepository.findByid(messageGetDTO.getUseridTo()).getUsername());
 
         return messageGetDTO;
     }
