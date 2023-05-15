@@ -69,4 +69,5 @@
 |week 6| Geyu Meng | [client#37](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/37)|Work with Jingjing Li to implement the sending friend request button in the frontend.  |
 |week 6| Geyu Meng | [client#39](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/39)|Implement the friends-list updating view. |
 |week 6| Geyu Meng | [client#36](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/36)|Implement displaying search result/response in the frontend. |
-
+|week 7| Shiyu Ran | [server#134](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/134)|Add leaderboard|
+|week 7| Shiyu Ran | [server#135](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/135)|Improve scores calculation algorithm.|
