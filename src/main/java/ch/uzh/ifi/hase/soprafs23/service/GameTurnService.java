@@ -66,7 +66,7 @@ public class GameTurnService {
 //            gameTurn.setStatus(TurnStatus.END);
 //            gameTurnRepository.saveAndFlush(gameTurn);
 //        }else{
-        gameTurn.setTargetWord(gameTurnInput.getTargetWord());
+        gameTurn.setTargetWord(gameTurnInput.getTargetWord().toLowerCase());
         gameTurn.setStatus(TurnStatus.PAINTING);
         gameTurnRepository.saveAndFlush(gameTurn);
     }
@@ -134,15 +134,15 @@ public class GameTurnService {
         // find drawingPlayer
         User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
 
-        String userGuess = userInput.getGuessingWord();
-        String target = gameTurn.getTargetWord();
+        String userGuess = userInput.getGuessingWord().toLowerCase();
+        String target = gameTurn.getTargetWord().toLowerCase();
         double similarity = 0;
         //currently to save the external API, comment it.
 //        if(userGuess != "" && userGuess != null && target!= "" && target!=null )
 //        {
 //        similarity = getWordSimilarity(userGuess, target );
 //        }
-        if(userInput.getGuessingWord().equals(gameTurn.getTargetWord())){
+        if(userGuess.equals(target)){
             user.setCurrentScore(12);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+12);  // total scores in this game accumulate
             user.setTotalScore(user.getTotalScore()+12);

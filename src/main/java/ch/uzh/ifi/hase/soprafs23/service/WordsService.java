@@ -49,7 +49,7 @@ public class WordsService {
 //        String regEx = "[`~!@#$%^&*()+=|{}:;\\\\[\\\\]._<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？']";
 //        word = Pattern.compile(regEx).matcher(word).replaceAll("").trim();
         word = word.replaceAll("[^A-Za-z]", "");
-        return word;
+        return word.toLowerCase();
     }
 
 
