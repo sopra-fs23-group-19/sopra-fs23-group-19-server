@@ -59,8 +59,8 @@
 |week 5| Shiyu Ran  | [server#130](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/130)| Fix bugs about game logic in the backend.|
 |week 6| Runze Li | [client#92](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/92)|Add welcome page, improve UI, use sound.|
 |week 6| Runze Li | [server#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/131)| Implement word similarity service. Use an external API.|
-|week 6| Manyi Wang | [#127](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/55)| invite players join the room|
-|week 6| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/53)| Accept/reject invitation|
+|week 6| Manyi Wang | [#127](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/127)| invite players join the room|
+|week 6| Manyi Wang | [#128](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/128)| Accept/reject invitation|
 |week 6| Shiyu Ran | [#59,#36](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/59; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/36)| Search user by username; Get all friends.|
 |week 6| Shiyu Ran | [#64,#65,#67](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/64; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/65; https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/67)| Accept/Reject friends, and refresh user's friends list|
 |week 6| Shiyu Ran | [#37](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/37)| Retrieve friends' profiles.|
@@ -73,3 +73,10 @@
 |week 7| Shiyu Ran | [server#135](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/135)|Improve scores calculation algorithm.|
 |week 7| Runze Li | [client#96](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/96)|Use toast and label to display messages.|
 |week 7| Runze Li | [client#97](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/97)|Implement a Timer to select word page and turn rank confirm page.|
+|week 7| Jingjing Li | [client#98](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/98)|Modify ui of navigation menu, lobby, profile, and rules page.|
+|week 7| Jingjing Li | [client#99](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/99)|Modify ui in game.|
+|week 7| Manyi Wang | [#139](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/139)| add exception of user/room/message services|
+|week 7| Manyi Wang | [#138](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/138)[#137](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/137)[#136](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/136)| fix bugs of workflow|
+|week 7| Geyu Meng | [client#100](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/100)|Modify ui of login and register page, friends page, and notification page.|
+|week 7| Geyu Meng | [client#101](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/101)|Fix bugs indicated by sonar cloud.|
+|week 7| Geyu Meng | [client#102](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/102)|Add background music|
