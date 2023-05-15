@@ -75,5 +75,5 @@
 |week 7| Runze Li | [client#97](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/97)|Implement a Timer to select word page and turn rank confirm page.|
 |week 7| Jingjing Li | [client#98](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/98)|Modify ui of navigation menu, lobby, profile, and rules page.|
 |week 7| Jingjing Li | [client#99](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/99)|Modify ui in game.|
-|week 7| Manyi Wang | [#106](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/106)| add exception of user/room/message services|
-|week 7| Manyi Wang | [#104](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/104)[#105](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/105)[#103](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/103)| fix bugs of workflow|
+|week 7| Manyi Wang | [#139](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/139)| add exception of user/room/message services|
+|week 7| Manyi Wang | [#138](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/138)[#137](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/137)[#136](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/136)| fix bugs of workflow|
