@@ -83,7 +83,7 @@ public class UserService {
     }
 
     public String findById(Long id){
-        if(userRepository.findById(id)==null){
+        if(userRepository.findByid(id)==null){
 //            return false;
             return "" ;//empty
         }
@@ -189,7 +189,7 @@ public class UserService {
 
     public User searchUsers(UserGetDTO userGetDTO) {
         String username = userGetDTO.getUsername();
-        if (username == null || username == ""){
+        if (username == null || username.equals("")){
 //            return this.userRepository.findAll();
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "please input a valid username");
         }

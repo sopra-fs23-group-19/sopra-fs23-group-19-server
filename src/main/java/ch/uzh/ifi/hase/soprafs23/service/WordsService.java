@@ -36,10 +36,7 @@ public class WordsService {
             try {
                 response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             }
-            catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
-            }
-            catch (InterruptedException e) {
+            catch (IOException | InterruptedException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
             }
         }
@@ -69,7 +66,8 @@ public class WordsService {
                     .filter(item -> !listOfWords.contains(item))
                     .collect(toList());
             for(int i=0;i<leftNum;i++){
-                int randomIndex = new Random().nextInt(wordsBackup.size());
+                Random rand = new Random();
+                int randomIndex = rand.nextInt(wordsBackup.size());
                 listOfWords.add(wordsBackup.get(randomIndex));
                 wordsBackup.remove(wordsBackup.get(randomIndex));
             }

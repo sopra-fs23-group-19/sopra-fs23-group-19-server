@@ -94,11 +94,11 @@ public class RoomService {
     public Room leaveRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
 
-        if(userId==room.getOwnerId()){
+        if(userId.equals(room.getOwnerId())){
             room.setStatus(RoomStatus.END);
         }else{
             for(User user: userRepository.findByRoomId(roomId)){
-                if(userId==user.getId()){
+                if(userId.equals(user.getId())){
                     user.setRoomId(null);
                     room.setStatus(RoomStatus.WAITING);
                 }

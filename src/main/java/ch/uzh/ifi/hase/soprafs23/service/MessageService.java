@@ -41,14 +41,14 @@ public class MessageService {
         List<Message> messageList = messageRepository.findAll();
 
         for(Message m: messageList){
-            if(m.getType() == MessageType.GAME && m.getUseridTo() == message.getUseridTo()
-                    && m.getUseridFrom() == message.getUseridFrom()
-                    && m.getStatus()== MessageStatus.PENDING){
+            if(m.getType().equals(MessageType.GAME) && m.getUseridTo().equals(message.getUseridTo())
+                    && m.getUseridFrom().equals(message.getUseridFrom())
+                    && m.getStatus().equals(MessageStatus.PENDING)){
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
             }
 
-            if(m.getType() == MessageType.GAME && m.getUseridTo() == message.getUseridTo()
-                    && m.getUseridFrom() == message.getUseridFrom()
+            if(m.getType() == MessageType.GAME && m.getUseridTo().equals(message.getUseridTo())
+                    && m.getUseridFrom().equals(message.getUseridFrom())
                     && m.getStatus()== MessageStatus.AGREE){
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Your request was already approved.");
             }
@@ -113,20 +113,20 @@ public class MessageService {
         List<Message> messageList = messageRepository.findAll();
 
         for(Message m: messageList){
-            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridTo()
-                    && m.getUseridFrom() == message.getUseridFrom()
+            if(m.getType() == message.getType() && m.getUseridTo().equals(message.getUseridTo())
+                    && m.getUseridFrom().equals(message.getUseridFrom())
+                    && m.getStatus().equals(message.getStatus())){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
+            }
+
+            if(m.getType() == message.getType() && m.getUseridTo().equals(message.getUseridFrom())
+                    && m.getUseridFrom().equals(message.getUseridTo())
                     && m.getStatus()== message.getStatus()){
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
             }
 
-            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridFrom()
-                    && m.getUseridFrom() == message.getUseridTo()
-                    && m.getStatus()== message.getStatus()){
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
-            }
-
-            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridTo()
-                    && m.getUseridFrom() == message.getUseridFrom()
+            if(m.getType() == message.getType() && m.getUseridTo().equals(message.getUseridTo())
+                    && m.getUseridFrom().equals(message.getUseridFrom())
                     && m.getStatus()== MessageStatus.AGREE){
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Your request was already approved.");
             }

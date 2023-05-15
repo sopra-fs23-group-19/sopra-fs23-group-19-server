@@ -232,7 +232,7 @@ public class GameTurnService {
         boolean allConfirm = true;
         for(User u: users){
 
-            if(userId==u.getId()){
+            if(userId.equals(u.getId())){
                 u.setConfirmRank(true);
             }
 
@@ -275,10 +275,7 @@ public class GameTurnService {
             try {
                 response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             }
-            catch (IOException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word similarity is not found.");
-            }
-            catch (InterruptedException e) {
+            catch (IOException | InterruptedException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word similarity is not found.");
             }
         }
