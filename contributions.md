@@ -73,3 +73,5 @@
 |week 7| Shiyu Ran | [server#135](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/135)|Improve scores calculation algorithm.|
 |week 7| Runze Li | [client#96](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/96)|Use toast and label to display messages.|
 |week 7| Runze Li | [client#97](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/97)|Implement a Timer to select word page and turn rank confirm page.|
+|week 7| Jingjing Li | [client#98](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/98)|Modify ui of navigation menu, lobby, profile, and rules page.|
+|week 7| Jingjing Li | [client#99](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/99)|Modify ui in game.|
