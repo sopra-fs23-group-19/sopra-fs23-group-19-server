@@ -71,3 +71,5 @@
 |week 6| Geyu Meng | [client#36](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/36)|Implement displaying search result/response in the frontend. |
 |week 7| Shiyu Ran | [server#134](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/134)|Add leaderboard|
 |week 7| Shiyu Ran | [server#135](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/135)|Improve scores calculation algorithm.|
+|week 7| Runze Li | [client#96](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/96)|Use toast and label to display messages.|
+|week 7| Runze Li | [client#97](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/97)|Implement a Timer to select word page and turn rank confirm page.|
