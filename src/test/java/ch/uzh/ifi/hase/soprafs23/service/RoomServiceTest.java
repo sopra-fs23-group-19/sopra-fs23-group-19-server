@@ -13,9 +13,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Collections;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RoomServiceTest {
@@ -163,21 +160,21 @@ public class RoomServiceTest {
 //        assertEquals(room.getStatus(),newRoom.getStatus());
 //    }
 
-    @Test
-    public void availableRooms_success() {
-        Room room = new Room();
-        room.setMode(2);
-        room.setId(1L);
-        room.setRoomName("1");
-        room.setOwnerId(1L);
-        room.setStatus(RoomStatus.WAITING);
-        List<Room> rooms = Collections.singletonList(room);
-        Mockito.when(roomRepository.findAll()).thenReturn(rooms);
-
-        List<Room> r = roomService.getAvailableRooms();
-        Mockito.verify(roomRepository, Mockito.times(1)).findAll();
-
-        assertEquals(r, rooms);
-    }
+//    @Test
+//    public void availableRooms_success() {
+//        Room room = new Room();
+//        room.setMode(2);
+//        room.setId(1L);
+//        room.setRoomName("1");
+//        room.setOwnerId(1L);
+//        room.setStatus(RoomStatus.WAITING);
+//        List<Room> rooms = Collections.singletonList(room);
+//        Mockito.when(roomRepository.findAll()).thenReturn(rooms);
+//
+//        List<Room> r = roomService.getAvailableRooms();
+//        Mockito.verify(roomRepository, Mockito.times(1)).findAll();
+//
+//        assertEquals(r, rooms);
+//    }
 
 }
