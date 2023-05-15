@@ -119,6 +119,12 @@ public class MessageService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
             }
 
+            if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridFrom()
+                    && m.getUseridFrom() == message.getUseridTo()
+                    && m.getStatus()== message.getStatus()){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Message already exists!");
+            }
+
             if(m.getType() == message.getType() && m.getUseridTo() == message.getUseridTo()
                     && m.getUseridFrom() == message.getUseridFrom()
                     && m.getStatus()== MessageStatus.AGREE){
