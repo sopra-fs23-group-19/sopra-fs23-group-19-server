@@ -27,7 +27,7 @@ class WordsServiceTest {
     @Test
     public void getThreeWords_success() {
 
-        Set<String> words = wordsService.getThreeWords(1L);
+        Set<String> words = wordsService.getThreeWords();
         assertNotNull(words);
     }
 

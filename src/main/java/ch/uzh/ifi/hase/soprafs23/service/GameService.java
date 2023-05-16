@@ -116,7 +116,8 @@ public class GameService {
         room.setStatus(RoomStatus.END_GAME);
         roomRepository.saveAndFlush(room);
         List<User> users = userRepository.findByRoomId(gameId);
-        if(users != null){
+        List<GameTurn> gameTurns = gameTurnRepository.findByRoomId(gameId);
+        if(users != null && !users.isEmpty()){
             for (User user: users){
                 user.setGuessingWord(null);
                 user.setCurrentScore(0);
@@ -124,6 +125,11 @@ public class GameService {
                 user.setRoomId(null);
                 user.setStatus(UserStatus.ONLINE);
                 userRepository.saveAndFlush(user);
+            }
+        }
+        if (gameTurns != null && !gameTurns.isEmpty()){
+            for (GameTurn gameTurn: gameTurns){
+                gameTurnRepository.deleteByid(gameTurn.getId());
             }
         }
     }

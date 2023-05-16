@@ -5,19 +5,15 @@ import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,22 +38,6 @@ public class GameControllerTest {
 
     @MockBean
     private UserService userService;
-
-    /**
-     * Helper Method to convert DTO into a JSON string such that the input
-     * can be processed
-     *
-     * @param object
-     * @return string
-     */
-    private String asJsonString(final Object object) {
-        try {
-            return new ObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    String.format("The request body could not be created.%s", e.toString()));
-        }
-    }
 
     @Test
     public void startGame_givenRoomId_returnTurnsInfo() throws Exception {
@@ -134,6 +114,38 @@ public class GameControllerTest {
         // performing request should be no_content status
         mockMvc.perform(putRequest)
                 .andExpect(status().isNoContent());
+
+    }
+
+    @Test
+    public void getLeaderBoard_success() throws Exception{
+        // given
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setRoomId(1L);
+        user1.setUsername("a");
+        user1.setTotalScore(12);
+
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("b");
+        user2.setRoomId(1L);
+        user2.setTotalScore(24);
+        List<User> users = new ArrayList<>(){{
+            add(user1);
+            add(user2);
+        }};
+
+        // given roomId
+        given(gameService.getLeaderboardRank()).willReturn(users);
+
+        // when/then -> do the request
+        MockHttpServletRequestBuilder getRequest = get("/leaderboard")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // performing request should return OK status
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk());
 
     }
 

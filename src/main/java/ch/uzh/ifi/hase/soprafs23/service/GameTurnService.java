@@ -61,11 +61,6 @@ public class GameTurnService {
     public void setTargetWord(GameTurnPutDTO gameTurnPutDTO) {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         GameTurn gameTurnInput = DTOMapper.INSTANCE.convertGameTurnPutDTOtoEntity(gameTurnPutDTO);
-        // if targetWord is null
-//        if (gameTurnInput.getTargetWord() == null){
-//            gameTurn.setStatus(TurnStatus.END);
-//            gameTurnRepository.saveAndFlush(gameTurn);
-//        }else{
         gameTurn.setTargetWord(gameTurnInput.getTargetWord().toLowerCase());
         gameTurn.setStatus(TurnStatus.PAINTING);
         gameTurnRepository.saveAndFlush(gameTurn);

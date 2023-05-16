@@ -59,6 +59,7 @@ class GameServiceTest {
         testUser1.setToken("1");
         testUser1.setStatus(UserStatus.ISPLAYING);
         testUser1.setCurrentGameScore(2);
+        testUser1.setTotalScore(12);
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser1);
 
         testUser2 = new User();
@@ -68,6 +69,7 @@ class GameServiceTest {
         testUser2.setToken("2");
         testUser2.setStatus(UserStatus.ISPLAYING);
         testUser2.setCurrentGameScore(1);
+        testUser2.setTotalScore(24);
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser2);
 
         testRoom = new Room();
@@ -182,6 +184,7 @@ class GameServiceTest {
         Mockito.when(roomRepository.saveAndFlush(Mockito.any())).thenReturn(testRoom);
 
         gameService.endGame(testRoom.getId());
+        gameTurnRepository.deleteByid(testGameTurn1.getId());
         assertEquals(null, testUser1.getGuessingWord());
         assertEquals(0, testUser1.getCurrentGameScore());
         assertEquals(0, testUser1.getCurrentScore());
@@ -197,6 +200,36 @@ class GameServiceTest {
         String exceptionMessage = "Sorry, the room is not found!";
         assertEquals(exceptionMessage,exception.getReason());
 
+    }
+
+    @Test
+    public void getGameTurn_notExists_throwsException() {
+        Mockito.when(gameTurnRepository.findByid(testGameTurn1.getId())).thenReturn(null);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameService.getGameTurn(testGameTurn1.getId()));
+        String exceptionMessage = "Sorry, this turn does not exist, maybe you haven't started it yet?";
+        assertEquals(exceptionMessage,exception.getReason());
+    }
+
+    @Test
+    public void getAllUsers_notExists_throwsException() {
+        Mockito.when(userRepository.findByRoomId(testRoom.getId())).thenReturn(null);
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> gameService.getAllUsers(testRoom.getId()));
+        String exceptionMessage = "Sorry, there is something wrong when fetching users." +
+        "Maybe the gameId is not correct?";
+        assertEquals(exceptionMessage,exception.getReason());
+    }
+
+    @Test
+    public void getLeaderBoard_success() {
+        List<User> listOfUsers= new ArrayList<>() {{
+            add(testUser1);
+            add(testUser2);
+        }};
+        Mockito.when(userRepository.findAll()).thenReturn(listOfUsers);
+
+        List<User> rankedUserList = gameService.getLeaderboardRank();
+
+        assertEquals(testUser2.getId(), rankedUserList.get(0).getId());
     }
 
 

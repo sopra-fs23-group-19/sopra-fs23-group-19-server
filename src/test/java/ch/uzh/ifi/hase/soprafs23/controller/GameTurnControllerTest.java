@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.TurnRankGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.BDDMockito.given;
@@ -74,7 +77,7 @@ class GameTurnControllerTest {
         gameTurn.setId(1L);
         Set<String> words = Set.of("a", "b", "c");
 
-        given(wordsService.getThreeWords(1L)).willReturn(words);
+        given(wordsService.getThreeWords()).willReturn(words);
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/words/"+gameTurn.getId())
@@ -153,36 +156,56 @@ class GameTurnControllerTest {
                 .andExpect(jsonPath("$.roomId", Matchers.is(gameTurn.getRoomId().intValue())));
     }
 
-//    @Test
-//    public void getGameTurnRank_givenTurnId_returnRank() throws Exception {
-//        // given
-//        GameTurn gameTurn = new GameTurn();
-//        gameTurn.setId(1L);
-//
-//        User user1 = new User();
-//        user1.setId(1L);
-//        user1.setRoomId(1L);
-//        user1.setUsername("a");
-//        User user2 = new User();
-//        user2.setId(2L);
-//        user2.setUsername("b");
-//        user2.setRoomId(1L);
-//        List<User> users = new ArrayList<>(){{
-//            add(user1);
-//            add(user2);
-//        }};
-//
-//        // given roomId
-//        given(gameTurnService.rank(Mockito.anyLong())).willReturn(users);
-//
-//        // when/then -> do the request
-//        MockHttpServletRequestBuilder getRequest = get("/gameRounds/ranks/"+ gameTurn.getId())
-//                .contentType(MediaType.APPLICATION_JSON);
-//
-//        // performing request should return OK status
-//        mockMvc.perform(getRequest)
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    public void getGameTurnRank_givenTurnId_returnRank() throws Exception {
+        // given
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setRoomId(1L);
+        user1.setUsername("a");
+        user1.setCurrentScore(12);
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("b");
+        user2.setRoomId(1L);
+        user2.setCurrentScore(12);
+        List<User> users = new ArrayList<>(){{
+            add(user1);
+            add(user2);
+        }};
+
+        GameTurn gameTurn = new GameTurn();
+        gameTurn.setId(1L);
+        gameTurn.setDrawingPlayerId(1L);
+        gameTurn.setImage("aaa");
+        gameTurn.setTargetWord("word");
+
+        TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
+        turnRankGetDTO.setDrawingPlayerId(1L);
+        turnRankGetDTO.setRankedList(users);
+        turnRankGetDTO.setDrawingPlayerName("a");
+        turnRankGetDTO.setImage("aaa");
+        turnRankGetDTO.setTargetWord("word");
+        turnRankGetDTO.setCorrectAnswers(1);
+
+        // given roomId
+        given(gameTurnService.rank(Mockito.anyLong())).willReturn(users);
+        given(gameTurnService.getGameTurn(Mockito.anyLong())).willReturn(gameTurn);
+        given(gameTurnService.getUser(Mockito.anyLong())).willReturn(user1);
+
+        // when/then -> do the request
+        MockHttpServletRequestBuilder getRequest = get("/gameRounds/ranks/"+ gameTurn.getId())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // performing request should return OK status
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.drawingPlayerId", Matchers.is(turnRankGetDTO.getDrawingPlayerId().intValue())))
+                .andExpect(jsonPath("$.drawingPlayerName", Matchers.is(turnRankGetDTO.getDrawingPlayerName())))
+                .andExpect(jsonPath("$.image", Matchers.is(turnRankGetDTO.getImage())))
+                .andExpect(jsonPath("$.targetWord", Matchers.is(turnRankGetDTO.getTargetWord())))
+                .andExpect(jsonPath("$.correctAnswers", Matchers.is(turnRankGetDTO.getCorrectAnswers())));
+    }
 
     @Test
     public void submitAnswer_givenAnswer_success() throws Exception {

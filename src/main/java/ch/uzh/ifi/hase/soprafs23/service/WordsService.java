@@ -50,7 +50,7 @@ public class WordsService {
     }
 
 
-    public Set<String> getThreeWords(Long gameTurnId) {
+    public Set<String> getThreeWords() {
 
         Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){

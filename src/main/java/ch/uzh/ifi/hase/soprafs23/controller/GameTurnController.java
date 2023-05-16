@@ -42,9 +42,9 @@ public class GameTurnController {
     @GetMapping("/gameRounds/words/{gameTurnId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Set<String> getThreeWords(@PathVariable("gameTurnId") Long gameTurnId) {
+    public Set<String> getThreeWords() {
 
-        return wordsService.getThreeWords(gameTurnId);
+        return wordsService.getThreeWords();
     }
 
     // drawing player chooses the target word
@@ -97,15 +97,6 @@ public class GameTurnController {
     @ResponseBody
     public TurnRankGetDTO getRank( @PathVariable Long gameTurnId){
 
-
-//        List<User> rankedUsers = gameTurnService.rank(gameTurnId);
-//        List<UserGetDTO> userGetDTOs = new ArrayList<>();
-//
-//        // convert each user to the API representation
-//        for (User user : rankedUsers) {
-//            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-//        }
-//        return userGetDTOs;
         List<User> rankedUsers = gameTurnService.rank(gameTurnId);
         TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
         GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);

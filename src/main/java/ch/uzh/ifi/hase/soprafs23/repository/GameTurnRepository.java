@@ -13,4 +13,6 @@ public interface GameTurnRepository extends JpaRepository<GameTurn, Long> {
 
     List<GameTurn> findByRoomId(Long roomId);
 
+    void deleteByid(Long id);
+
 }
