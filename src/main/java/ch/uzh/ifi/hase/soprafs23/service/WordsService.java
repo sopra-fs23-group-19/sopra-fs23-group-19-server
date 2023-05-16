@@ -36,7 +36,7 @@ public class WordsService {
             try {
                 response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
             }
-            catch (IOException | InterruptedException e) {
+            catch (Exception e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Word is not found.");
             }
         }
