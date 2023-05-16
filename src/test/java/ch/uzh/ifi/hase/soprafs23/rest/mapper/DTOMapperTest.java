@@ -1,12 +1,17 @@
 package ch.uzh.ifi.hase.soprafs23.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
+import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserNameDTO;
@@ -122,6 +127,46 @@ class DTOMapperTest {
         assertEquals(room.getRoomName(),room1.getRoomName());
         assertEquals(room.getMode(),room1.getMode());
         assertEquals(room.getOwnerId(),room1.getOwnerId());
+    }
+
+    @Test
+    public void test_fromGameMessagePostDTO_toMessage_success() {
+        // create gameMessagePostDTO
+        GameMessagePostDTO gameMessagePostDTO = new GameMessagePostDTO();
+        gameMessagePostDTO.setUseridFrom(1L);
+        gameMessagePostDTO.setUseridTo(2L);
+        gameMessagePostDTO.setRoomId(1L);
+
+        // MAP -> Create Message
+        Message message = DTOMapper.INSTANCE.convertGameMessagePostDTOTOEntity(gameMessagePostDTO);
+
+        // check content
+        assertEquals(gameMessagePostDTO.getRoomId(), message.getRoomId());
+        assertEquals(gameMessagePostDTO.getUseridFrom(), message.getUseridFrom());
+        assertEquals(gameMessagePostDTO.getUseridTo(), message.getUseridTo());
+    }
+
+    @Test
+    public void test_fromMessage_toMessageGetDTO_success() {
+        // create message
+        Message message = new Message();
+        message.setId(1L);
+        message.setRoomId(1L);
+        message.setUseridFrom(1L);
+        message.setUseridTo(2L);
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.AGREE);
+
+        // MAP -> Create messageGetDTO
+        MessageGetDTO messageGetDTO = DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message);
+
+        // check content
+        assertEquals(message.getRoomId(), messageGetDTO.getRoomId());
+        assertEquals(message.getUseridFrom(), messageGetDTO.getUseridFrom());
+        assertEquals(message.getUseridTo(), messageGetDTO.getUseridTo());
+        assertEquals(message.getId(), messageGetDTO.getMessageId());
+        assertEquals(message.getStatus(), messageGetDTO.getStatus());
+        assertEquals(message.getType(), messageGetDTO.getType());
     }
 
 }

@@ -152,20 +152,5 @@ public interface DTOMapper {
     @Mapping(target = "type", source = "type")
     MessageGetDTO convertEntityToMessageGetDTO(Message message);
 
-    @Mapping(source = "username", target = "username")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "password", ignore = true)
-    @Mapping(target = "token", ignore = true)
-    @Mapping(target = "status", ignore = true)
-    @Mapping(target = "bestScore", ignore = true)
-    @Mapping(target = "totalScore", ignore = true)
-    @Mapping(target = "creationDate", ignore = true)
-    @Mapping(target = "currentScore", ignore = true)
-    @Mapping(target = "guessingWord", ignore = true)
-    @Mapping(target = "currentGameScore", ignore = true)
-    @Mapping(target = "roomId", ignore =true)
-    @Mapping(target = "confirmRank", ignore = true)
-    @Mapping(target = "friends", ignore = true)
-    User cnvertUserGetDTOtoEntity(UserGetDTO userGetDTO);
 
 }
