@@ -43,8 +43,6 @@ public class WordsService {
         String str = response.body();
         List<String> words = Arrays.asList(str.split("\""));
         String word = words.get(words.size()-2);
-//        String regEx = "[`~!@#$%^&*()+=|{}:;\\\\[\\\\]._<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？']";
-//        word = Pattern.compile(regEx).matcher(word).replaceAll("").trim();
         word = word.replaceAll("[^A-Za-z]", "");
         return word.toLowerCase();
     }
@@ -65,8 +63,8 @@ public class WordsService {
             List<String> wordsBackup = wordsAll.stream()
                     .filter(item -> !listOfWords.contains(item))
                     .collect(toList());
+            Random rand = new Random();
             for(int i=0;i<leftNum;i++){
-                Random rand = new Random();
                 int randomIndex = rand.nextInt(wordsBackup.size());
                 listOfWords.add(wordsBackup.get(randomIndex));
                 wordsBackup.remove(wordsBackup.get(randomIndex));
