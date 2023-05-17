@@ -103,17 +103,16 @@ public class GameTurnController {
         turnRankGetDTO.setRankedList(rankedUsers);
         turnRankGetDTO.setDrawingPlayerId(gameTurn.getDrawingPlayerId());
         turnRankGetDTO.setDrawingPlayerName(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getUsername());
+        turnRankGetDTO.setDrawingPlayerScore(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getCurrentScore());
         turnRankGetDTO.setImage(gameTurn.getImage());
         turnRankGetDTO.setTargetWord(gameTurn.getTargetWord());
         // calculate correct answers
         int correct = 0;
         for (User user: rankedUsers){
-            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
-                if (user.getCurrentScore() == 12){
+            if (user.getCurrentScore() == 12){
                     correct += 1;
                 }
             }
-        }
         turnRankGetDTO.setCorrectAnswers(correct);
         return turnRankGetDTO;
     }

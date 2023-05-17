@@ -170,7 +170,6 @@ class GameTurnControllerTest {
         user2.setRoomId(1L);
         user2.setCurrentScore(12);
         List<User> users = new ArrayList<>(){{
-            add(user1);
             add(user2);
         }};
 

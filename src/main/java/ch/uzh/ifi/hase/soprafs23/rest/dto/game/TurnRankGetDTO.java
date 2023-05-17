@@ -13,6 +13,7 @@ public class TurnRankGetDTO {
     private String drawingPlayerName;
     private List<User> rankedList = new ArrayList<>();
     private String targetWord;
+    private int drawingPlayerScore;
     public int getCorrectAnswers() {
         return correctAnswers;
     }
@@ -58,6 +59,14 @@ public class TurnRankGetDTO {
 
     public void setRankedList(List<User> rankedList) {
         this.rankedList = rankedList;
+    }
+
+    public int getDrawingPlayerScore() {
+        return drawingPlayerScore;
+    }
+
+    public void setDrawingPlayerScore(int drawingPlayerScore) {
+        this.drawingPlayerScore = drawingPlayerScore;
     }
 
 }
