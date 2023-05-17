@@ -108,7 +108,10 @@ public class GameTurnService {
         GameTurn gameTurn = getGameTurn(gameTurnPutDTO.getId());
         gameTurn.setImage( gameTurnPutDTO.getImage());
         gameTurn.setStatus(TurnStatus.GUESSING);
+        User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
+        drawingPlayer.setCurrentScore(0);
         gameTurnRepository.flush();
+        userRepository.flush();
 
         return gameTurn;
     }
@@ -143,13 +146,13 @@ public class GameTurnService {
             user.setTotalScore(user.getTotalScore()+12);
             // set drawingPlayer's score
             if (room.getMode() == 4){  // 4-mode game
-                drawingPlayer.setCurrentScore(4);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+4);
-                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+4);
+                drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 4);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 4);
             }else{   // 2-mode game
-                drawingPlayer.setCurrentScore(12);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+12);
-                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore()+12);
+                drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 12);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
             }
         }
         else if (similarity > 0.9) {
@@ -158,12 +161,12 @@ public class GameTurnService {
             user.setTotalScore(user.getTotalScore() + 6);
             // set drawingPlayer's score
             if (room.getMode() == 4) {  // 4-mode game
-                drawingPlayer.setCurrentScore(2);
+                drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 2);
                 drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 2);
                 drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 2);
             }
             else { // 2-mode game
-                drawingPlayer.setCurrentScore(6);
+                drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 6);
                 drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
                 drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
             }
