@@ -12,4 +12,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     List<Message> findByUseridTo(Long useridTo);
 
+    List<Message> findByRoomId(Long roomId);
+
 }
