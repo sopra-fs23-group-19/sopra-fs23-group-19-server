@@ -197,8 +197,10 @@ public class GameTurnService {
         List<User> allPlayers = getAllUsers(gameTurn.getRoomId());
 
         Map<User,Integer> playersScores = new HashMap<>();
-        for (User user: allPlayers){
-            playersScores.put(user, user.getCurrentScore());
+        for (User user: allPlayers){  // only rank guessingPlayers
+            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
+                playersScores.put(user, user.getCurrentScore());
+            }
         }
         // rank the user by scores
         List<User> rankedUsers =  playersScores.entrySet().stream()
