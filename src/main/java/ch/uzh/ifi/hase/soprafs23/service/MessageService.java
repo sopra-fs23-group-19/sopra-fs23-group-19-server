@@ -111,8 +111,16 @@ public class MessageService {
         message.setUseridTo(friendMessagePostDTO.getUseridTo());
 
         List<Message> messageList = messageRepository.findAll();
+        List<Long> firendsList = userRepository.findByid(friendMessagePostDTO.getUseridFrom()).getFriends();
+
+        for(Long f:firendsList){
+            if (f.equals(friendMessagePostDTO.getUseridTo())){
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "He/She is already your friend.");
+            }
+        }
 
         for(Message m: messageList){
+
             if(m.getType() == message.getType() && m.getUseridTo().equals(message.getUseridTo())
                     && m.getUseridFrom().equals(message.getUseridFrom())
                     && m.getStatus().equals(message.getStatus())){
