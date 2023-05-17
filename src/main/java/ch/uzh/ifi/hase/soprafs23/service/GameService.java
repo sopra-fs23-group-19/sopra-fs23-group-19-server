@@ -5,9 +5,11 @@ import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
+import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +32,18 @@ public class GameService {
     private final GameTurnRepository gameTurnRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+    private final MessageRepository messageRepository;
 
     @Autowired
     public GameService(
                        @Qualifier("gameTurnRepository") GameTurnRepository gameTurnRepository,
                        @Qualifier("userRepository") UserRepository userRepository,
-                       @Qualifier("roomRepository") RoomRepository roomRepository) {
+                       @Qualifier("roomRepository") RoomRepository roomRepository,
+                       @Qualifier("messageRepository") MessageRepository messageRepository) {
         this.gameTurnRepository = gameTurnRepository;
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
+        this.messageRepository = messageRepository;
     }
 
     // initialize a new game
@@ -127,9 +132,13 @@ public class GameService {
                 userRepository.saveAndFlush(user);
             }
         }
+        List<Message> messages = messageRepository.findByRoomId(gameId);
         if (gameTurns != null && !gameTurns.isEmpty()){
             for (GameTurn gameTurn: gameTurns){
                 gameTurnRepository.deleteByid(gameTurn.getId());
+            }
+            for(Message m:messages){
+                messageRepository.deleteById(m.getId());
             }
         }
     }
