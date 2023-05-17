@@ -167,11 +167,14 @@ class GameTurnServiceTest {
 
         Mockito.when(gameTurnRepository.findByid(testGameTurn1.getId())).thenReturn(testGameTurn1);
         Mockito.when(gameTurnRepository.saveAndFlush(Mockito.any())).thenReturn(testGameTurn1);
+        Mockito.when(userRepository.findByid(testGameTurn1.getDrawingPlayerId())).thenReturn(testUser1);
+        Mockito.when(userRepository.saveAndFlush(Mockito.any())).thenReturn(testUser1);
 
         gameTurnService.submitImage(gameTurnPutDTO);
         assertEquals(testGameTurn1.getId(), gameTurnPutDTO.getId());
         assertEquals(testGameTurn1.getImage(), gameTurnPutDTO.getImage());
         assertEquals(testGameTurn1.getStatus(), TurnStatus.GUESSING);
+        assertEquals(testUser1.getCurrentScore(), 0);
 
     }
 
