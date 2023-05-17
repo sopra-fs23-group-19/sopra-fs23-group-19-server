@@ -138,7 +138,7 @@ public class GameService {
                 gameTurnRepository.deleteByid(gameTurn.getId());
             }
             for(Message m:messages){
-                messageRepository.deleteById(m.getId());
+                messageRepository.deleteByid(m.getId());
             }
         }
     }

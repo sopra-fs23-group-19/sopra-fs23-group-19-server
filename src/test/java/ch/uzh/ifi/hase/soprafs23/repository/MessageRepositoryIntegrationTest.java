@@ -26,7 +26,7 @@ class MessageRepositoryIntegrationTest {
     private MessageRepository messageRepository;
 
     @Test
-    public void findById_success() {
+    public void findByid_success() {
         // given
         Message message = new Message();
         message.setUseridFrom(1L);

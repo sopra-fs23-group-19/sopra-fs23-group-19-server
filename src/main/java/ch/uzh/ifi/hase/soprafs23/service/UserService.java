@@ -82,7 +82,7 @@ public class UserService {
         return true;
     }
 
-    public String findById(Long id){
+    public String findByid(Long id){
         if(userRepository.findByid(id)==null){
 //            return false;
             return "" ;//empty

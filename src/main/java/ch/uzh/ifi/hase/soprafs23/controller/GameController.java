@@ -101,7 +101,7 @@ public class GameController {
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
         gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
-        gameTurnAfterGetDTO.setDrawingPlayerName(userService.findById(gameTurnGetDTO.getDrawingPlayerId()));
+        gameTurnAfterGetDTO.setDrawingPlayerName(userService.findByid(gameTurnGetDTO.getDrawingPlayerId()));
 
 
         if(gameService.getAllPlayersIds(gameTurnGetDTO.getId())==null) {

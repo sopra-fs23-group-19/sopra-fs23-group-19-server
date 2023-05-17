@@ -144,13 +144,17 @@ public class MessageService {
     }
 
     public MessageGetDTO completeReturnMessage(MessageGetDTO messageGetDTO){
+        System.out.println("in complete return message");
         System.out.println(messageGetDTO.getRoomId());
+        System.out.println(messageGetDTO.getUseridFrom());
+        System.out.println(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
         // System.out.println(roomRepository.findByid(messageGetDTO.getRoomId()).getMode());
         if(roomRepository.findByid(messageGetDTO.getRoomId())!=null) {
             messageGetDTO.setRoomName(roomRepository.findByid(messageGetDTO.getRoomId()).getRoomName());
-            messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
-            messageGetDTO.setUsernameTo(userRepository.findByid(messageGetDTO.getUseridTo()).getUsername());
         }
+
+        messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
+        messageGetDTO.setUsernameTo(userRepository.findByid(messageGetDTO.getUseridTo()).getUsername());
         return messageGetDTO;
     }
 
@@ -169,6 +173,9 @@ public class MessageService {
 
     public MessageGetDTO completeFriendsMessages(MessageGetDTO messageGetDTO) {
 
+        System.out.println(messageGetDTO.getUseridFrom());
+        System.out.println(userRepository.findByid(messageGetDTO.getUseridFrom()));
+        System.out.println(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
         messageGetDTO.setUsernameFrom(userRepository.findByid(messageGetDTO.getUseridFrom()).getUsername());
         messageGetDTO.setUsernameTo(userRepository.findByid(messageGetDTO.getUseridTo()).getUsername());
 
