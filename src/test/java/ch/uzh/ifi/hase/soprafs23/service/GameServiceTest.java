@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
+import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,6 +34,8 @@ class GameServiceTest {
 
     @Mock
     private RoomRepository roomRepository;
+    @Mock
+    private MessageRepository messageRepository;
 
     @InjectMocks
     private GameService gameService;
@@ -182,6 +185,7 @@ class GameServiceTest {
         Mockito.when(userRepository.findByRoomId(testRoom.getId())).thenReturn(listOfUsers);
         Mockito.when(userRepository.saveAndFlush(Mockito.any())).thenReturn(testUser1);
         Mockito.when(roomRepository.saveAndFlush(Mockito.any())).thenReturn(testRoom);
+        Mockito.when(messageRepository.findByRoomId(Mockito.any())).thenReturn(new ArrayList<>());
 
         gameService.endGame(testRoom.getId());
         gameTurnRepository.deleteByid(testGameTurn1.getId());
