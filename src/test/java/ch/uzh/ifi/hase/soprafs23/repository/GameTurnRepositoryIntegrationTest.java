@@ -23,7 +23,7 @@ class GameTurnRepositoryIntegrationTest {
     private GameTurnRepository gameTurnRepository;
 
     @Test
-    public void findById_success() {
+    public void findByid_success() {
         // given
         GameTurn gameTurn = new GameTurn();
         gameTurn.setImage("aaa");
