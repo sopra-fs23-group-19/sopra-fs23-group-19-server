@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -157,6 +158,84 @@ public class MessageServiceTest {
         Mockito.when(messageRepository.findByid(Mockito.any())).thenReturn(message);
 
         assertThrows(ResponseStatusException.class, () -> messageService.comfirmGame(1L,confirmMessageDTO));
+    }
+
+    @Test
+    public void getMessageByUser(){
+        Message message = new Message();
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.PENDING);
+        message.setId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+        List<Message> messageList = new ArrayList<>();
+        messageList.add(message);
+        Mockito.when(messageRepository.findByUseridTo(Mockito.any())).thenReturn(messageList);
+
+        Message newMessage = messageService.getMessagesByUser(1L).get(0);
+
+        assertEquals(message.getId(), newMessage.getId());
+        assertEquals(newMessage.getStatus(),MessageStatus.PENDING);
+        assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
+        assertEquals(newMessage.getUseridTo(),message.getUseridTo());
+    }
+
+    @Test
+    public void getMessageInfo(){
+        Message message = new Message();
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.PENDING);
+        message.setId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+
+        Mockito.when(messageRepository.findByid(Mockito.any())).thenReturn(message);
+
+        Message newMessage = messageService.getMessageInfo(1L);
+
+        assertEquals(message.getId(), newMessage.getId());
+        assertEquals(newMessage.getStatus(),MessageStatus.PENDING);
+        assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
+        assertEquals(newMessage.getUseridTo(),message.getUseridTo());
+
+    }
+
+    @Test
+    public void addFriend(){
+        FriendMessagePostDTO friendMessagePostDTO = new FriendMessagePostDTO();
+        friendMessagePostDTO.setUseridFrom(1L);
+        friendMessagePostDTO.setUseridTo(2L);
+
+        Message message = new Message();
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.PENDING);
+        message.setId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+        List<Message> messageList = new ArrayList<>();
+        messageList.add(message);
+        List<Long> longList = new ArrayList<>();
+        Mockito.when(messageRepository.findAll()).thenReturn(messageList);
+
+        User user = new User();
+        user.setPassword("Firstname Lastname");
+        user.setUsername("firstname@lastname");
+        user.setStatus(UserStatus.ONLINE);
+        user.setId(1L);
+        user.setToken("1");
+        Mockito.when(userRepository.findByid(Mockito.any())).thenReturn(user);
+
+        Mockito.when(messageRepository.saveAndFlush(Mockito.any())).thenReturn(message);
+
+        Message newMessage = messageService.addFriend(friendMessagePostDTO);
+
+        assertEquals(message.getId(), newMessage.getId());
+        assertEquals(newMessage.getStatus(),MessageStatus.PENDING);
+        assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
+        assertEquals(newMessage.getUseridTo(),message.getUseridTo());
     }
 
 }
