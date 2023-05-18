@@ -46,6 +46,14 @@ public class RoomService {
 
         newRoom.setStatus(RoomStatus.WAITING);
 
+        if(newRoom.getOwnerId() == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+        }
+
+        if(userRepository.findByid(newRoom.getOwnerId())==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+        }
+
         newRoom = roomRepository.save(newRoom);
 
         roomRepository.flush();
