@@ -55,6 +55,7 @@ public class UserController {
     }
 
 
+    @UserLoginToken
       @GetMapping("/users")
       @ResponseStatus(HttpStatus.OK)
       @ResponseBody
@@ -93,6 +94,7 @@ public class UserController {
   }
 
 
+  @UserLoginToken
   // search users by username
   @PostMapping("/users/searchFriends")
   @ResponseStatus(HttpStatus.CREATED)
@@ -105,6 +107,7 @@ public class UserController {
   }
 
 
+  @UserLoginToken
   // return friends list
   @GetMapping("/users/returnFriends/{userId}")
   @ResponseStatus(HttpStatus.OK)
@@ -120,6 +123,7 @@ public class UserController {
       return userGetDTOs;
   }
 
+  @UserLoginToken
     // get friends' profiles
     @PostMapping("/users/friendsProfiles")
     @ResponseStatus(HttpStatus.CREATED)

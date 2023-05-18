@@ -75,6 +75,7 @@ public class GameController {
         gameService.endGame(gameId);
     }
 
+    @UserLoginToken
     @GetMapping("/leaderboard")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
