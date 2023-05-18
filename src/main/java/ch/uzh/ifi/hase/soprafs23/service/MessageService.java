@@ -64,6 +64,9 @@ public class MessageService {
     }
 
     public List<Message> getMessagesByUser(Long userid){
+        if(userid == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User doesn't exist!");
+        }
         return messageRepository.findByUseridTo(userid);
     }
 
