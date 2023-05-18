@@ -12,6 +12,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -234,6 +235,64 @@ public class MessageServiceTest {
 
         assertEquals(message.getId(), newMessage.getId());
         assertEquals(newMessage.getStatus(),MessageStatus.PENDING);
+        assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
+        assertEquals(newMessage.getUseridTo(),message.getUseridTo());
+    }
+
+    @Test
+    public void refreshFriend_success(){
+        Message message = new Message();
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.AGREE);
+        message.setId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+
+        User user = new User();
+        user.setPassword("Firstname Lastname");
+        user.setUsername("firstname@lastname");
+        user.setStatus(UserStatus.OFFLINE);
+        user.setId(1L);
+        user.setToken("1");
+
+        User user1 = new User();
+        user1.setPassword("Firstname Lastname");
+        user1.setUsername("firstname@lastname");
+        user1.setStatus(UserStatus.OFFLINE);
+        user1.setId(2L);
+        user1.setToken("1");
+
+        Mockito.when(userRepository.findByid(Mockito.any())).thenReturn(user);
+
+        Message newMessage = messageService.refreshFriends(message);
+
+        assertEquals(message.getId(), newMessage.getId());
+        assertEquals(newMessage.getStatus(),MessageStatus.AGREE);
+        assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
+        assertEquals(newMessage.getUseridTo(),message.getUseridTo());
+    }
+
+    @Test
+    public void completeFriendsMessage_success(){
+        MessageGetDTO message = new MessageGetDTO();
+        message.setMessageId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+
+        User user1 = new User();
+        user1.setPassword("Firstname Lastname");
+        user1.setUsername("firstname@lastname");
+        user1.setStatus(UserStatus.OFFLINE);
+        user1.setId(2L);
+        user1.setToken("1");
+
+        Mockito.when(userRepository.findByid(Mockito.any())).thenReturn(user1);
+
+        MessageGetDTO newMessage = messageService.completeReturnMessage(message);
+
+        assertEquals(message.getMessageId(), newMessage.getMessageId());
         assertEquals(newMessage.getUseridFrom(),message.getUseridFrom());
         assertEquals(newMessage.getUseridTo(),message.getUseridTo());
     }
