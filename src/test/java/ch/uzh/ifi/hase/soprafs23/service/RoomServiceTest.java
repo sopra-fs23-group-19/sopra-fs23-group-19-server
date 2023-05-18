@@ -50,7 +50,7 @@ public class RoomServiceTest {
         Mockito.when(userRepository.findByid(Mockito.any())).thenReturn(user);
 
         Room newRoom = roomService.createRoom(room);
-        Mockito.verify(userRepository, Mockito.times(2)).findByid(Mockito.any());
+        Mockito.verify(userRepository, Mockito.times(3)).findByid(Mockito.any());
         Mockito.verify(roomRepository, Mockito.times(1)).save(Mockito.any());
 
         assertEquals(room.getId(),newRoom.getId());
