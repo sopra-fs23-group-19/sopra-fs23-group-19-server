@@ -174,7 +174,6 @@ public class MessageServiceTest {
         ConfirmMessageDTO confirmMessageDTO = new ConfirmMessageDTO();
         confirmMessageDTO.setAction("AGREE");
         Mockito.when(messageRepository.findByid(Mockito.any())).thenReturn(message);
-
         assertThrows(ResponseStatusException.class, () -> messageService.comfirmFriend(1L,confirmMessageDTO));
     }
 
