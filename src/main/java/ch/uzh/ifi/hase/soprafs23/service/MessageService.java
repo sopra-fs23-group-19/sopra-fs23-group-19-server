@@ -67,7 +67,11 @@ public class MessageService {
         if(userid == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User doesn't exist!");
         }
-        return messageRepository.findByUseridTo(userid);
+        List<Message> messageList =  messageRepository.findByUseridTo(userid);
+        if(messageList==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message doesn't exist!");
+        }
+        return messageList;
     }
 
     public List<Message> getPendingMessages(Long userid){
@@ -86,7 +90,12 @@ public class MessageService {
 
 
     public Message getMessageInfo(Long id){
-        return messageRepository.findByid(id);
+        Message message = messageRepository.findByid(id);
+        if(message==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Message doesn't exist!");
+        }
+
+        return message;
     }
 
     public Message comfirmGame(Long id, ConfirmMessageDTO confirmMessageDTO){
@@ -114,7 +123,12 @@ public class MessageService {
         message.setUseridTo(friendMessagePostDTO.getUseridTo());
 
         List<Message> messageList = messageRepository.findAll();
-        List<Long> firendsList = userRepository.findByid(friendMessagePostDTO.getUseridFrom()).getFriends();
+        User u = userRepository.findByid(friendMessagePostDTO.getUseridFrom());
+
+        if(u==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
+        }
+        List<Long> firendsList = u.getFriends();
 
         for(Long f:firendsList){
             if (f.equals(friendMessagePostDTO.getUseridTo())){
@@ -164,6 +178,13 @@ public class MessageService {
     public Message refreshFriends(Message message) {
         User userFrom = userRepository.findByid(message.getUseridFrom());
         User userTo = userRepository.findByid(message.getUseridTo());
+
+        if(userFrom==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
+        }
+        if(userTo==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!");
+        }
         if (message.getStatus().equals(MessageStatus.AGREE)){
             userFrom.getFriends().add(userTo.getId());
             userTo.getFriends().add(userFrom.getId());
