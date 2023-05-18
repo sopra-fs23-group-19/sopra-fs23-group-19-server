@@ -162,6 +162,23 @@ public class MessageServiceTest {
     }
 
     @Test
+    public void confirmFriend_succeed(){
+        Message message = new Message();
+        message.setType(MessageType.GAME);
+        message.setStatus(MessageStatus.AGREE);
+        message.setId(1L);
+        message.setUseridTo(1L);
+        message.setUseridFrom(2L);
+        message.setRoomId(1L);
+
+        ConfirmMessageDTO confirmMessageDTO = new ConfirmMessageDTO();
+        confirmMessageDTO.setAction("AGREE");
+        Mockito.when(messageRepository.findByid(Mockito.any())).thenReturn(message);
+
+        assertThrows(ResponseStatusException.class, () -> messageService.comfirmFriend(1L,confirmMessageDTO));
+    }
+
+    @Test
     public void getMessageByUser(){
         Message message = new Message();
         message.setType(MessageType.GAME);
