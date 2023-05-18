@@ -111,7 +111,7 @@ public class MessageService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room doesn't exist!");
         }
         List<User> userList = userRepository.findByRoomId(room.getId());
-        if(room.getMode() == userList.size()){
+        if(room.getMode() <= userList.size()){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already started!");
         }
 
