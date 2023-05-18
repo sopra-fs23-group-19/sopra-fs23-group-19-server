@@ -1,21 +1,26 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPutDTO;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,6 +49,18 @@ public class RoomControllerTest {
     @MockBean
     private UserService userService;
 
+    @Mock
+    private AuthenticationInterceptor interceptor;
+    @Mock
+    private UserLoginToken userLoginToken;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
+    }
+
     //create room
     @Test
     public void createRoom_valid() throws Exception{
@@ -64,7 +81,7 @@ public class RoomControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/rooms")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(roomPostDTO));
+                .content(asJsonString(roomPostDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest)
@@ -95,7 +112,7 @@ public class RoomControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = put("/rooms/join")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(roomPutDTO));
+                .content(asJsonString(roomPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isOk())
@@ -122,7 +139,7 @@ public class RoomControllerTest {
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/rooms/1").contentType(MediaType.APPLICATION_JSON)
-                .header("Token","1");
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -148,7 +165,7 @@ public class RoomControllerTest {
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/rooms/12").contentType(MediaType.APPLICATION_JSON)
-                .header("Token","1");
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
@@ -172,7 +189,7 @@ public class RoomControllerTest {
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/rooms").contentType(MediaType.APPLICATION_JSON)
-                .header("Token","1");
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -219,7 +236,7 @@ public class RoomControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = put("/rooms/leave")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(roomPutDTO)).header("Token","1");
+                .content(asJsonString(roomPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isOk());

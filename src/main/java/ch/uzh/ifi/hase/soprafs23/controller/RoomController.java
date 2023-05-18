@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.TurnStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
@@ -30,7 +31,7 @@ public class RoomController {
     }
 
     // owner doesn't need to join the room after creating
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/rooms")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -44,7 +45,7 @@ public class RoomController {
 
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PutMapping("/rooms/join")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -54,7 +55,7 @@ public class RoomController {
 
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping(value = "/rooms/{roomId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -62,7 +63,7 @@ public class RoomController {
         return changeRoomToAfter(roomService.retrieveRoom(roomId));
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/rooms")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -78,7 +79,7 @@ public class RoomController {
         return roomAfterGetDTOS;
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PutMapping("/rooms/leave")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

@@ -1,16 +1,21 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
 import ch.uzh.ifi.hase.soprafs23.service.GameService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -39,6 +44,18 @@ public class GameControllerTest {
     @MockBean
     private UserService userService;
 
+    @Mock
+    private AuthenticationInterceptor interceptor;
+    @Mock
+    private UserLoginToken userLoginToken;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
+    }
+
     @Test
     public void startGame_givenRoomId_returnTurnsInfo() throws Exception {
         // given
@@ -57,7 +74,7 @@ public class GameControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder postRequest = post("/games/waitingArea/"+room.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return CREATED status
         mockMvc.perform(postRequest)
@@ -89,7 +106,7 @@ public class GameControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/games/ranks/"+ user1.getRoomId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return OK status
         mockMvc.perform(getRequest)
@@ -109,7 +126,7 @@ public class GameControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder putRequest = put("/games/ending/"+room.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be no_content status
         mockMvc.perform(putRequest)
@@ -141,7 +158,7 @@ public class GameControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/leaderboard")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return OK status
         mockMvc.perform(getRequest)

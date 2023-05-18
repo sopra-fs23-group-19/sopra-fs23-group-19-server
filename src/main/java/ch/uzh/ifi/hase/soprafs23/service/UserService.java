@@ -116,15 +116,6 @@ public class UserService {
 	  log.debug("Created Information for User: {}", newUser);
 	  return newUser;
   }
-
-  public void changeStatusToPlaying(Long userId){
-      User user =  userRepository.findByid(userId);
-      if (user == null) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found");
-      }else{
-          user.setStatus(UserStatus.ISPLAYING);
-      }
-  }
   
   private void checkNullPassword(User newUser) {
       if(newUser.getPassword() == null){

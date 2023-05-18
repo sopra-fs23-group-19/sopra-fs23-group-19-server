@@ -1,14 +1,19 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
+import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -35,6 +40,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.http.HttpHeaders;
 
 /**
  * UserControllerTest
@@ -50,6 +56,18 @@ public class UserControllerTest {
 
     @MockBean
     private UserService userService;
+
+    @Mock
+    private AuthenticationInterceptor interceptor;
+    @Mock
+    private UserLoginToken userLoginToken;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
+    }
 
     // login valid
     @Test
@@ -70,7 +88,8 @@ public class UserControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(userPostDTO))
+                .header(HttpHeaders.AUTHORIZATION,"qqqqqqq1");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isOk())
@@ -114,14 +133,15 @@ public class UserControllerTest {
         user.setId(1L);
         user.setPassword("Test User");
         user.setUsername("testUsername");
-        user.setToken("1");
+        user.setToken("12345678910");
         user.setStatus(UserStatus.ONLINE);
 
         doNothing().when(userService).logout(Mockito.any());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/logout/1")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isNoContent());
@@ -137,13 +157,13 @@ public class UserControllerTest {
         user.setToken("1");
         user.setStatus(UserStatus.ONLINE);
 
-
         doThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed."))
                 .when(userService).logout(Mockito.any());
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/logout/1")
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isUnauthorized());
@@ -162,14 +182,13 @@ public class UserControllerTest {
         user.setId(1L);
         user.setToken("1");
         //user.setBirthday(null);
-
         // this mocks the UserService -> we define above what the userService should
         // return when getUsers() is called
         given(userService.retrieveUser(Mockito.any())).willReturn(user);
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users/"+user.getId()).contentType(MediaType.APPLICATION_JSON)
-                .header("Token","1");
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -180,7 +199,9 @@ public class UserControllerTest {
     // get /users/{userId} 4============================================================================================
     @Test
     public void userProfile_invalid() throws Exception {
-
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX",Locale.ENGLISH);
         Date q = df.parse("2023-03-06T20:19:12.560+00:00");
         // given
@@ -197,7 +218,7 @@ public class UserControllerTest {
         given(userService.retrieveUser(Mockito.any())).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found"));
 
         // when
-        MockHttpServletRequestBuilder getRequest = get("/users/6774").contentType(MediaType.APPLICATION_JSON).header("Token","1");
+        MockHttpServletRequestBuilder getRequest = get("/users/6774").contentType(MediaType.APPLICATION_JSON).header("Token","1").header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isNotFound());
@@ -231,7 +252,7 @@ public class UserControllerTest {
 
         // when
         MockHttpServletRequestBuilder getRequest = get("/users").contentType(MediaType.APPLICATION_JSON)
-                .header("Token","1");
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -245,7 +266,6 @@ public class UserControllerTest {
     // post /users 1====================================================================================================================
     @Test
     public void createUser_validInput_userCreated() throws Exception {
-
         // given
         User user = new User();
         user.setId(1L);
@@ -263,7 +283,8 @@ public class UserControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(userPostDTO))
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest)
@@ -294,7 +315,8 @@ public class UserControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/users/register")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPostDTO));
+                .content(asJsonString(userPostDTO))
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isConflict());
@@ -325,7 +347,7 @@ public class UserControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = put("/users/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPutDTO)).header("Token","1");
+                .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isNoContent());
@@ -356,7 +378,7 @@ public class UserControllerTest {
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder putRequest = put("/users/112318")
-                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPutDTO)).header("Token","1");
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(putRequest)

@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
@@ -22,7 +23,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/notification/game")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -33,6 +34,7 @@ public class MessageController {
         return messageService.completeReturnMessage(messageGetDTO);
     }
 
+    @UserLoginToken
     @PostMapping("/notification/friend")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -43,22 +45,7 @@ public class MessageController {
         return messageService.completeReturnMessage(messageGetDTO);
     }
 
-    //@UserLoginToken
-//    @GetMapping("/notification/game/{userid}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public List<MessageGetDTO> getMessagesByUser(@PathVariable Long userid) { //return all messages
-//        List<Message> messages = messageService.getMessagesByUser(userid);
-//        List<MessageGetDTO> result = new ArrayList<>();
-//
-//        for(Message message:messages){
-//            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-//
-//        }
-//
-//        return result;
-//    }
-
+    @UserLoginToken
     @GetMapping("/notification/game/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -75,6 +62,7 @@ public class MessageController {
         return result;
     }
 
+    @UserLoginToken
     @GetMapping("/notification/friend/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -91,22 +79,7 @@ public class MessageController {
         return result;
     }
 
-    //@UserLoginToken
-//    @GetMapping("/notification/game/pending/{userid}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public List<MessageGetDTO> getPendingMessages(@PathVariable Long userid) { //return all messages
-//        List<Message> messages = messageService.getPendingMessages(userid);
-//        List<MessageGetDTO> result = new ArrayList<>();
-//
-//        for(Message message:messages){
-//            result.add(messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-//
-//        }
-//
-//        return result;
-//    }
-
+    @UserLoginToken
     @GetMapping("/notification/game/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -123,6 +96,7 @@ public class MessageController {
         return result;
     }
 
+    @UserLoginToken
     @GetMapping("/notification/friend/pending/{userid}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -139,7 +113,7 @@ public class MessageController {
         return result;
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/notification/game/information/{messageId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -147,7 +121,7 @@ public class MessageController {
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.getMessageInfo(messageId)));
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/notification/game/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -156,26 +130,9 @@ public class MessageController {
         return messageService.completeReturnMessage(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.comfirmGame(messageId,confirmMessageDTO)));
     }
 
-    // get all messages
-    //@UserLoginToken
-//    @GetMapping("/notification/friends/{userId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public List<MessageGetDTO> confirmMessage(@PathVariable Long userId) {
-//        List<Message> messages = messageService.getMessagesByUser(userId);
-//        List<MessageGetDTO> result = new ArrayList<>();
-//
-//        for(Message message:messages){
-//            if(message.getStatus().equals(MessageStatus.PENDING)) {
-//                result.add(messageService.completeFriendsMessages(DTOMapper.INSTANCE.convertEntityToMessageGetDTO(message)));
-//            }
-//        }
-//
-//        return result;
-//    }
 
     // agree or reject friends invitations
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/friends/{messageId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody

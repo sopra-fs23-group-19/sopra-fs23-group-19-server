@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.TurnRankGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
@@ -9,12 +11,15 @@ import ch.uzh.ifi.hase.soprafs23.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,6 +59,18 @@ class GameTurnControllerTest {
     @MockBean
     private RoomService roomService;
 
+    @Mock
+    private AuthenticationInterceptor interceptor;
+    @Mock
+    private UserLoginToken userLoginToken;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
+    }
+
     /**
      * Helper Method to convert DTO into a JSON string such that the input
      * can be processed
@@ -81,7 +98,7 @@ class GameTurnControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/words/"+gameTurn.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be ok status
         mockMvc.perform(getRequest)
@@ -102,7 +119,7 @@ class GameTurnControllerTest {
         // when/then -> do the request
         MockHttpServletRequestBuilder putRequest = put("/gameRounds/words")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(gameTurnPutDTO));
+                .content(asJsonString(gameTurnPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be no_content status
         mockMvc.perform(putRequest)
@@ -122,7 +139,7 @@ class GameTurnControllerTest {
         // when/then -> do the request
         MockHttpServletRequestBuilder putRequest = put("/gameRounds/drawings")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(gameTurnPutDTO));
+                .content(asJsonString(gameTurnPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be no_content status
         mockMvc.perform(putRequest)
@@ -146,7 +163,7 @@ class GameTurnControllerTest {
         // when/then -> do the request
         MockHttpServletRequestBuilder postRequest = post("/gameRounds/finalDrawings")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(gameTurnPutDTO));
+                .content(asJsonString(gameTurnPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return created status
         mockMvc.perform(postRequest)
@@ -194,7 +211,7 @@ class GameTurnControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/ranks/"+ gameTurn.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return OK status
         mockMvc.perform(getRequest)
@@ -221,7 +238,7 @@ class GameTurnControllerTest {
         // when/then -> do the request
         MockHttpServletRequestBuilder putRequest = put("/gameRounds/answers/"+gameTurn.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPutDTO));
+                .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be no_content status
         mockMvc.perform(putRequest)
@@ -240,7 +257,7 @@ class GameTurnControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/information/"+gameTurn.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return ok status
         mockMvc.perform(getRequest)
@@ -267,7 +284,7 @@ class GameTurnControllerTest {
 
         // when/then -> do the request
         MockHttpServletRequestBuilder getRequest = get("/gameRounds/rankConfirmation/"+gameTurn.getId()+"/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should return ok status
         mockMvc.perform(getRequest)

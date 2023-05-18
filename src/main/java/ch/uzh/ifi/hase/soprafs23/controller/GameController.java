@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
 import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
@@ -35,7 +36,7 @@ public class GameController {
     }
 
     // start a new game
-    //@UserLoginToken
+    @UserLoginToken
     @PostMapping("/games/waitingArea/{roomId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
@@ -50,7 +51,7 @@ public class GameController {
 
     // get rank list from this game
     //if game status is end_game.
-    //@UserLoginToken
+    @UserLoginToken
     @GetMapping("/games/ranks/{gameId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
@@ -66,7 +67,7 @@ public class GameController {
         return userGetDTOs;
     }
 
-    //@UserLoginToken
+    @UserLoginToken
     @PutMapping("/games/ending/{gameId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody

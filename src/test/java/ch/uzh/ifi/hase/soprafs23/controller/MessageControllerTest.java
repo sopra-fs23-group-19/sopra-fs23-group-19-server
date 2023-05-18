@@ -1,22 +1,28 @@
 package ch.uzh.ifi.hase.soprafs23.controller;
 
+import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
+import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.ConfirmMessageDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.FriendMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.GameMessagePostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.message.MessageGetDTO;
 import ch.uzh.ifi.hase.soprafs23.service.MessageService;
+import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -43,6 +49,20 @@ class MessageControllerTest {
 
     @MockBean
     private MessageService messageService;
+    @MockBean
+    private UserService userService;
+
+    @Mock
+    private AuthenticationInterceptor interceptor;
+    @Mock
+    private UserLoginToken userLoginToken;
+
+    @BeforeEach
+    public void setup() throws Exception {
+        given(interceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).willReturn(true);
+        given(userLoginToken.required()).willReturn(true);
+        given(userService.findByToken(Mockito.any())).willReturn(true);
+    }
 
     /**
      * Helper Method to convert userPostDTO into a JSON string such that the input
@@ -85,7 +105,7 @@ class MessageControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/notification/game")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(gameMessagePostDTO));
+                .content(asJsonString(gameMessagePostDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
@@ -118,7 +138,7 @@ class MessageControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/notification/friend")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(friendMessagePostDTO));
+                .content(asJsonString(friendMessagePostDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
@@ -150,7 +170,7 @@ class MessageControllerTest {
         given(messageService.completeReturnMessage(Mockito.any())).willReturn(messageGetDTO);
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/notification/game/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -183,7 +203,7 @@ class MessageControllerTest {
         given(messageService.completeReturnMessage(Mockito.any())).willReturn(messageGetDTO);
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/notification/friend/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -218,7 +238,7 @@ class MessageControllerTest {
         given(messageService.completeReturnMessage(Mockito.any())).willReturn(messageGetDTO);
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/notification/game/pending/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -253,7 +273,7 @@ class MessageControllerTest {
         given(messageService.completeReturnMessage(Mockito.any())).willReturn(messageGetDTO);
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/notification/friend/pending/"+user.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -277,7 +297,7 @@ class MessageControllerTest {
 
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder getRequest = get("/notification/game/information/"+message.getId())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(getRequest).andExpect(status().isOk())
@@ -304,7 +324,7 @@ class MessageControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/notification/game/"+message.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(confirmMessageDTO));
+                .content(asJsonString(confirmMessageDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
@@ -337,7 +357,7 @@ class MessageControllerTest {
         // when/then -> do the request + validate the result
         MockHttpServletRequestBuilder postRequest = post("/friends/"+message.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(confirmMessageDTO));
+                .content(asJsonString(confirmMessageDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // then
         mockMvc.perform(postRequest).andExpect(status().isCreated())
