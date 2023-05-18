@@ -54,8 +54,6 @@ public class RoomService {
         userRepository.findByid(newRoom.getOwnerId()).setStatus(UserStatus.ONLINE);
         userRepository.flush();
 
-        System.out.println("create----"+newRoom.getId());
-        log.debug("Created Information for Room: {}", newRoom);
         return newRoom;
     }
 
@@ -76,7 +74,6 @@ public class RoomService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room doesn't exist!");
         }
 
-        System.out.println("in join"+userList.size());
         if(room.getMode() > userList.size()) {
             User user = userRepository.findByid(userId);
 
@@ -85,8 +82,6 @@ public class RoomService {
             }
 
             user.setRoomId(roomId);
-
-            System.out.println("user"+user.getUsername());
 
             if (room.getMode() == userRepository.findByRoomId(roomId).size()) {
                 room.setStatus(RoomStatus.READY);
