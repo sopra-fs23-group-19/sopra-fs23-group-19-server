@@ -110,9 +110,13 @@ public class MessageService {
         if(room == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room doesn't exist!");
         }
+        List<User> userList = userRepository.findByRoomId(room.getId());
+        if(room.getMode() == userList.size()){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already started!");
+        }
 
         if(room.getStatus() !=RoomStatus.WAITING){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game already started!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already started!");
         }
 
         if(message.getStatus() == MessageStatus.PENDING) {
