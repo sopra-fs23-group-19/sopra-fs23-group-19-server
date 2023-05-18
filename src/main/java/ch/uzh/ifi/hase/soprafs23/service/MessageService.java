@@ -129,6 +129,23 @@ public class MessageService {
         return message;
     }
 
+    public Message comfirmFriend(Long id, ConfirmMessageDTO confirmMessageDTO){
+        Message message = messageRepository.findByid(id);
+
+        if(message == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Messages not found!");
+        }
+
+        if(message.getStatus() == MessageStatus.PENDING) {
+            message.setStatus(MessageStatus.valueOf(confirmMessageDTO.getAction()));
+        }else{
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "You already reacted to this message!");
+        }
+        messageRepository.flush();
+
+        return message;
+    }
+
     public Message addFriend(FriendMessagePostDTO friendMessagePostDTO){
         Message message = new Message();
         message.setStatus(MessageStatus.PENDING);

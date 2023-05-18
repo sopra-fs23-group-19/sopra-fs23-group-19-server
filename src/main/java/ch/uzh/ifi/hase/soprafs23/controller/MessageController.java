@@ -180,7 +180,7 @@ public class MessageController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public MessageGetDTO refreshFriends(@RequestBody ConfirmMessageDTO confirmMessageDTO, @PathVariable Long messageId){
-        Message message = messageService.comfirmGame(messageId,confirmMessageDTO);
+        Message message = messageService.comfirmFriend(messageId,confirmMessageDTO);
         MessageGetDTO messageGetDTO = DTOMapper.INSTANCE.convertEntityToMessageGetDTO(messageService.refreshFriends(message));
         return messageService.completeFriendsMessages(messageGetDTO);
     }
