@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.constant.MessageStatus;
 import ch.uzh.ifi.hase.soprafs23.constant.MessageType;
 import ch.uzh.ifi.hase.soprafs23.constant.RoomStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.Message;
+import ch.uzh.ifi.hase.soprafs23.entity.Room;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.MessageRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
@@ -103,6 +104,15 @@ public class MessageService {
 
         if(message == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Messages not found!");
+        }
+
+        Room room  = roomRepository.findByid(message.getRoomId());
+        if(room == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room doesn't exist!");
+        }
+
+        if(room.getStatus() !=RoomStatus.WAITING){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game already started!");
         }
 
         if(message.getStatus() == MessageStatus.PENDING) {
