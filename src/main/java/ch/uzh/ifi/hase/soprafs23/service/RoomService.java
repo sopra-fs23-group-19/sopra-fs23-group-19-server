@@ -71,9 +71,19 @@ public class RoomService {
     public Room joinRoom(Long userId, Long roomId){
         Room room = retrieveRoom(roomId);
         List<User> userList = userRepository.findByRoomId(roomId);
+
+        if(room==null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Room doesn't exist!");
+        }
+
         System.out.println("in join"+userList.size());
         if(room.getMode() > userList.size()) {
             User user = userRepository.findByid(userId);
+
+            if(user==null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User doesn't exist!");
+            }
+
             user.setRoomId(roomId);
 
             System.out.println("user"+user.getUsername());
