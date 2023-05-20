@@ -247,7 +247,6 @@ public class GameTurnService {
             if (gameTurn.getCurrentTurn() == getRoom(gameTurn.getRoomId()).getMode()) {
                 getRoom(gameTurn.getRoomId()).setStatus(RoomStatus.END_GAME);
             }
-            gameTurn.setCurrentTurn(gameTurn.getCurrentTurn()+1);
         }
 
         userRepository.flush();

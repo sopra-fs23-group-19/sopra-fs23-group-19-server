@@ -155,7 +155,6 @@ public class GameTurnController {
         gameTurnAfterGetDTO.setImage(gameTurnGetDTO.getImage());
         gameTurnAfterGetDTO.setTargetWord(gameTurnGetDTO.getTargetWord());
         gameTurnAfterGetDTO.setRoomId(gameTurnGetDTO.getRoomId());
-        gameTurnAfterGetDTO.setStatus(gameTurnGetDTO.getStatus());
         gameTurnAfterGetDTO.setDrawingPlayerName(userService.findByid(gameTurnGetDTO.getDrawingPlayerId()));
 
 
