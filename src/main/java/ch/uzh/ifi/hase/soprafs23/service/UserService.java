@@ -156,17 +156,14 @@ public class UserService {
       // update the password
       if (!userInput.getPassword().equals("")) {
           // The password is the same as before, the user needs to enter a new one
-          if(userInput.getPassword().equals(user.getPassword())) {
-              throw new ResponseStatusException(HttpStatus.CONFLICT, "Password is the same as before, please enter a different one.");
-          }else {
-              user.setPassword(userInput.getPassword());
-              userRepository.flush();
-          }
+           user.setPassword(userInput.getPassword());
+           userRepository.flush();
+
       }
       // update username
       if (!userInput.getUsername().equals("")){
           User userByUsername = userRepository.findByUsername(userInput.getUsername());
-          if(userByUsername != null) {
+          if(userByUsername != null && !userByUsername.getId().equals(userId)) {
               // return 409: add User failed because username already exists
               throw new ResponseStatusException(HttpStatus.CONFLICT, "Username has already existed!");
           }else{
