@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs23.service;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -161,4 +164,47 @@ public class UserServiceTest {
         // is thrown
         assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
     }
+
+    @Test
+    public void searchUsers_null_throwsException() {
+
+        UserGetDTO userGetDTO = new UserGetDTO();
+        userGetDTO.setUsername("");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.searchUsers(userGetDTO));
+        String exceptionMessage = "please input a valid username";
+        assertEquals(exceptionMessage,exception.getReason());
+    }
+
+    @Test
+    public void searchUsers_NotFound_throwsException() {
+
+        UserGetDTO userGetDTO = new UserGetDTO();
+        userGetDTO.setUsername("name");
+
+        assertThrows(ResponseStatusException.class, () -> userService.searchUsers(userGetDTO));
+    }
+
+    @Test
+    public void searchUsers_success() {
+        UserGetDTO userGetDTO = new UserGetDTO();
+        userGetDTO.setUsername("testUsername");
+
+        Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+        assertEquals(testUser.getUsername(), userGetDTO.getUsername());
+    }
+
+    @Test
+    public void returnFriends_success() {
+         User createdUser = new User();
+         createdUser.setId(2L);
+         createdUser.getFriends().add(testUser.getId());
+         Mockito.when(userRepository.findByid(Mockito.anyLong())).thenReturn(createdUser);
+
+         List<User> createdUserFriends = userService.returnFriends(createdUser.getId());
+
+         assertEquals(1, createdUserFriends.get(0).getFriends().size());
+    }
+
+
 }

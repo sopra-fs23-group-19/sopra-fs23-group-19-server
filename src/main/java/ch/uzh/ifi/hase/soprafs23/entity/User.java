@@ -162,10 +162,6 @@ public class User implements Serializable {
         this.currentGameScore = currentGameScore;
     }
 
-    public static Long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public List<Long> getFriends() {
         return friends;
     }

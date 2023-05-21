@@ -100,7 +100,7 @@ public class UserController {
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
   public UserGetDTO searchUsers(@RequestBody UserGetDTO userGetDTO)  {
-        System.out.println(userGetDTO.getUsername());
+//        System.out.println(userGetDTO.getUsername());
         User user = userService.searchUsers(userGetDTO);
 
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
@@ -122,16 +122,5 @@ public class UserController {
       }
       return userGetDTOs;
   }
-
-  @UserLoginToken
-    // get friends' profiles
-    @PostMapping("/users/friendsProfiles")
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public UserGetDTO getFriendsProfiles(@RequestBody UserFriendsPostDTO userFriendsPostDTO){
-
-        User userTo = userService.retrieveFriends(userFriendsPostDTO);
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(userTo);
-    }
 
 }

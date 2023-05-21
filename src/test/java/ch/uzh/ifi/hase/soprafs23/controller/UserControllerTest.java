@@ -4,7 +4,7 @@ import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.interceptor.AuthenticationInterceptor;
-import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserLoginPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
@@ -18,6 +18,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,21 +27,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.http.HttpHeaders;
 
 /**
  * UserControllerTest
@@ -383,6 +379,66 @@ public class UserControllerTest {
         // then
         mockMvc.perform(putRequest)
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void searchUser_givenUsername_returnUser() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        //user.setBirthday(null);
+        user.setUsername("testUsername");
+        user.setToken("1");
+        user.setStatus(UserStatus.ONLINE);
+        //user.setCreation_date(q);
+        user.setPassword("2");
+
+        UserGetDTO userGetDTO = new UserGetDTO();
+        userGetDTO.setUsername("testUsername");
+
+        given(userService.searchUsers(Mockito.any())).willReturn(user);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/users/searchFriends")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userGetDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.username", is(user.getUsername())));
+    }
+
+    @Test
+    public void searchFriends_givenId_returnFriends() throws Exception {
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setPassword("Test User");
+        user1.setUsername("testUsername");
+        user1.setToken("1");
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setPassword("Test User2");
+        user2.setUsername("testUsername2");
+        user2.setToken("2");
+        user1.getFriends().add(user2.getId());
+        user2.getFriends().add(user1.getId());
+
+        List<User> user1friends = new ArrayList<>(){{
+            add(user2);
+        }};
+
+        given(userService.returnFriends(Mockito.anyLong())).willReturn(user1friends);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder getRequest = get("/users/returnFriends/"+user1.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION,"12345678910");
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username", is(user2.getUsername())))
+                .andExpect(jsonPath("$[0].id", is(user2.getId().intValue())));
     }
 
     /**
