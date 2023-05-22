@@ -84,3 +84,6 @@
 |week 8| Jingjing Li | [client#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/131)|Fix some bugs and change background color.|
 |week 8| Shiyu Ran | [server#140](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/140)|Write MessageController tests.|
 |week 8| Shiyu Ran | [server#141](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/141)|Fix some bugs and solve deployment and sonarqube problems.|
+|week 8| Runze Li | [client#133](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/133)|Fix message notification displayed to users when receive exception from backend.|
+|week 8| Runze Li | [client#134](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/134)|Fix routers guard and routers.|
+|week 8| Runze Li | [client#132](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/132)|Create readme. Give a template, project logo for our project.(issue not closed yet)|
