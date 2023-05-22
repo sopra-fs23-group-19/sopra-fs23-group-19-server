@@ -132,7 +132,7 @@ If you want to avoid running all tests with every change, use the following comm
 
 ### Acknowledgement
 
-- The client code is based on the [SoPra FS23 - Client Template](https://github.com/HASEL-UZH/sopra-fs23-template-client).
+- The client code is based on the [SoPra FS23 - Server Template](https://github.com/HASEL-UZH/sopra-fs23-template-server).
 - Many thanks to **[Mete Polat](https://github.com/polatmete)** who helped us as a Tutor and Scrum Master during this SoPra project.
 
 **Note**  
