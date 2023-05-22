@@ -236,7 +236,7 @@ class GameTurnControllerTest {
         doNothing().when(gameTurnService).calculateScore(Mockito.any(), Mockito.anyLong());
 
         // when/then -> do the request
-        MockHttpServletRequestBuilder putRequest = put("/gameRounds/answers/"+gameTurn.getId())
+        MockHttpServletRequestBuilder putRequest = post("/gameRounds/answers/"+gameTurn.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
