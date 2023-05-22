@@ -116,6 +116,7 @@ public class MessageService {
         }
 
         if(room.getStatus() !=RoomStatus.WAITING){
+            messageRepository.deleteByid(message.getId());
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Game already started!");
         }
 
