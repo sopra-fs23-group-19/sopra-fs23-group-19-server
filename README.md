@@ -16,7 +16,6 @@ It is easy to play, and can motivate creative imaginations. It's a quick way to 
 - [Technologies](#technologies)
 - [High-level components](#high-level-components)
 - [Launch & Deployment](#launch-deployment)
-- [Illustrations](#illustrations)
 - [Roadmap](#roadmap)
 - [Contributions](#contributions)
 - [License](#license)
