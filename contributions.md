@@ -82,3 +82,5 @@
 |week 7| Geyu Meng | [client#102](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/102)|Add background music|
 |week 8| Jingjing Li | [client#130](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/130)|Implement the leaderboard page.|
 |week 8| Jingjing Li | [client#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/131)|Fix some bugs and change background color.|
+|week 8| Shiyu Ran | [server#140](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/140)|Write MessageController tests.|
+|week 8| Shiyu Ran | [server#141](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/141)|Fix some bugs and solve deployment and sonarqube problems.|
