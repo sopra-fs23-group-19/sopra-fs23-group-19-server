@@ -84,7 +84,7 @@ public class GameTurnController {
     // guessing player submits the answer in advance
     @UserLoginToken
     @PostMapping("/gameRounds/answers/{gameTurnId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable Long gameTurnId){
 

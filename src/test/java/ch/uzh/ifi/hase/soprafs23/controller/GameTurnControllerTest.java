@@ -242,7 +242,7 @@ class GameTurnControllerTest {
 
         // performing request should be no_content status
         mockMvc.perform(postRequest)
-                .andExpect(status().isNoContent());
+                .andExpect(status().isCreated());
     }
 
     @Test
