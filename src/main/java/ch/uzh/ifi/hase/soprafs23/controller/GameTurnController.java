@@ -86,7 +86,7 @@ public class GameTurnController {
     @PutMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable("gameTurnId") Long gameTurnId){
+    public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable Long gameTurnId){
 
         gameTurnService.calculateScore(userPutDTO, gameTurnId);
     }
