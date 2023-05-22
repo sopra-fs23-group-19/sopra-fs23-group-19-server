@@ -49,7 +49,7 @@ Friends can play together. The user can send friend-invitations, and the others 
 
 ## Launch & Deployment
 
-## Setup this Template with your IDE of choice
+### Setup this Template with your IDE of choice
 Download your IDE of choice (e.g., [IntelliJ](https://www.jetbrains.com/idea/download/), [Visual Studio Code](https://code.visualstudio.com/), or [Eclipse](http://www.eclipse.org/downloads/)). Make sure Java 17 is installed on your system (for Windows, please make sure your `JAVA_HOME` environment variable is set to the correct version of Java).
 
 ### IntelliJ
@@ -66,7 +66,7 @@ The following extensions can help you get started more easily:
 
 **Note:** You'll need to build the project first with Gradle, just click on the `build` command in the _Gradle Tasks_ extension. Then check the _Spring Boot Dashboard_ extension if it already shows `soprafs23` and hit the play button to start the server. If it doesn't show up, restart VS Code and check again.
 
-## Building with Gradle
+### Building with Gradle
 You can use the local Gradle Wrapper to build the application.
 -   macOS: `./gradlew`
 -   Linux: `./gradlew`
