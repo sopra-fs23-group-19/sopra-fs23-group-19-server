@@ -80,3 +80,15 @@
 |week 7| Geyu Meng | [client#100](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/100)|Modify ui of login and register page, friends page, and notification page.|
 |week 7| Geyu Meng | [client#101](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/101)|Fix bugs indicated by sonar cloud.|
 |week 7| Geyu Meng | [client#102](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/102)|Add background music|
+|week 8| Jingjing Li | [client#130](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/130)|Implement the leaderboard page.|
+|week 8| Jingjing Li | [client#131](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/131)|Fix some bugs and change background color.|
+|week 8| Shiyu Ran | [server#140](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/140)|Write MessageController tests.|
+|week 8| Shiyu Ran | [server#141](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/141)|Fix some bugs and solve deployment and sonarqube problems.|
+|week 8| Runze Li | [client#133](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/133)|Fix message notification displayed to users when receive exception from backend.|
+|week 8| Runze Li | [client#134](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/134)|Fix routers guard and routers.|
+|week 8| Runze Li | [client#132](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/132)|Create readme. Give a template, project logo for our project.(issue not closed yet)|
+|week 8| Manyi Wang| [#142](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/142)|Add Message service tests|
+|week 8| Manyi Wang| [commit](e5fecdb20a6ec741903e0604c7ff4f6f82e007b6),[commit](9093ab3883bbb66cc84daeed5d8a6c3a774facfb)|Add more exceptions and fix some bugs|
+|week 8| Geyu Meng | [client#27](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/27)|Implement the save button which is enabled during drawing phase and guessing phase for the drawing player.|
+|week 8| Geyu Meng | [client#110](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/110)|Implement the touchscreen board.|
+|week 8| Geyu Meng | [client#129](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/129)|Fix bugs in the front-end.|
