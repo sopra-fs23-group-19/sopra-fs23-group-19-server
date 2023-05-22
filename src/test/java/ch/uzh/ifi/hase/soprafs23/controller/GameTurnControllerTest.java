@@ -236,12 +236,12 @@ class GameTurnControllerTest {
         doNothing().when(gameTurnService).calculateScore(Mockito.any(), Mockito.anyLong());
 
         // when/then -> do the request
-        MockHttpServletRequestBuilder putRequest = post("/gameRounds/answers/"+gameTurn.getId())
+        MockHttpServletRequestBuilder postRequest = post("/gameRounds/answers/"+gameTurn.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
 
         // performing request should be no_content status
-        mockMvc.perform(putRequest)
+        mockMvc.perform(postRequest)
                 .andExpect(status().isNoContent());
     }
 

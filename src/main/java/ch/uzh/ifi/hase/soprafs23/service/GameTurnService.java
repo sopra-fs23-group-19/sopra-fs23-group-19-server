@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -134,15 +133,15 @@ public class GameTurnService {
 
         String userGuess = userInput.getGuessingWord().toLowerCase();
         String target = gameTurn.getTargetWord().toLowerCase();
+        if (userGuess == null){
+            userGuess = "";
+        }
         double similarity = 0;
         //compute similarity, using the external API
-        if (userGuess!=null) {
-            if (target!=null) {
-                if (!userGuess.equals("") && !target.equals("")) {
+        if (!userGuess.equals("") && !target.equals("")) {
                     similarity = getWordSimilarity(userGuess, target);
                 }
-            }
-        }
+
         if(userGuess.equals(target)){
             user.setCurrentScore(12);  // set current score in this game turn
             user.setCurrentGameScore(user.getCurrentGameScore()+12);  // total scores in this game accumulate
