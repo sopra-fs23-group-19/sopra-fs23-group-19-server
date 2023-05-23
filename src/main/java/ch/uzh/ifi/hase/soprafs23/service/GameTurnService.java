@@ -116,7 +116,7 @@ public class GameTurnService {
     }
 
     // calculate the score when each player handles his/her answer
-    public void calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
+    public synchronized void calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
 
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         // find user in the db

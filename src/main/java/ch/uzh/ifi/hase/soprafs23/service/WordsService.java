@@ -23,6 +23,7 @@ public class WordsService {
             "potato","cow","basketball","plane","bicycle","guitar","car","leg","bread","powder",
             "flower","bat","king","phone","cake","pineapple","sun","eye","desk","rice",
             "sunglasses","egg","mountain","stone","restaurant","hospital","hook","mouth","bag","telescope");
+    private static final Random rand = new Random();
 
     public String getWord() {
         HttpRequest request = HttpRequest.newBuilder()
@@ -49,7 +50,7 @@ public class WordsService {
 
 
     public Set<String> getThreeWords() {
-        Random rand = new Random();
+
         Set<String> listOfWords = new HashSet<>();
         for(int i=0; i<3; i++){
             listOfWords.add(getWord());
