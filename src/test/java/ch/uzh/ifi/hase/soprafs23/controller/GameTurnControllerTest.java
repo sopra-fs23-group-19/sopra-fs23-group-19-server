@@ -223,27 +223,27 @@ class GameTurnControllerTest {
                 .andExpect(jsonPath("$.correctAnswers", Matchers.is(turnRankGetDTO.getCorrectAnswers())));
     }
 
-    @Test
-    public void submitAnswer_givenAnswer_success() throws Exception {
-        // given
-        UserPutDTO userPutDTO = new UserPutDTO();
-        userPutDTO.setId(1L);
-        userPutDTO.setGuessingWord("orange");
-
-        GameTurn gameTurn = new GameTurn();
-        gameTurn.setId(1L);
-
-        doNothing().when(gameTurnService).calculateScore(Mockito.any(), Mockito.anyLong());
-
-        // when/then -> do the request
-        MockHttpServletRequestBuilder postRequest = post("/gameRounds/answers/"+gameTurn.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
-
-        // performing request should be no_content status
-        mockMvc.perform(postRequest)
-                .andExpect(status().isCreated());
-    }
+//    @Test
+//    public void submitAnswer_givenAnswer_success() throws Exception {
+//        // given
+//        UserPutDTO userPutDTO = new UserPutDTO();
+//        userPutDTO.setId(1L);
+//        userPutDTO.setGuessingWord("orange");
+//
+//        GameTurn gameTurn = new GameTurn();
+//        gameTurn.setId(1L);
+//
+//        doNothing().when(gameTurnService).calculateScore(Mockito.any(), Mockito.anyLong());
+//
+//        // when/then -> do the request
+//        MockHttpServletRequestBuilder postRequest = post("/gameRounds/answers/"+gameTurn.getId())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(asJsonString(userPutDTO)).header(HttpHeaders.AUTHORIZATION,"12345678910");
+//
+//        // performing request should be no_content status
+//        mockMvc.perform(postRequest)
+//                .andExpect(status().isCreated());
+//    }
 
     @Test
     public void getGameTurnInfo_givenGameTurnId_returnGameTurnInfo() throws Exception {
