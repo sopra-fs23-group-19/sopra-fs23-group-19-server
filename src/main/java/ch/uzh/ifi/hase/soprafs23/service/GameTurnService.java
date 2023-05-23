@@ -130,10 +130,6 @@ public class GameTurnService {
             // find gameTurn info in the db
             GameTurn gameTurn = getGameTurn(gameTurnId);
             gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
-            Room room = getRoom(gameTurn.getRoomId());
-
-            // find drawingPlayer
-            User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
 
             String userGuess = userInput.getGuessingWord().toLowerCase();
             String target = gameTurn.getTargetWord().toLowerCase();
@@ -183,6 +179,7 @@ public class GameTurnService {
             }
 
             if (gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode() - 1) {
+                calculateDrawerScore(gameTurnId);
                 gameTurn.setStatus(TurnStatus.RANKING);
             }
 
@@ -313,10 +310,18 @@ public class GameTurnService {
 
         if(totalScore == 12){
             drawingPlayer.setCurrentScore(12);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+12);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+        }else if(totalScore == 18) {
+            drawingPlayer.setCurrentScore(6);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+        }else if(totalScore == 24) {
+            drawingPlayer.setCurrentScore(8);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
         }else if(totalScore == 36){
             drawingPlayer.setCurrentScore(12);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore()+12);
+            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
         }
+
+        userRepository.flush();
     }
 }
