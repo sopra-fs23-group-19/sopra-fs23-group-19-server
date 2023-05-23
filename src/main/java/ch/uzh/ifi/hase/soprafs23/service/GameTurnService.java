@@ -243,6 +243,7 @@ public class GameTurnService {
 
             if(userId.equals(u.getId())){
                 u.setConfirmRank(true);
+                u.setConfirmSubmit(false);
             }
 
             if(u.isConfirmRank()!=true){
