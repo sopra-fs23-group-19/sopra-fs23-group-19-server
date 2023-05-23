@@ -61,7 +61,8 @@ public class User implements Serializable {
 
     @Column
     private boolean confirmRank = false;
-
+    @Column
+    private boolean confirmSubmit = false;
     @Column
     @ElementCollection
     private List<Long> friends = new ArrayList<>();
@@ -72,6 +73,14 @@ public class User implements Serializable {
 
     public void setConfirmRank(boolean confirmRank) {
         this.confirmRank = confirmRank;
+    }
+
+    public boolean isConfirmSubmit() {
+        return confirmSubmit;
+    }
+
+    public void setConfirmSubmit(boolean confirmSubmit) {
+        this.confirmSubmit = confirmSubmit;
     }
 
     public Long getId() {

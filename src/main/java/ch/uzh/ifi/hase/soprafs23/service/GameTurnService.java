@@ -129,8 +129,11 @@ public class GameTurnService {
 
             // find gameTurn info in the db
             GameTurn gameTurn = getGameTurn(gameTurnId);
-            gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
 
+            if(!user.isConfirmSubmit()) {
+                gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
+                user.setConfirmSubmit(true);
+            }
             String userGuess = userInput.getGuessingWord().toLowerCase();
             String target = gameTurn.getTargetWord().toLowerCase();
             if (userGuess == null) {
