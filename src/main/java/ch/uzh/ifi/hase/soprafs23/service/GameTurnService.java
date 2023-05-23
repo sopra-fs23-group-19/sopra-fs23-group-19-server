@@ -187,10 +187,6 @@ public class GameTurnService {
             }
 
 
-            for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
-                u.setConfirmRank(false);
-            }
-
             userRepository.flush();
             gameTurnRepository.saveAndFlush(gameTurn);
             roomRepository.flush();
@@ -307,6 +303,11 @@ public class GameTurnService {
         List<User> guessingPlayers = getAllUsers(gameTurn.getRoomId());
         User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
         guessingPlayers.remove(drawingPlayer);
+
+        for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
+            u.setConfirmRank(false);
+        }
+
         int totalScore = 0;
         for (User guessingPlayer: guessingPlayers){
             totalScore += guessingPlayer.getCurrentScore();
