@@ -98,6 +98,7 @@ public class GameTurnController {
     @ResponseBody
     public TurnRankGetDTO getRank( @PathVariable Long gameTurnId){
 
+        gameTurnService.calculateDrawerScore(gameTurnId);
         List<User> rankedUsers = gameTurnService.rank(gameTurnId);
         TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
         GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
