@@ -46,6 +46,7 @@ public interface DTOMapper {
     @Mapping(target = "roomId", ignore =true)
     @Mapping(target = "confirmRank", ignore = true)
     @Mapping(target = "friends", ignore = true)
+    @Mapping(target = "confirmSubmit", ignore = true)
     User convertUserLoginPostDTOtoEntity(UserLoginPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -68,6 +69,7 @@ public interface DTOMapper {
     @Mapping(target = "roomId", ignore =true)
     @Mapping(target = "confirmRank", ignore = true)
     @Mapping(target = "friends", ignore = true)
+    @Mapping(target = "confirmSubmit", ignore = true)
     User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
     @Mapping(source = "id", target = "id")
@@ -97,6 +99,7 @@ public interface DTOMapper {
     @Mapping(target = "currentGameScore", ignore = true)
     @Mapping(target = "confirmRank", ignore = true)
     @Mapping(target = "friends", ignore = true)
+    @Mapping(target = "confirmSubmit", ignore = true)
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
     @Mapping(target = "id", ignore = true)
