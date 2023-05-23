@@ -12,8 +12,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -38,8 +36,9 @@ public class GameTurnService {
     private final RoomRepository roomRepository;
     private final GameTurnRepository gameTurnRepository;
     private final UserRepository userRepository;
+    private final Object lock = new Object();
 
-    private final Logger log = LoggerFactory.getLogger(UserService.class);
+//    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public GameTurnService(@Qualifier("roomRepository") RoomRepository roomRepository,
@@ -122,7 +121,7 @@ public class GameTurnService {
     // calculate the score when each player handles his/her answer
     public int calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
         int submitNum = 0;
-        try {
+        synchronized (lock) {
             User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
             // find user in the db
             User user = getUser(userInput.getId());
@@ -178,10 +177,7 @@ public class GameTurnService {
             gameTurnRepository.saveAndFlush(gameTurn);
             roomRepository.flush();
 
-        }catch (Exception e){
-            e.printStackTrace();
         }
-
         return submitNum;
     }
 
@@ -289,7 +285,7 @@ public class GameTurnService {
     public void calculateDrawerScore(Long gameTurnId) {
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
-//        Room room = getRoom(gameTurn.getRoomId());
+        Room room = getRoom(gameTurn.getRoomId());
         List<User> guessingPlayers = getAllUsers(gameTurn.getRoomId());
         User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
         guessingPlayers.remove(drawingPlayer);
@@ -303,20 +299,32 @@ public class GameTurnService {
             totalScore += guessingPlayer.getCurrentScore();
         }
 
-        if(totalScore == 12){
-            drawingPlayer.setCurrentScore(12);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
-        }else if(totalScore == 18) {
-            drawingPlayer.setCurrentScore(6);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
-        }else if(totalScore == 24) {
-            drawingPlayer.setCurrentScore(8);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
-        }else if(totalScore == 36){
-            drawingPlayer.setCurrentScore(12);
-            drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+        if (room.getMode() == 2){
+            if(totalScore == 12){
+                drawingPlayer.setCurrentScore(12);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+            }else if(totalScore == 6){
+                drawingPlayer.setCurrentScore(6);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+            }
+        }else {
+            if (totalScore == 12) {
+                drawingPlayer.setCurrentScore(4);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
+            }
+            else if (totalScore == 18) {
+                drawingPlayer.setCurrentScore(6);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+            }
+            else if (totalScore == 24) {
+                drawingPlayer.setCurrentScore(8);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
+            }
+            else if (totalScore == 36) {
+                drawingPlayer.setCurrentScore(12);
+                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+            }
         }
-
         userRepository.flush();
     }
 }
