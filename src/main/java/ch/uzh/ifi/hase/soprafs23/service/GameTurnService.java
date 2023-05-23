@@ -120,7 +120,8 @@ public class GameTurnService {
     }
 
     // calculate the score when each player handles his/her answer
-    public void calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
+    public int calculateScore(UserPutDTO userPutDTO, Long gameTurnId) {
+        int submitNum = 0;
         try {
             User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
             // find user in the db
@@ -131,9 +132,16 @@ public class GameTurnService {
             GameTurn gameTurn = getGameTurn(gameTurnId);
 
             if(!user.isConfirmSubmit()) {
-                gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
+                // gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
                 user.setConfirmSubmit(true);
             }
+
+            for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
+                if(u.isConfirmSubmit()){
+                    submitNum++;
+                }
+            }
+
             String userGuess = userInput.getGuessingWord().toLowerCase();
             String target = gameTurn.getTargetWord().toLowerCase();
             if (userGuess == null) {
@@ -149,39 +157,18 @@ public class GameTurnService {
                 user.setCurrentScore(12);  // set current score in this game turn
                 user.setCurrentGameScore(user.getCurrentGameScore() + 12);  // total scores in this game accumulate
                 user.setTotalScore(user.getTotalScore() + 12);
-//                // set drawingPlayer's score
-//                if (room.getMode() == 4) {  // 4-mode game
-//                    drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 4);
-//                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
-//                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 4);
-//                }
-//                else {   // 2-mode game
-//                    drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 12);
-//                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
-//                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
-//                }
             }
             else if (similarity > 0.9) {
                 user.setCurrentScore(6);  // set current score in this game turn
                 user.setCurrentGameScore(user.getCurrentGameScore() + 6);  // total scores in this game accumulate
                 user.setTotalScore(user.getTotalScore() + 6);
-//                // set drawingPlayer's score
-//                if (room.getMode() == 4) {  // 4-mode game
-//                    drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 2);
-//                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 2);
-//                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 2);
-//                }
-//                else { // 2-mode game
-//                    drawingPlayer.setCurrentScore(drawingPlayer.getCurrentScore() + 6);
-//                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
-//                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
-//                }
             }
             else {
                 user.setCurrentScore(0);
             }
 
-            if (gameTurn.getSubmitNum() == roomRepository.findByid(gameTurn.getRoomId()).getMode() - 1) {
+            if (submitNum == roomRepository.findByid(gameTurn.getRoomId()).getMode() - 1) {
+                gameTurn.setSubmitNum(submitNum);
                 calculateDrawerScore(gameTurnId);
                 gameTurn.setStatus(TurnStatus.RANKING);
             }
@@ -190,9 +177,12 @@ public class GameTurnService {
             userRepository.flush();
             gameTurnRepository.saveAndFlush(gameTurn);
             roomRepository.flush();
+
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        return submitNum;
     }
 
 
