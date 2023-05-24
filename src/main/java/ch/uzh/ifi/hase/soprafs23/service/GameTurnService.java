@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -203,14 +204,16 @@ public class GameTurnService {
 
         List<User> playersScores = new ArrayList<>();
         for (User user: allPlayers){
-            playersScores.add(user);
+            if (!user.getId().equals(gameTurn.getDrawingPlayerId())) {
+                playersScores.add(user);
+            }
         }
         Comparator<User> compareByCurrentScore = Comparator
                 .comparing(User::getCurrentScore)
                 .thenComparing(User::getId).reversed();
 
         Collections.sort(playersScores, compareByCurrentScore);
-//        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
+        playersScores = playersScores.stream().collect(Collectors.toList());
 
         // set users' bestScore and totalScore
 //        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
