@@ -129,13 +129,14 @@ public class GameTurnService {
 
             // find gameTurn info in the db
             GameTurn gameTurn = getGameTurn(gameTurnId);
+            Long drawingPlayerId = gameTurn.getDrawingPlayerId();
 
             for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
-                if(u.isConfirmSubmit()){
+                if(u.isConfirmSubmit() && !u.getId().equals(drawingPlayerId)){
                     submitNum++;
                 }
             }
-            if(!user.isConfirmSubmit()) {
+            if(!user.isConfirmSubmit() && !user.getId().equals(drawingPlayerId)) {
                 // gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
                 submitNum++;
                 user.setConfirmSubmit(true);
