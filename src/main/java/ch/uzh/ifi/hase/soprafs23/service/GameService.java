@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -149,16 +146,31 @@ public class GameService {
         // find all players
         List<User> allPlayers = getAllUsers(room.getId());
 
-        Map<User,Integer> playersScores = new HashMap<>();
+//        Map<User,Integer> playersScores = new HashMap<>();
+//        for (User user: allPlayers){
+//            playersScores.put(user, user.getCurrentGameScore());
+//        }
+//        // rank the user by scores
+//        List<User> rankedUsers =  playersScores.entrySet().stream()
+//                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
+//                .map(entry -> entry.getKey()).collect(Collectors.toList());
+//        Map<Long,Integer> playersScores = new HashMap<>();
+//        for (User user: allPlayers){
+//            playersScores.put(user.getId(), user.getCurrentGameScore());
+//        }
+        List<User> playersScores = new ArrayList<>();
         for (User user: allPlayers){
-            playersScores.put(user, user.getCurrentGameScore());
+            playersScores.add(user);
         }
-        // rank the user by scores
-        List<User> rankedUsers =  playersScores.entrySet().stream()
-                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
-                .map(entry -> entry.getKey()).collect(Collectors.toList());
+        Comparator<User> compareByGameScore = Comparator
+                .comparing(User::getCurrentGameScore)
+                .thenComparing(User::getId).reversed();
 
-        return rankedUsers;
+        Collections.sort(playersScores, compareByGameScore);
+        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
+
+
+        return playersScores;
     }
 
     public List<Long> getAllPlayersIds(Long id){ //turn id
