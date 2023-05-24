@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.TurnRankGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
 import org.json.JSONObject;
@@ -298,63 +299,90 @@ public class GameTurnService {
 
     public void calculateDrawerScore(Long gameTurnId) {
 
-        GameTurn gameTurn = getGameTurn(gameTurnId);
-        Room room = getRoom(gameTurn.getRoomId());
-        List<User> guessingPlayers = getAllUsers(gameTurn.getRoomId());
-        User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
-        guessingPlayers.remove(drawingPlayer);
+        synchronized (lock) {
+            GameTurn gameTurn = getGameTurn(gameTurnId);
+            Room room = getRoom(gameTurn.getRoomId());
+            List<User> guessingPlayers = getAllUsers(gameTurn.getRoomId());
+            User drawingPlayer = getUser(gameTurn.getDrawingPlayerId());
+            guessingPlayers.remove(drawingPlayer);
 
-        for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
-            u.setConfirmRank(false);
-        }
+            for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
+                u.setConfirmRank(false);
+            }
 
-        int totalScore = 0;
-        for (User guessingPlayer: guessingPlayers){
-            totalScore += guessingPlayer.getCurrentScore();
-        }
+            int totalScore = 0;
+            for (User guessingPlayer : guessingPlayers) {
+                totalScore += guessingPlayer.getCurrentScore();
+            }
 
-        if (!drawingPlayer.isConfirmSubmit()) {
-            if (room.getMode() == 2) {
-                if (totalScore == 12) {
-                    drawingPlayer.setCurrentScore(12);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
-                    drawingPlayer.setConfirmSubmit(true);
+            if (!drawingPlayer.isConfirmSubmit()) {
+                if (room.getMode() == 2) {
+                    if (totalScore == 12) {
+                        drawingPlayer.setCurrentScore(12);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
+                    else if (totalScore == 6) {
+                        drawingPlayer.setCurrentScore(6);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
                 }
-                else if (totalScore == 6) {
-                    drawingPlayer.setCurrentScore(6);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
-                    drawingPlayer.setConfirmSubmit(true);
+                else {
+                    if (totalScore == 12) {
+                        drawingPlayer.setCurrentScore(4);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 4);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
+                    else if (totalScore == 18) {
+                        drawingPlayer.setCurrentScore(6);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
+                    else if (totalScore == 24) {
+                        drawingPlayer.setCurrentScore(8);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 8);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
+                    else if (totalScore == 36) {
+                        drawingPlayer.setCurrentScore(12);
+                        drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                        drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
+                        drawingPlayer.setConfirmSubmit(true);
+                    }
                 }
             }
-            else {
-                if (totalScore == 12) {
-                    drawingPlayer.setCurrentScore(4);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 4);
-                    drawingPlayer.setConfirmSubmit(true);
-                }
-                else if (totalScore == 18) {
-                    drawingPlayer.setCurrentScore(6);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
-                    drawingPlayer.setConfirmSubmit(true);
-                }
-                else if (totalScore == 24) {
-                    drawingPlayer.setCurrentScore(8);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 8);
-                    drawingPlayer.setConfirmSubmit(true);
-                }
-                else if (totalScore == 36) {
-                    drawingPlayer.setCurrentScore(12);
-                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
-                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
-                    drawingPlayer.setConfirmSubmit(true);
+            userRepository.flush();
+        }
+    }
+
+    public TurnRankGetDTO setTurnRankInfo(Long gameTurnId) {
+
+        TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
+        synchronized (lock) {
+            List<User> rankedUsers = rank(gameTurnId);
+            GameTurn gameTurn = getGameTurn(gameTurnId);
+            turnRankGetDTO.setRankedList(rankedUsers);
+            turnRankGetDTO.setDrawingPlayerId(gameTurn.getDrawingPlayerId());
+            turnRankGetDTO.setDrawingPlayerName(getUser(gameTurn.getDrawingPlayerId()).getUsername());
+            turnRankGetDTO.setDrawingPlayerScore(getUser(gameTurn.getDrawingPlayerId()).getCurrentScore());
+            turnRankGetDTO.setImage(gameTurn.getImage());
+            turnRankGetDTO.setTargetWord(gameTurn.getTargetWord());
+            // calculate correct answers
+            int correct = 0;
+            for (User user: rankedUsers){
+                if (user.getCurrentScore() == 12){
+                    correct += 1;
                 }
             }
+            turnRankGetDTO.setCorrectAnswers(correct);
         }
-        userRepository.flush();
+
+        return turnRankGetDTO;
     }
 }

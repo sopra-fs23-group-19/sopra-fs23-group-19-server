@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs23.controller;
 
 import ch.uzh.ifi.hase.soprafs23.annotation.UserLoginToken;
 import ch.uzh.ifi.hase.soprafs23.entity.GameTurn;
-import ch.uzh.ifi.hase.soprafs23.entity.User;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
@@ -16,7 +15,6 @@ import ch.uzh.ifi.hase.soprafs23.service.WordsService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -99,24 +97,8 @@ public class GameTurnController {
     public TurnRankGetDTO getRank( @PathVariable Long gameTurnId){
 
 //        gameTurnService.calculateDrawerScore(gameTurnId);
-        List<User> rankedUsers = gameTurnService.rank(gameTurnId);
-        TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
-        GameTurn gameTurn = gameTurnService.getGameTurn(gameTurnId);
-        turnRankGetDTO.setRankedList(rankedUsers);
-        turnRankGetDTO.setDrawingPlayerId(gameTurn.getDrawingPlayerId());
-        turnRankGetDTO.setDrawingPlayerName(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getUsername());
-        turnRankGetDTO.setDrawingPlayerScore(gameTurnService.getUser(gameTurn.getDrawingPlayerId()).getCurrentScore());
-        turnRankGetDTO.setImage(gameTurn.getImage());
-        turnRankGetDTO.setTargetWord(gameTurn.getTargetWord());
-        // calculate correct answers
-        int correct = 0;
-        for (User user: rankedUsers){
-            if (user.getCurrentScore() == 12){
-                    correct += 1;
-                }
-            }
-        turnRankGetDTO.setCorrectAnswers(correct);
-        return turnRankGetDTO;
+
+        return gameTurnService.setTurnRankInfo(gameTurnId);
     }
 
     // users request refreshed information from backend every second
