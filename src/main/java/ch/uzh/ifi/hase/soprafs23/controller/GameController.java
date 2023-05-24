@@ -81,16 +81,16 @@ public class GameController {
     @ResponseBody
     public List<UserGetDTO> getRank(){
         List<User> rankedUsers = gameService.getLeaderboardRank();
-        List<User> subRankedUsers = new ArrayList<>();
-        if(rankedUsers.size() > 10){  // only choose top 10 users
-            subRankedUsers = rankedUsers.subList(0,10);
-        }else{
-            subRankedUsers = rankedUsers;
-        }
+//        List<User> subRankedUsers = new ArrayList<>();
+//        if(rankedUsers.size() > 10){  // only choose top 10 users
+//            subRankedUsers = rankedUsers.subList(0,10);
+//        }else{
+//            subRankedUsers = rankedUsers;
+//        }
         List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
         // convert each user to the API representation
-        for (User user : subRankedUsers) {
+        for (User user : rankedUsers) {
             userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
         }
         return userGetDTOs;

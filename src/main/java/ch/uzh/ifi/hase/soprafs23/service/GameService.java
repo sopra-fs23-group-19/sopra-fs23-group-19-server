@@ -167,7 +167,19 @@ public class GameService {
                 .thenComparing(User::getId).reversed();
 
         Collections.sort(playersScores, compareByGameScore);
-        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
+//        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
+
+        Map<User,Integer> playersBestScores = new HashMap<>();
+        for (User user: allPlayers){
+            playersBestScores.put(user, user.getCurrentGameScore());
+        }
+
+        for(Map.Entry<User,Integer> entry: playersBestScores.entrySet()){
+            if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
+                entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
+            }
+            userRepository.saveAndFlush(entry.getKey());
+        }
 
 
         return playersScores;
@@ -189,17 +201,28 @@ public class GameService {
     public List<User> getLeaderboardRank() {
         List<User> allUsers = userRepository.findAll();
         if(allUsers == null || allUsers.size()==0){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Sorry, there is something wrong when fetching all users.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"There is no ranking information.");
         }
-        Map<User,Integer> userTotalScores = new HashMap<>();
-        for (User user: allUsers){
-            userTotalScores.put(user, user.getTotalScore());
-        }
-        // rank the user by total scores
-        List<User> rankedUsers =  userTotalScores.entrySet().stream()
-                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
-                .map(entry -> entry.getKey()).collect(Collectors.toList());
+//        Map<User,Integer> userTotalScores = new HashMap<>();
+//        for (User user: allUsers){
+//            userTotalScores.put(user, user.getTotalScore());
+//        }
+//        // rank the user by total scores
+//        List<User> rankedUsers =  userTotalScores.entrySet().stream()
+//                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
+//                .map(entry -> entry.getKey()).collect(Collectors.toList());
 
-        return rankedUsers;
+        List<User> playersScores = new ArrayList<>();
+        for (User user: allUsers){
+            playersScores.add(user);
+        }
+        Comparator<User> compareByTotalScore = Comparator
+                .comparing(User::getTotalScore)
+                .thenComparing(User::getId).reversed();
+
+        Collections.sort(playersScores, compareByTotalScore);
+        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
+
+        return playersScores;
     }
 }

@@ -25,10 +25,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -189,30 +189,41 @@ public class GameTurnService {
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
         List<User> allPlayers = getAllUsers(gameTurn.getRoomId());
+//
+//        Map<User,Integer> playersScores = new HashMap<>();
+//        for (User user: allPlayers){  // only rank guessingPlayers
+//            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
+//                playersScores.put(user, user.getCurrentScore());
+//            }
+//        }
+//        // rank the user by scores
+//        List<User> rankedUsers =  playersScores.entrySet().stream()
+//                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
+//                .map(entry -> entry.getKey()).collect(Collectors.toList());
 
-        Map<User,Integer> playersScores = new HashMap<>();
-        for (User user: allPlayers){  // only rank guessingPlayers
-            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
-                playersScores.put(user, user.getCurrentScore());
-            }
+        List<User> playersScores = new ArrayList<>();
+        for (User user: allPlayers){
+            playersScores.add(user);
         }
-        // rank the user by scores
-        List<User> rankedUsers =  playersScores.entrySet().stream()
-                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
-                .map(entry -> entry.getKey()).collect(Collectors.toList());
+        Comparator<User> compareByCurrentScore = Comparator
+                .comparing(User::getCurrentScore)
+                .thenComparing(User::getId).reversed();
+
+        Collections.sort(playersScores, compareByCurrentScore);
+//        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
 
         // set users' bestScore and totalScore
-        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
-            if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
-                entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
-            }
-            userRepository.saveAndFlush(entry.getKey());
-        }
+//        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
+//            if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
+//                entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
+//            }
+//            userRepository.saveAndFlush(entry.getKey());
+//        }
 
-        gameTurnRepository.flush();
+//        gameTurnRepository.flush();
 
 
-        return rankedUsers;
+        return playersScores;
     }
 
 
@@ -304,11 +315,13 @@ public class GameTurnService {
                 if (totalScore == 12) {
                     drawingPlayer.setCurrentScore(12);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
                     drawingPlayer.setConfirmSubmit(true);
                 }
                 else if (totalScore == 6) {
                     drawingPlayer.setCurrentScore(6);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
                     drawingPlayer.setConfirmSubmit(true);
                 }
             }
@@ -316,21 +329,25 @@ public class GameTurnService {
                 if (totalScore == 12) {
                     drawingPlayer.setCurrentScore(4);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 4);
                     drawingPlayer.setConfirmSubmit(true);
                 }
                 else if (totalScore == 18) {
                     drawingPlayer.setCurrentScore(6);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 6);
                     drawingPlayer.setConfirmSubmit(true);
                 }
                 else if (totalScore == 24) {
                     drawingPlayer.setCurrentScore(8);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 8);
                     drawingPlayer.setConfirmSubmit(true);
                 }
                 else if (totalScore == 36) {
                     drawingPlayer.setCurrentScore(12);
                     drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                    drawingPlayer.setTotalScore(drawingPlayer.getTotalScore() + 12);
                     drawingPlayer.setConfirmSubmit(true);
                 }
             }
