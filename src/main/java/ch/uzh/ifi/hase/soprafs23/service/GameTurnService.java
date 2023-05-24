@@ -130,15 +130,15 @@ public class GameTurnService {
             // find gameTurn info in the db
             GameTurn gameTurn = getGameTurn(gameTurnId);
 
-            if(!user.isConfirmSubmit()) {
-                // gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
-                user.setConfirmSubmit(true);
-            }
-
             for (User u : userRepository.findByRoomId(gameTurn.getRoomId())) {
                 if(u.isConfirmSubmit()){
                     submitNum++;
                 }
+            }
+            if(!user.isConfirmSubmit()) {
+                // gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
+                submitNum++;
+                user.setConfirmSubmit(true);
             }
 
             String userGuess = userInput.getGuessingWord().toLowerCase();
@@ -299,30 +299,40 @@ public class GameTurnService {
             totalScore += guessingPlayer.getCurrentScore();
         }
 
-        if (room.getMode() == 2){
-            if(totalScore == 12){
-                drawingPlayer.setCurrentScore(12);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
-            }else if(totalScore == 6){
-                drawingPlayer.setCurrentScore(6);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+        if (!drawingPlayer.isConfirmSubmit()) {
+            if (room.getMode() == 2) {
+                if (totalScore == 12) {
+                    drawingPlayer.setCurrentScore(12);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
+                else if (totalScore == 6) {
+                    drawingPlayer.setCurrentScore(6);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
             }
-        }else {
-            if (totalScore == 12) {
-                drawingPlayer.setCurrentScore(4);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
-            }
-            else if (totalScore == 18) {
-                drawingPlayer.setCurrentScore(6);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
-            }
-            else if (totalScore == 24) {
-                drawingPlayer.setCurrentScore(8);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
-            }
-            else if (totalScore == 36) {
-                drawingPlayer.setCurrentScore(12);
-                drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+            else {
+                if (totalScore == 12) {
+                    drawingPlayer.setCurrentScore(4);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 4);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
+                else if (totalScore == 18) {
+                    drawingPlayer.setCurrentScore(6);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 6);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
+                else if (totalScore == 24) {
+                    drawingPlayer.setCurrentScore(8);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 8);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
+                else if (totalScore == 36) {
+                    drawingPlayer.setCurrentScore(12);
+                    drawingPlayer.setCurrentGameScore(drawingPlayer.getCurrentGameScore() + 12);
+                    drawingPlayer.setConfirmSubmit(true);
+                }
             }
         }
         userRepository.flush();
