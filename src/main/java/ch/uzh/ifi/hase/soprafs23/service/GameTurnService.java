@@ -140,32 +140,34 @@ public class GameTurnService {
                 // gameTurn.setSubmitNum(gameTurn.getSubmitNum() + 1);
                 submitNum++;
                 user.setConfirmSubmit(true);
+
+                String userGuess = userInput.getGuessingWord().toLowerCase();
+                String target = gameTurn.getTargetWord().toLowerCase();
+                if (userGuess == null) {
+                    userGuess = "";
+                }
+                double similarity = 0;
+                //compute similarity, using the external API
+                if (!userGuess.equals("") && !target.equals("")) {
+                    similarity = getWordSimilarity(userGuess, target);
+                }
+
+                if (userGuess.equals(target)) {
+                    user.setCurrentScore(12);  // set current score in this game turn
+                    user.setCurrentGameScore(user.getCurrentGameScore() + 12);  // total scores in this game accumulate
+                    user.setTotalScore(user.getTotalScore() + 12);
+                }
+                else if (similarity > 0.9) {
+                    user.setCurrentScore(6);  // set current score in this game turn
+                    user.setCurrentGameScore(user.getCurrentGameScore() + 6);  // total scores in this game accumulate
+                    user.setTotalScore(user.getTotalScore() + 6);
+                }
+                else {
+                    user.setCurrentScore(0);
+                }
             }
 
-            String userGuess = userInput.getGuessingWord().toLowerCase();
-            String target = gameTurn.getTargetWord().toLowerCase();
-            if (userGuess == null) {
-                userGuess = "";
-            }
-            double similarity = 0;
-            //compute similarity, using the external API
-            if (!userGuess.equals("") && !target.equals("")) {
-                similarity = getWordSimilarity(userGuess, target);
-            }
 
-            if (userGuess.equals(target)) {
-                user.setCurrentScore(12);  // set current score in this game turn
-                user.setCurrentGameScore(user.getCurrentGameScore() + 12);  // total scores in this game accumulate
-                user.setTotalScore(user.getTotalScore() + 12);
-            }
-            else if (similarity > 0.9) {
-                user.setCurrentScore(6);  // set current score in this game turn
-                user.setCurrentGameScore(user.getCurrentGameScore() + 6);  // total scores in this game accumulate
-                user.setTotalScore(user.getTotalScore() + 6);
-            }
-            else {
-                user.setCurrentScore(0);
-            }
 
             if (submitNum == roomRepository.findByid(gameTurn.getRoomId()).getMode() - 1) {
                 gameTurn.setSubmitNum(submitNum);
