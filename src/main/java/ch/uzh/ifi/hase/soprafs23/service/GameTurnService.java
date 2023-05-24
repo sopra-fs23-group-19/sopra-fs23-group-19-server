@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,7 +39,6 @@ public class GameTurnService {
     private final UserRepository userRepository;
     private final Object lock = new Object();
 
-//    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     public GameTurnService(@Qualifier("roomRepository") RoomRepository roomRepository,
@@ -191,17 +189,6 @@ public class GameTurnService {
 
         GameTurn gameTurn = getGameTurn(gameTurnId);
         List<User> allPlayers = getAllUsers(gameTurn.getRoomId());
-//
-//        Map<User,Integer> playersScores = new HashMap<>();
-//        for (User user: allPlayers){  // only rank guessingPlayers
-//            if (!user.getId().equals(gameTurn.getDrawingPlayerId())){
-//                playersScores.put(user, user.getCurrentScore());
-//            }
-//        }
-//        // rank the user by scores
-//        List<User> rankedUsers =  playersScores.entrySet().stream()
-//                .sorted((Map.Entry<User, Integer> e1, Map.Entry<User, Integer> e2) -> e2.getValue() - e1.getValue())
-//                .map(entry -> entry.getKey()).collect(Collectors.toList());
 
         List<User> playersScores = new ArrayList<>();
         for (User user: allPlayers){
@@ -214,17 +201,6 @@ public class GameTurnService {
                 .thenComparing(User::getId).reversed();
 
         Collections.sort(playersScores, compareByCurrentScore);
-        playersScores = playersScores.stream().collect(Collectors.toList());
-
-        // set users' bestScore and totalScore
-//        for(Map.Entry<User,Integer> entry: playersScores.entrySet()){
-//            if(entry.getKey().getBestScore() < entry.getKey().getCurrentGameScore()){
-//                entry.getKey().setBestScore(entry.getKey().getCurrentGameScore());
-//            }
-//            userRepository.saveAndFlush(entry.getKey());
-//        }
-
-//        gameTurnRepository.flush();
 
 
         return playersScores;

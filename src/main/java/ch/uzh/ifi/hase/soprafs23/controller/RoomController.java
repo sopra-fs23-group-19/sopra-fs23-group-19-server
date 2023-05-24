@@ -10,7 +10,6 @@ import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomAfterGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.room.RoomPutDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs23.service.GameTurnService;
 import ch.uzh.ifi.hase.soprafs23.service.RoomService;
 import ch.uzh.ifi.hase.soprafs23.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -23,11 +22,9 @@ import java.util.List;
 public class RoomController {
     private final RoomService roomService;
     private final UserService userService;
-    private final GameTurnService gameTurnService;
-    RoomController(RoomService roomService, UserService userService, GameTurnService gameTurnService) {
+    RoomController(RoomService roomService, UserService userService) {
         this.roomService = roomService;
         this.userService = userService;
-        this.gameTurnService = gameTurnService;
     }
 
     // owner doesn't need to join the room after creating

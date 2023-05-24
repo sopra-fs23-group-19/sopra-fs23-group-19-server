@@ -84,9 +84,9 @@ public class GameTurnController {
     @PostMapping("/gameRounds/answers/{gameTurnId}")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public void submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable Long gameTurnId){
+    public int submitAnswer(@RequestBody UserPutDTO userPutDTO, @PathVariable Long gameTurnId){
 
-        gameTurnService.calculateScore(userPutDTO, gameTurnId);
+        return gameTurnService.calculateScore(userPutDTO, gameTurnId);
     }
 
     // get rank list from this turn
