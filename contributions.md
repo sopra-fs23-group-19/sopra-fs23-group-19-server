@@ -97,4 +97,5 @@
 |week 9| Geyu Meng ||Fix bugs, finish report and prepare final presentations.|
 |week 9| Runze Li ||Fix bugs, finish report and prepare final presentations.|
 |week 9| Jingjing Li ||Fix bugs, finish report and prepare final presentations.|
-|week 9| Manyi Wang |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/b4847a21d6f57601c624a4d08d34a955905d9a98)|Fix bugs, finish report and prepare final presentations.|
+|week 9| Manyi Wang |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/b4847a21d6f57601c624a4d08d34a955905d9a98)|Fix bugs|
+|week 9| Manyi Wang |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/d27062bf61465f8a35ee5167e5a0a95c6b382a48)|Finish documention, report and slides|
