@@ -93,7 +93,7 @@
 |week 8| Geyu Meng | [client#110](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/110)|Implement the touchscreen board.|
 |week 8| Geyu Meng | [client#129](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/129)|Fix bugs in the front-end.|
 |week 9| Shiyu Ran | [server#143](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/143)|Fix scores calculation bugs.|
-|week 9| Shiyu Ran | [server#144](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/144)|Complete tests and prepare for final presenttaion.|
+|week 9| Shiyu Ran | [server#144](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/144)|Complete tests and prepare for final presentation.|
 |week 9| Geyu Meng ||Fix bugs, finish report and prepare final presentations.|
 |week 9| Runze Li ||Fix bugs, finish report and prepare final presentations.|
 |week 9| Jingjing Li ||Fix bugs, finish report and prepare final presentations.|
