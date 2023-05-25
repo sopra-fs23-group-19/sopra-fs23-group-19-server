@@ -13,6 +13,7 @@ The goal of this project is to create an engaging and interactive game that allo
 
 <h3 align="center">:round_pushpin: Motivation</h3>
 The motivation behind a drawing and guessing game is to provide a fun, interactive, and lighthearted activity that can be played with friends, family, or even strangers. The game can be a great way to unwind after a long day, or to simply share a laugh with others. We hope our game can provide a fun and enjoyable experience for all those involved.
+
 ## :book: Table of content
 
 - [Technologies](#technologies)
