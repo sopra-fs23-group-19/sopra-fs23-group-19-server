@@ -94,8 +94,11 @@
 |week 8| Geyu Meng | [client#129](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/129)| Fix bugs in the front-end.                                                                                                                   |
 |week 9| Shiyu Ran | [server#143](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/143)| Fix scores calculation bugs.                                                                                                                 |
 |week 9| Shiyu Ran | [server#144](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/issues/144)| Complete tests, fix code smells and prepare for final presentation.                                                                          |
-|week 9| Geyu Meng ||Fix bugs, finish report and prepare final presentations.|
-|week 9| Runze Li ||Fix bugs, finish report and prepare final presentations.|
-|week 9| Jingjing Li ||Fix bugs, finish report and prepare final presentations.|
+|week 9| Geyu Meng |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/574c45bf3f2f2342d231f0e439351d3321f1d83c)|Fix bugs.|
+|week 9| Geyu Meng |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/be3fe2e193e2e0ff7c787d995d624ea80e7e7ffc)|Readme.md|
+|week 9| Runze Li |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/9da57c055cef91e570ce5f10b1d9fca6fa5876e7)|Fix bugs|
+|week 9| Runze Li |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/c148b617fd7bb55d952f8165954298361153b4fb)|Readme.md|
+|week 9| Jingjing Li |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/1106c80787d419fb823044ebb8038a91856c5515)|Fix bugs|
+|week 9| Jingjing Li |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/commit/469c1b73b54a93e619d29a58b9d5b58f3eaaa256)|Readme.md|
 |week 9| Manyi Wang |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/b4847a21d6f57601c624a4d08d34a955905d9a98)|Fix bugs|
 |week 9| Manyi Wang |[commit](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/commit/d27062bf61465f8a35ee5167e5a0a95c6b382a48)|Finish documention, report and slides|
