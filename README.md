@@ -143,3 +143,4 @@ If you want to avoid running all tests with every change, use the following comm
 _The cartoon cat images are from GIPHY and all credit goes to the original artists._
 
 ## License
+We publish the code under the terms of the [MIT License](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-server/blob/main/LICENSE) that allows distribution, modification, and commercial use. This software, however, comes without any warranty or liability.
