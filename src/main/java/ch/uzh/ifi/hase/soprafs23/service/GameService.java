@@ -151,7 +151,6 @@ public class GameService {
                 .thenComparing(User::getId).reversed();
 
         Collections.sort(playersScores, compareByGameScore);
-//        playersScores = playersScores.stream().limit(10).collect(Collectors.toList());
 
         Map<User,Integer> playersBestScores = new HashMap<>();
         for (User user: playersScores){

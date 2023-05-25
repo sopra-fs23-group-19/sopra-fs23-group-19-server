@@ -59,7 +59,6 @@ public class UserService {
 
         if(user!=null){
             user.setStatus(UserStatus.OFFLINE);
-//            user.setToken(null);
             userRepository.flush();
         }else{
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Logout failed.");
@@ -83,7 +82,6 @@ public class UserService {
 
     public String findByid(Long id){
         if(userRepository.findByid(id)==null){
-//            return false;
             return "" ;//empty
         }
         User user = userRepository.findByid(id);

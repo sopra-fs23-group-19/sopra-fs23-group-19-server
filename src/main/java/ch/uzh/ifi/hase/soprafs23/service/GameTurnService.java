@@ -243,12 +243,10 @@ public class GameTurnService {
     }
     // get the word similarity
     public double getWordSimilarity( String word0, String word1) {
-//        System.out.println(word0);
-//        System.out.println(word1);
 
         String requestContent = "https://twinword-text-similarity-v1.p.rapidapi.com/similarity/?text1="+
                 URLEncoder.encode(word0, StandardCharsets.UTF_8).replace("+", "%20")+"&text2="+URLEncoder.encode(word1, StandardCharsets.UTF_8).replace("+", "%20");
-//        System.out.println(requestContent);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(requestContent))
                 .header("X-RapidAPI-Key", "f1ba58b38bmsh7f13519be0f7c4ep180d7cjsn1d03862b849f")
@@ -266,7 +264,6 @@ public class GameTurnService {
         }
 
         String str = response.body().toString();
-//        System.out.println(str);
         JSONObject result = new JSONObject(str);
         double similarity = 0;
         if (result.has("similarity")) {

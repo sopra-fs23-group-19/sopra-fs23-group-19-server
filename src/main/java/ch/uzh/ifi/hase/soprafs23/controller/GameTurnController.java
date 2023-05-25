@@ -96,8 +96,6 @@ public class GameTurnController {
     @ResponseBody
     public TurnRankGetDTO getRank( @PathVariable Long gameTurnId){
 
-//        gameTurnService.calculateDrawerScore(gameTurnId);
-
         return gameTurnService.setTurnRankInfo(gameTurnId);
     }
 

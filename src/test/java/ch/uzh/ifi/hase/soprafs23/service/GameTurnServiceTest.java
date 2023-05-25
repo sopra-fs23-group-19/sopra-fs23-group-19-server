@@ -10,6 +10,7 @@ import ch.uzh.ifi.hase.soprafs23.repository.GameTurnRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs23.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.game.GameTurnPutDTO;
+import ch.uzh.ifi.hase.soprafs23.rest.dto.game.TurnRankGetDTO;
 import ch.uzh.ifi.hase.soprafs23.rest.dto.user.UserPutDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -288,6 +290,30 @@ class GameTurnServiceTest {
         String target = "apple";
 
         assertEquals(1, gameTurnService.getWordSimilarity(userGuess,target));
+    }
+
+    @Test
+    public void setTurnRankInfo_success(){
+        TurnRankGetDTO turnRankGetDTO = new TurnRankGetDTO();
+        turnRankGetDTO.setDrawingPlayerScore(0);
+        turnRankGetDTO.setDrawingPlayerId(testUser1.getId());
+        turnRankGetDTO.setTargetWord("apple");
+        turnRankGetDTO.setRankedList(Collections.singletonList(testUser2));
+        turnRankGetDTO.setImage("aaa");
+        turnRankGetDTO.setDrawingPlayerName(testUser1.getUsername());
+        turnRankGetDTO.setCorrectAnswers(0);
+        List<User> listOfUsers= new ArrayList<>() {{
+            add(testUser1);
+            add(testUser2);
+        }};
+
+        Mockito.when(gameTurnRepository.findByid(testGameTurn1.getId())).thenReturn(testGameTurn1);
+        Mockito.when(userRepository.findByRoomId(testGameTurn1.getRoomId())).thenReturn(listOfUsers);
+        Mockito.when(userRepository.findByid(testUser1.getId())).thenReturn(testUser1);
+
+        List<User> rankedUsers = gameTurnService.rank(testGameTurn1.getId());
+        assertEquals(turnRankGetDTO.getCorrectAnswers(),gameTurnService.setTurnRankInfo(testGameTurn1.getId()).getCorrectAnswers());
+        assertEquals(turnRankGetDTO.getRankedList(),rankedUsers);
     }
 
 
