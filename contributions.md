@@ -92,3 +92,8 @@
 |week 8| Geyu Meng | [client#27](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/27)|Implement the save button which is enabled during drawing phase and guessing phase for the drawing player.|
 |week 8| Geyu Meng | [client#110](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/110)|Implement the touchscreen board.|
 |week 8| Geyu Meng | [client#129](https://github.com/sopra-fs23-group-19/sopra-fs23-group-19-client/issues/129)|Fix bugs in the front-end.|
+|week 9| Shiyu Ran |Fix bugs, finish report and prepare final presentations.|
+|week 9| Geyu Meng |Fix bugs, finish report and prepare final presentations.|
+|week 9| Runze Li |Fix bugs, finish report and prepare final presentations.|
+|week 9| Jingjing Li |Fix bugs, finish report and prepare final presentations.|
+|week 9| Manyi Wang |Fix bugs, finish report and prepare final presentations.|
