@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="src/styles/images/icon.jpg" alt="Icon image" width="100">
+  <img src="icon.jpg" alt="Icon image" width="100">
 </h1>
 <h1 align="center">SoPra FS23 - Drawing & Guessing</h1>
 <h2 align="center"> :pencil: Introduction</h2>
