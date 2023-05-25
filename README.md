@@ -1,16 +1,18 @@
 <h1 align="center">
   <br>
-  <img src="src/styles/images/icon.jpg" alt="Cat Paint" width="100">
+  <img src="src/styles/images/icon.jpg" alt="Icon image" width="100">
 </h1>
 <h1 align="center">SoPra FS23 - Drawing & Guessing</h1>
 <h2 align="center"> :pencil: Introduction</h2>
-Drawing & Guessing a social drawing application where players take turns drawing a picture of a given word, and other players compete to guess the word from the drawing. Users can  game is aimed at all age groups.
+Drawing & Guessing is a social drawing application that involves one participant drawing a picture based on a given word, while others attempt to correctly guess the drawing. 
+To play the game, users must create a room for either two or four participants. They can invite their online friends to join. During each turn, players are designated as either "drawing player" or "guessing player".
+The drawing player selects a word and has 60 seconds to draw an illustration depicting that word. During the guessing turn, participants have 60 seconds to submit their answer. Points are awarded to both the drawing and guessing players based on the accuracy of the guesses. Once the game concludes, a final ranking page is displayed to all players. The game relies on a word generating API to generate words, and a word similarity API to compare answers with the target word.
 
 <h3 align="center">:round_pushpin: Goal</h3>
-It is easy to play, and can motivate creative imaginations. It's a quick way to bond with strangers. Users can invite their newly formed group to a quick game for introductory.
+The goal of this project is to create an engaging and interactive game that allows players to draw pictures and guess each other's drawings, while earning points and competing against each other. The project aims to provide a fun and challenging experience that encourages creativity, imagination and quick thinking. The application should be an entertaining and intuitive game that can be easily played and enjoyed by people of all ages and backgrounds.
 
 <h3 align="center">:round_pushpin: Motivation</h3>
-
+The motivation behind a drawing and guessing game is to provide a fun, interactive, and lighthearted activity that can be played with friends, family, or even strangers. The game can be a great way to unwind after a long day, or to simply share a laugh with others. We hope our game can provide a fun and enjoyable experience for all those involved.
 ## :book: Table of content
 
 - [Technologies](#technologies)
@@ -122,13 +124,14 @@ If you want to avoid running all tests with every change, use the following comm
 
 ### Authors
 
-| Name        |
-| ----------- |
-| Runze Li    |
-| Jingjing Li |
-| Geyu Meng   |
-| Manyi Wang  |
-| Shiyu Ran   |
+| Name        | Personal page                                                                                                                                  |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Runze Li    | [![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/runzeliuzh)   |
+| Jingjing Li | [![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Jing-jing-Li) |
+| Geyu Meng   | [![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/GY-Meng)      |
+| Manyi Wang  | [![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/manyiw99)     |
+| Shiyu Ran   | [![GitHub Badge](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Shiyu-Ran)    |
+
 
 ### Acknowledgement
 
